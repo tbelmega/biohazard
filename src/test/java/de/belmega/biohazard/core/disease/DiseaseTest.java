@@ -24,7 +24,8 @@ public class DiseaseTest {
     @Test
     public void testThat_diseaseSpreadsInCountryUpToPopulationLimit() throws Exception {
         //arrange
-        Country country = new Country(80000000);
+        int initialPopulation = 80000000;
+        Country country = new Country(initialPopulation);
         country.setPopulationGrowthFactor(0);
         Disease disease = new Disease(0.1);
         country.add(disease, 75000000);
@@ -33,7 +34,7 @@ public class DiseaseTest {
         country.tick();
 
         //assert
-        assertEquals(80000000, country.getInfectedPeople(disease));
+        assertEquals(initialPopulation, country.getInfectedPeople(disease));
     }
 
     /**
@@ -41,12 +42,12 @@ public class DiseaseTest {
      * In this case, the plain calculation should be replaced by a proper percent chance to infect one person.
      * The chance is checked once per tick.
      */
-    @Test(timeOut = 10)
+    @Test(timeOut = 100)
     public void testThat_diseaseSpreadsInCountryByChance() throws Exception {
         //arrange
         Country country = new Country(80000000);
         Disease disease = new Disease(0.1);
-        long amountOfInfectedPeople = 4L;
+        long amountOfInfectedPeople = 4;
         country.add(disease, amountOfInfectedPeople);
 
         //act

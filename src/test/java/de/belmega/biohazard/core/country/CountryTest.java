@@ -8,8 +8,8 @@ public class CountryTest {
 
     /**
      * Test population growth per tick.
-     * If growth factor for the country is not set manually, the standard value is 0.01 divided by 365,
-     * simulating a 1% per year growth, taking a tick as one day.
+     * If growth factor for the country is not set manually, the standard value is 0.
+     * The test uses 0.01 divided by 365, simulating a 1% per year growth, taking a tick as one day.
      */
     @Test
     public void testThat_populationGrowsAfterTick() throws Exception {
@@ -17,6 +17,7 @@ public class CountryTest {
         int initialPopulation = 80000000;
         long expectedPopulation = 80002192;
         Country country = new Country(initialPopulation);
+        country.setPopulationGrowthFactor(0.01 / 365);
 
         //act
         country.tick();
@@ -26,19 +27,16 @@ public class CountryTest {
     }
 
     @Test
-    public void testThat_populationGrowsWithCustomGrowthFactor() throws Exception {
+    public void testThat_whenNoGrowthFactorIsSet_populationStaysSame() throws Exception {
         //arrange
         int initialPopulation = 80000000;
-        double growthFactor = 0.02 / 365;
-        long expectedPopulation = 80004384;
         Country country = new Country(initialPopulation);
 
         //act
-        country.setPopulationGrowthFactor(growthFactor);
         country.tick();
 
         //assert
-        assertEquals(expectedPopulation, country.getPopulation());
+        assertEquals(initialPopulation, country.getPopulation());
     }
 
 
