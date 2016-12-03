@@ -10,7 +10,7 @@ import static org.mockito.Mockito.verify;
 public class ContinentTest {
 
     @Test
-    public void testThat_tickForContinentCallsTickForCountries() throws Exception {
+    public void testThat_whenContinentTicks_allCountriesTick() throws Exception {
         //arrange
         Continent continent = new Continent();
         Country country1 = Mockito.mock(Country.class);
