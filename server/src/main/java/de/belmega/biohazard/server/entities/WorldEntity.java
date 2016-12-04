@@ -1,12 +1,15 @@
 package de.belmega.biohazard.server.entities;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.sql.Date;
 
 /**
  * @author tbelmega on 03.12.2016.
  */
 @Entity
-@Table(name = "WorldEntity", schema = "PUBLIC")
 public class WorldEntity {
 
 
@@ -16,11 +19,14 @@ public class WorldEntity {
 
     private String name;
 
+    private Date creationDate;
+
     public WorldEntity() {
     }
 
     public WorldEntity(String name) {
         this.name = name;
+        this.creationDate = new Date(System.currentTimeMillis());
     }
 
     public long getId() {
@@ -37,5 +43,13 @@ public class WorldEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 }

@@ -1,0 +1,20 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        template="template.xhtml">
+    <ui:define name="content">
+        <f:metadata>
+            <!-- When page is loaded, get ID from URL and store it in the bean.
+             Then call loadWorldEntity, to let the bean load the entity. -->
+            <f:viewParam name="worldId" value="#{worldDetailsBean.worldId}"/>
+            <f:event type="preRenderComponent" listener="#{worldDetailsBean.loadWorldEntity}"/>
+        </f:metadata>
+
+        <h:form>
+            <h1>#{worldDetailsBean.worldEntity.name}</h1>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

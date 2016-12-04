@@ -5,13 +5,29 @@
         xmlns:f="http://java.sun.com/jsf/core"
         template="template.xhtml">
     <ui:define name="content">
-
+        <f:metadata>
+            <f:viewParam name="order" value="#{worldListBean.orderAscending}"></f:viewParam>
+        </f:metadata>
         <h:form>
 
+            <h:inputText value="#{worldListBean.filter}"/>
+            <h:commandButton value="filter"/>
             <h:dataTable value="#{worldListBean.worlds}" var="world">
                 <h:column>
                     <f:facet name="header">Name</f:facet>
-                    #{world.name}
+                    <h:link value="#{world.name}" outcome="worlddetails.xhtml">
+                        <f:param name="worldId" value="#{world.id}"/>
+                    </h:link>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:link value="Created">
+                            <!-- Link to same page, with new value as URL parameter -->
+                            <f:param name="order" value="#{!worldListBean.orderAscending}"/>
+                        </h:link>
+                    </f:facet>
+                    #{world.creationDate}
                 </h:column>
             </h:dataTable>
 
