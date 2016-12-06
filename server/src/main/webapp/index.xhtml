@@ -11,7 +11,7 @@
         <h:form>
 
             <h:inputText value="#{worldListBean.filter}"/>
-            <h:commandButton value="filter"/>
+            <h:commandButton value="Filter"/>
             <h:dataTable value="#{worldListBean.worlds}" var="world">
                 <h:column>
                     <f:facet name="header">Name</f:facet>
@@ -30,7 +30,7 @@
                     #{world.creationDate}
                 </h:column>
             </h:dataTable>
-
+            <h:commandButton value="Create World" action="createworld"/>
         </h:form>
 
     </ui:define>

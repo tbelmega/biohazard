@@ -1,0 +1,15 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html"
+        template="template.xhtml">
+    <ui:define name="content">
+
+        <h:form>
+            <h1>Create new world</h1>
+            <h:inputText value="#{createWorldBean.worldEntity.name}"/>
+            <h:commandButton value="Create" action="#{createWorldBean.submit}"/>
+            <h:commandButton value="Cancel" action="#{createWorldBean.destroyWorldEntity}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

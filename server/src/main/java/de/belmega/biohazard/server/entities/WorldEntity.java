@@ -22,6 +22,7 @@ public class WorldEntity {
     private Date creationDate;
 
     public WorldEntity() {
+        this.creationDate = new Date(System.currentTimeMillis());
     }
 
     public WorldEntity(String name) {
