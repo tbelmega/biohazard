@@ -14,6 +14,18 @@
 
         <h:form>
             <h1>#{worldDetailsBean.worldEntity.name}</h1>
+
+            <h:panelGrid columns="2">
+                <h:outputLabel>Created: </h:outputLabel>
+                #{worldDetailsBean.worldEntity.creationDate}
+            </h:panelGrid>
+
+            <div>
+                <h:commandButton id="btnBack" value="Back" action="index"/>
+                <h:commandButton id="btnDelete" value="Delete"
+                                 onclick="if (! confirm('Destroy this world?')) return false"
+                                 action="#{worldDetailsBean.destroyWorldEntity}"/>
+            </div>
         </h:form>
 
     </ui:define>

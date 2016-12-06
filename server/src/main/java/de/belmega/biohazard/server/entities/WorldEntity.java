@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @author tbelmega on 03.12.2016.
@@ -19,15 +19,15 @@ public class WorldEntity {
 
     private String name;
 
-    private Date creationDate;
+    private Timestamp creationDate;
 
     public WorldEntity() {
-        this.creationDate = new Date(System.currentTimeMillis());
+        this.creationDate = new Timestamp(System.currentTimeMillis());
     }
 
     public WorldEntity(String name) {
         this.name = name;
-        this.creationDate = new Date(System.currentTimeMillis());
+        this.creationDate = new Timestamp(System.currentTimeMillis());
     }
 
     public long getId() {
@@ -46,11 +46,11 @@ public class WorldEntity {
         this.name = name;
     }
 
-    public Date getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 }

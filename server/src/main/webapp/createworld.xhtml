@@ -7,9 +7,13 @@
 
         <h:form>
             <h1>Create new world</h1>
-            <h:inputText value="#{createWorldBean.worldEntity.name}"/>
-            <h:commandButton value="Create" action="#{createWorldBean.submit}"/>
-            <h:commandButton value="Cancel" action="#{createWorldBean.destroyWorldEntity}"/>
+            <h:outputLabel>Name: </h:outputLabel>
+            <h:inputText id="nameInput" value="#{createWorldBean.worldEntity.name}"/>
+
+            <div>
+                <h:commandButton id="btnOK" value="Create" action="#{createWorldBean.submit}"/>
+                <h:commandButton id="btnAbort" value="Cancel" action="#{createWorldBean.destroyWorldEntity}"/>
+            </div>
         </h:form>
     </ui:define>
 </ui:composition>
