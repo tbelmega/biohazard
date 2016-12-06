@@ -29,4 +29,9 @@ public class World {
     public void tick() {
         continents.forEach(Continent::tick);
     }
+
+
+    public Set<Continent> getContinents() {
+        return continents;
+    }
 }
