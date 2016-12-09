@@ -17,4 +17,8 @@ public class Continent {
             this.countries.add(country);
         }
     }
+
+    public Set<Country> getCountries() {
+        return countries;
+    }
 }
