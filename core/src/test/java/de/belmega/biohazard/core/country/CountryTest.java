@@ -6,7 +6,6 @@ import org.testng.annotations.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.testng.AssertJUnit.assertEquals;
 
 public class CountryTest {
 
@@ -27,27 +26,27 @@ public class CountryTest {
         country.tick();
 
         //assert
-        assertEquals(expectedPopulation, country.getPopulation());
+        assertThat(country.getPopulation(), is(equalTo(expectedPopulation)));
     }
 
     @Test
     public void testThat_whenNoGrowthFactorIsSet_populationStaysSame() throws Exception {
         //arrange
-        int initialPopulation = 80000000;
+        long initialPopulation = 80000000;
         Country country = new Country(initialPopulation);
 
         //act
         country.tick();
 
         //assert
-        assertEquals(initialPopulation, country.getPopulation());
+        assertThat(country.getPopulation(), is(equalTo(initialPopulation)));
     }
 
 
     @Test
     public void testThat_populationShrinksWithCustomGrowthFactor() throws Exception {
         //arrange
-        int initialPopulation = 80000000;
+        long initialPopulation = 80000000;
         double growthFactor = -0.01 / 365;
         long expectedPopulation = 79997808;
         Country country = new Country(initialPopulation);
@@ -57,11 +56,11 @@ public class CountryTest {
         country.tick();
 
         //assert
-        assertEquals(expectedPopulation, country.getPopulation());
+        assertThat(country.getPopulation(), is(equalTo(expectedPopulation)));
     }
 
     @Test
-    public void testThat_CountryStateIsExtracted() throws Exception {
+    public void testThat_countryStateIsExtracted() throws Exception {
         //arrange
         long initialPopulation = 80000000;
         double growthFactor = -0.01 / 365;
@@ -82,7 +81,7 @@ public class CountryTest {
     }
 
     @Test
-    public void testThat_CountryStateIsRestored() throws Exception {
+    public void testThat_countryStateIsRestored() throws Exception {
         //arrange
         CountryState countryState = new CountryState();
         long initialPopulation = 80000000L;
