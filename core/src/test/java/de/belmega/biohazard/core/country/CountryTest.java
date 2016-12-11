@@ -1,7 +1,11 @@
 package de.belmega.biohazard.core.country;
 
+import de.belmega.biohazard.core.disease.Disease;
 import org.testng.annotations.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class CountryTest {
@@ -54,5 +58,46 @@ public class CountryTest {
 
         //assert
         assertEquals(expectedPopulation, country.getPopulation());
+    }
+
+    @Test
+    public void testThat_CountryStateIsExtracted() throws Exception {
+        //arrange
+        long initialPopulation = 80000000;
+        double growthFactor = -0.01 / 365;
+        Country country = new Country(initialPopulation);
+        country.setPopulationGrowthFactor(growthFactor);
+
+        Disease disease = new Disease("foo", 1.0);
+        long initiallyInfected = 1000L;
+        country.add(disease, initiallyInfected);
+
+        //act
+        CountryState state = country.getState();
+
+        //assert
+        assertThat(state.getPopulation(), is(equalTo(initialPopulation)));
+        assertThat(state.getGrowthFactor(), is(equalTo(growthFactor)));
+        assertThat(state.getInfectedPeoplePerDisease().get("foo"), is(equalTo(initiallyInfected)));
+    }
+
+    @Test
+    public void testThat_CountryStateIsRestored() throws Exception {
+        //arrange
+        CountryState countryState = new CountryState();
+        long initialPopulation = 80000000L;
+        countryState.setPopulation(initialPopulation);
+        double growthFactor = 0.01;
+        countryState.setGrowthFactor(growthFactor);
+        long infectedPeople = 1000L;
+        countryState.addInfected("foo", infectedPeople);
+
+        //act
+        Country country = Country.build(countryState);
+
+        //assert
+        assertThat(country.getPopulation(), is(equalTo(initialPopulation)));
+        assertThat(country.getGrowthFactor(), is(equalTo(growthFactor)));
+        assertThat(country.getInfectedPeople(new Disease("foo", 1.0)), is(equalTo(infectedPeople)));
     }
 }

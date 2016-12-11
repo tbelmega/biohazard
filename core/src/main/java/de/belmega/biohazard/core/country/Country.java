@@ -18,6 +18,18 @@ public class Country {
         population = initialPopulation;
     }
 
+    public static Country build(CountryState countryState) {
+        Country country = new Country(countryState.getPopulation());
+        country.setPopulationGrowthFactor(countryState.getGrowthFactor());
+
+        for (String diseaseName : countryState.getInfectedPeoplePerDisease().keySet()) {
+            Disease d = new Disease(diseaseName, 1.0);
+            country.add(d, countryState.getInfectedPeoplePerDisease().get(diseaseName));
+        }
+
+        return country;
+    }
+
     public void tick() {
         population = Math.round(population * (1 + populationGrowthFactor));
 
@@ -83,5 +95,22 @@ public class Country {
     public long getInfectedPeople(Disease disease) {
         Double percentage = this.infectedPercentagePerDisease.get(disease);
         return Math.round(percentage * population);
+    }
+
+    public CountryState getState() {
+        CountryState state = new CountryState();
+        state.setPopulation(this.population);
+        state.setGrowthFactor(this.populationGrowthFactor);
+
+        for (Disease d : this.infectedPercentagePerDisease.keySet()) {
+            long infectedPeople = Math.round(infectedPercentagePerDisease.get(d) * population);
+            state.add(d.getName(), infectedPeople);
+        }
+
+        return state;
+    }
+
+    public double getGrowthFactor() {
+        return populationGrowthFactor;
     }
 }
