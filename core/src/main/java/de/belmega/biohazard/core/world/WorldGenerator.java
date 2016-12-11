@@ -2,6 +2,8 @@ package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
 
+import java.util.UUID;
+
 public class WorldGenerator {
 
     private final WorldGenerationParams params;
@@ -59,6 +61,6 @@ public class WorldGenerator {
         long factor1 = minPopulation + (int) (Math.random() * range);
         long factor2 = minPopulation + (int) (Math.random() * range);
         long population = factor1 * factor2;
-        return new Country(population);
+        return new Country("Country_" + UUID.randomUUID().getMostSignificantBits(), population);
     }
 }

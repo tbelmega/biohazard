@@ -8,18 +8,20 @@ import java.util.Map;
 
 public class Country {
 
+    private final String name;
     private long population;
 
     private double populationGrowthFactor = 0;
 
     private Map<Disease, Double> infectedPercentagePerDisease = new HashMap<>();
 
-    public Country(long initialPopulation) {
+    public Country(String name, long initialPopulation) {
+        this.name = name;
         population = initialPopulation;
     }
 
     public static Country build(CountryState countryState) {
-        Country country = new Country(countryState.getPopulation());
+        Country country = new Country("foo", countryState.getPopulation());
         country.setPopulationGrowthFactor(countryState.getGrowthFactor());
 
         for (String diseaseName : countryState.getInfectedPeoplePerDisease().keySet()) {
@@ -112,5 +114,9 @@ public class Country {
 
     public double getGrowthFactor() {
         return populationGrowthFactor;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

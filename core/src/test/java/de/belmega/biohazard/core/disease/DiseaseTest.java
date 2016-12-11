@@ -10,7 +10,7 @@ public class DiseaseTest {
     @Test
     public void testThat_diseaseSpreadsInCountry() throws Exception {
         //arrange
-        Country country = new Country(80000000);
+        Country country = new Country("baz", 80000000);
         Disease disease = new Disease("foo", 0.1);
         country.add(disease, 1000);
 
@@ -25,7 +25,7 @@ public class DiseaseTest {
     public void testThat_diseaseSpreadsInCountryUpToPopulationLimit() throws Exception {
         //arrange
         int initialPopulation = 80000000;
-        Country country = new Country(initialPopulation);
+        Country country = new Country("baz", initialPopulation);
         country.setPopulationGrowthFactor(0);
         Disease disease = new Disease("foo", 0.1);
         country.add(disease, 75000000);
@@ -45,7 +45,7 @@ public class DiseaseTest {
     @Test(timeOut = 100)
     public void testThat_diseaseSpreadsInCountryByChance() throws Exception {
         //arrange
-        Country country = new Country(80000000);
+        Country country = new Country("baz", 80000000);
         Disease disease = new Disease("foo", 0.1);
         long amountOfInfectedPeople = 4;
         country.add(disease, amountOfInfectedPeople);

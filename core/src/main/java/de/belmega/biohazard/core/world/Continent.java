@@ -21,4 +21,12 @@ public class Continent {
     public Set<Country> getCountries() {
         return countries;
     }
+
+    public ContinentState getState() {
+        ContinentState continentState = new ContinentState();
+        for (Country c : this.getCountries()) {
+            continentState.addCountry(c.getName());
+        }
+        return continentState;
+    }
 }

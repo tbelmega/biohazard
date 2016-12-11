@@ -19,7 +19,7 @@ public class CountryTest {
         //arrange
         int initialPopulation = 80000000;
         long expectedPopulation = 80002192;
-        Country country = new Country(initialPopulation);
+        Country country = new Country("baz", initialPopulation);
         country.setPopulationGrowthFactor(0.01 / 365);
 
         //act
@@ -33,7 +33,7 @@ public class CountryTest {
     public void testThat_whenNoGrowthFactorIsSet_populationStaysSame() throws Exception {
         //arrange
         long initialPopulation = 80000000;
-        Country country = new Country(initialPopulation);
+        Country country = new Country("baz", initialPopulation);
 
         //act
         country.tick();
@@ -49,7 +49,7 @@ public class CountryTest {
         long initialPopulation = 80000000;
         double growthFactor = -0.01 / 365;
         long expectedPopulation = 79997808;
-        Country country = new Country(initialPopulation);
+        Country country = new Country("baz", initialPopulation);
 
         //act
         country.setPopulationGrowthFactor(growthFactor);
@@ -64,7 +64,7 @@ public class CountryTest {
         //arrange
         long initialPopulation = 80000000;
         double growthFactor = -0.01 / 365;
-        Country country = new Country(initialPopulation);
+        Country country = new Country("baz", initialPopulation);
         country.setPopulationGrowthFactor(growthFactor);
 
         Disease disease = new Disease("foo", 1.0);
