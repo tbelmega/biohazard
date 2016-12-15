@@ -2,6 +2,9 @@ package de.belmega.biohazard.core.country;
 
 
 import de.belmega.biohazard.core.disease.Disease;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -100,7 +103,7 @@ public class Country {
     }
 
     public CountryState getState() {
-        CountryState state = new CountryState();
+        CountryState state = new CountryState(this.name);
         state.setPopulation(this.population);
         state.setGrowthFactor(this.populationGrowthFactor);
 
@@ -118,5 +121,32 @@ public class Country {
 
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("Name", name)
+                .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Country country = (Country) o;
+
+        return new EqualsBuilder()
+                .append(this.name, country.name)
+                .isEquals();
+
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(this.name)
+                .build();
     }
 }

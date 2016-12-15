@@ -12,7 +12,7 @@ public class ContinentTest {
     @Test
     public void testThat_whenContinentTicks_allCountriesTick() throws Exception {
         //arrange
-        Continent continent = new Continent();
+        Continent continent = new Continent("foo");
         Country country1 = Mockito.mock(Country.class);
         Country country2 = Mockito.mock(Country.class);
         Country country3 = Mockito.mock(Country.class);

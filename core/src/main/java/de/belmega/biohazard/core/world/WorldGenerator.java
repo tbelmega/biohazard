@@ -35,7 +35,7 @@ public class WorldGenerator {
     }
 
     private Continent generateContinent() {
-        Continent continent = new Continent();
+        Continent continent = new Continent("Continent_" + UUID.randomUUID().getMostSignificantBits());
         continent.add(generateCountries());
         return continent;
     }

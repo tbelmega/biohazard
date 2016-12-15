@@ -83,7 +83,7 @@ public class CountryTest {
     @Test
     public void testThat_countryStateIsRestored() throws Exception {
         //arrange
-        CountryState countryState = new CountryState();
+        CountryState countryState = new CountryState("baz");
         long initialPopulation = 80000000L;
         countryState.setPopulation(initialPopulation);
         double growthFactor = 0.01;

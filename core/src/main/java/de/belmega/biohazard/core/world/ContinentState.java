@@ -1,20 +1,27 @@
 package de.belmega.biohazard.core.world;
 
-import java.util.HashSet;
-import java.util.Set;
+import de.belmega.biohazard.core.country.CountryState;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ContinentState {
-    private Set<String> countries = new HashSet<>();
+    private final String name;
+    private Map<String, CountryState> countries = new HashMap<>();
 
-    public Set<String> getCountries() {
+    public ContinentState(String name) {
+        this.name = name;
+    }
+
+    public Map<String, CountryState> getCountries() {
         return countries;
     }
 
-    public void setCountries(Set<String> countries) {
-        this.countries = countries;
+    public void addCountry(CountryState countryState) {
+        this.countries.put(countryState.getName(), countryState);
     }
 
-    public void addCountry(String name) {
-        this.countries.add(name);
+    public String getName() {
+        return name;
     }
 }

@@ -8,9 +8,14 @@ import java.util.Map;
  * Thus a Country can dump it's state into a CountryState and be restored from it.
  */
 public class CountryState {
+    private final String name;
     private long population;
     private double growthFactor;
     private Map<String, Long> infectedPeoplePerDisease = new HashMap<>();
+
+    public CountryState(String name) {
+        this.name = name;
+    }
 
     public long getPopulation() {
         return population;
@@ -38,5 +43,9 @@ public class CountryState {
 
     public void addInfected(String name, long infectedPeople) {
         this.infectedPeoplePerDisease.put(name, infectedPeople);
+    }
+
+    public String getName() {
+        return name;
     }
 }
