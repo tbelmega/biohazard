@@ -24,7 +24,7 @@ public class Country {
     }
 
     public static Country build(CountryState countryState) {
-        Country country = new Country("foo", countryState.getPopulation());
+        Country country = new Country(countryState.getName(), countryState.getPopulation());
         country.setPopulationGrowthFactor(countryState.getGrowthFactor());
 
         for (String diseaseName : countryState.getInfectedPeoplePerDisease().keySet()) {

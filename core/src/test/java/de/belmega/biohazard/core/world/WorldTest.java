@@ -11,10 +11,13 @@ public class WorldTest {
     public void testThat_whenWorldRuns_allContinentsTick() throws Exception {
         //arrange
         Continent continent1 = Mockito.mock(Continent.class);
+        when(continent1.getName()).thenReturn("foo");
+
         Continent continent2 = Mockito.mock(Continent.class);
-        Continent continent3 = Mockito.mock(Continent.class);
+        when(continent2.getName()).thenReturn("bar");
+
         World world = new World();
-        world.add(continent1, continent2, continent3);
+        world.add(continent1, continent2);
 
         //act
         world.run(100);
@@ -26,6 +29,5 @@ public class WorldTest {
         verify(continent1, (atLeast(expectedTicks))).tick();
         verify(continent1, (atMost(expectedTicks + 1))).tick();
         verify(continent2, (atLeast(expectedTicks))).tick();
-        verify(continent3, (atLeast(expectedTicks))).tick();
     }
 }

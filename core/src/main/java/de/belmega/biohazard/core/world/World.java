@@ -2,14 +2,22 @@ package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class World {
 
-    private Set<Continent> continents = new HashSet<>();
+    private Map<String, Continent> continents = new HashMap<>();
     private WorldRunner worldRunner;
 
+    public static World build(WorldState worldState) {
+        World world = new World();
+        for (ContinentState c : worldState.getContinents().values())
+            world.add(Continent.build(c));
+        return world;
+    }
 
     public void run(long millisecondsPerTick) {
         worldRunner = new WorldRunner(this, millisecondsPerTick);
@@ -20,7 +28,7 @@ public class World {
 
     public void add(Continent... continents) {
         for (Continent continent : continents) {
-            this.continents.add(continent);
+            this.continents.put(continent.getName(), continent);
         }
     }
 
@@ -29,19 +37,28 @@ public class World {
     }
 
     public void tick() {
-        continents.forEach(Continent::tick);
+        continents.values().forEach(Continent::tick);
     }
 
-
     public Set<Continent> getContinents() {
-        return continents;
+        return new HashSet<>(continents.values());
     }
 
     public Set<Country> getCountries() {
         final Set<Country> countries = new HashSet<>();
-        for (Continent c : continents) {
+        for (Continent c : continents.values())
             countries.addAll(c.getCountries());
-        }
         return countries;
+    }
+
+    public WorldState getState() {
+        WorldState worldState = new WorldState();
+        for (Continent c : continents.values())
+            worldState.addContinent(c.getState());
+        return worldState;
+    }
+
+    public Continent getContinent(String name) {
+        return this.continents.get(name);
     }
 }

@@ -4,19 +4,21 @@ import de.belmega.biohazard.core.country.Country;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class ContinentTest {
 
     @Test
     public void testThat_whenContinentTicks_allCountriesTick() throws Exception {
         //arrange
-        Continent continent = new Continent("foo");
         Country country1 = Mockito.mock(Country.class);
+        when(country1.getName()).thenReturn("bar");
+
         Country country2 = Mockito.mock(Country.class);
-        Country country3 = Mockito.mock(Country.class);
-        continent.add(country1, country2, country3);
+        when(country2.getName()).thenReturn("baz");
+
+        Continent continent = new Continent("foo");
+        continent.add(country1, country2);
 
         //act
         continent.tick();
@@ -24,6 +26,5 @@ public class ContinentTest {
         //assert
         verify(country1, times(1)).tick();
         verify(country2, times(1)).tick();
-        verify(country3, times(1)).tick();
     }
 }
