@@ -1,9 +1,12 @@
 package de.belmega.biohazard.core.country;
 
 import de.belmega.biohazard.core.disease.Disease;
+import de.belmega.biohazard.persistence.CountryState;
+import de.belmega.biohazard.persistence.InfectionState;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -77,13 +80,13 @@ public class CountryTest {
         //assert
         assertThat(state.getPopulation(), is(equalTo(initialPopulation)));
         assertThat(state.getGrowthFactor(), is(equalTo(growthFactor)));
-        assertThat(state.getInfectedPeoplePerDisease().get("foo"), is(equalTo(initiallyInfected)));
+        assertThat(state.getInfectedPeoplePerDisease(), containsInAnyOrder(new InfectionState(state, "foo", 1000L)));
     }
 
     @Test
     public void testThat_countryStateIsRestored() throws Exception {
         //arrange
-        CountryState countryState = new CountryState("baz");
+        CountryState countryState = new CountryState();
         long initialPopulation = 80000000L;
         countryState.setPopulation(initialPopulation);
         double growthFactor = 0.01;

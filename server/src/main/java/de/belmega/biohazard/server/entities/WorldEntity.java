@@ -1,5 +1,7 @@
 package de.belmega.biohazard.server.entities;
 
+import de.belmega.biohazard.persistence.WorldState;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +22,8 @@ public class WorldEntity {
     private String name;
 
     private Timestamp creationDate;
+
+    private WorldState state;
 
     public WorldEntity() {
         this.creationDate = new Timestamp(System.currentTimeMillis());

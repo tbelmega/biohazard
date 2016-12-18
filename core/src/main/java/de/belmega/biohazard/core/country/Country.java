@@ -2,6 +2,8 @@ package de.belmega.biohazard.core.country;
 
 
 import de.belmega.biohazard.core.disease.Disease;
+import de.belmega.biohazard.persistence.CountryState;
+import de.belmega.biohazard.persistence.InfectionState;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -27,9 +29,9 @@ public class Country {
         Country country = new Country(countryState.getName(), countryState.getPopulation());
         country.setPopulationGrowthFactor(countryState.getGrowthFactor());
 
-        for (String diseaseName : countryState.getInfectedPeoplePerDisease().keySet()) {
-            Disease d = new Disease(diseaseName, 1.0);
-            country.add(d, countryState.getInfectedPeoplePerDisease().get(diseaseName));
+        for (InfectionState infection : countryState.getInfectedPeoplePerDisease()) {
+            Disease d = new Disease(infection.getDiseaseName(), 1.0);
+            country.add(d, infection.getAmount());
         }
 
         return country;
@@ -103,13 +105,14 @@ public class Country {
     }
 
     public CountryState getState() {
-        CountryState state = new CountryState(this.name);
+        CountryState state = new CountryState();
+        state.setName(this.name);
         state.setPopulation(this.population);
         state.setGrowthFactor(this.populationGrowthFactor);
 
         for (Disease d : this.infectedPercentagePerDisease.keySet()) {
             long infectedPeople = Math.round(infectedPercentagePerDisease.get(d) * population);
-            state.add(d.getName(), infectedPeople);
+            state.addInfected(d.getName(), infectedPeople);
         }
 
         return state;

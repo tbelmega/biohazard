@@ -1,6 +1,7 @@
 package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
+import de.belmega.biohazard.persistence.WorldState;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -17,14 +18,16 @@ public class WorldStateTest {
     public void testThat_worldStateIsExtracted() throws Exception {
         //arrange
         World world = new World();
-        world.add(new Continent("bar"), new Continent("foo"));
+        Continent bar = new Continent("bar");
+        Continent foo = new Continent("foo");
+        world.add(bar, foo);
 
 
         //act
         WorldState state = world.getState();
 
         //assert
-        assertThat(state.getContinents().keySet(), containsInAnyOrder("foo", "bar"));
+        assertThat(state.getContinents(), containsInAnyOrder(foo.getState(), bar.getState()));
     }
 
     @Test

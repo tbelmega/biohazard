@@ -1,6 +1,8 @@
 package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
+import de.belmega.biohazard.persistence.ContinentState;
+import de.belmega.biohazard.persistence.WorldState;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,7 +16,7 @@ public class World {
 
     public static World build(WorldState worldState) {
         World world = new World();
-        for (ContinentState c : worldState.getContinents().values())
+        for (ContinentState c : worldState.getContinents())
             world.add(Continent.build(c));
         return world;
     }

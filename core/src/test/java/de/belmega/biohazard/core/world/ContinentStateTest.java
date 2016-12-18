@@ -1,6 +1,7 @@
 package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
+import de.belmega.biohazard.persistence.ContinentState;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -23,16 +24,14 @@ public class ContinentStateTest {
         ContinentState state = continent.getState();
 
         //assert
-        assertThat(state.getCountries().keySet(), containsInAnyOrder("foo", "bar"));
-
-        long fooPopulation = state.getCountries().get("foo").getPopulation();
-        assertThat(fooPopulation, is(equalTo(80000000L)));
+        assertThat(state.getCountries(), containsInAnyOrder(foo.getState(), bar.getState()));
     }
 
     @Test
     public void testThat_continentIsRestoredFromState() throws Exception {
         //arrange
-        ContinentState continentState = new ContinentState("quz");
+        ContinentState continentState = new ContinentState();
+        continentState.setName("quz");
         Country foo = new Country("foo", 80000000L);
         continentState.addCountry(foo.getState());
 
