@@ -14,7 +14,7 @@ public class WorldState {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<ContinentState> continents = new HashSet<>();
 
     public Collection<ContinentState> getContinents() {

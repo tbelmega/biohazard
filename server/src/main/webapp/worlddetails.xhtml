@@ -18,7 +18,14 @@
             <h:panelGrid columns="2">
                 <h:outputLabel>Created: </h:outputLabel>
                 #{worldDetailsBean.worldEntity.creationDate}
+
             </h:panelGrid>
+
+            <h:dataTable value="#{worldDetailsBean.continents}" var="continent">
+                <h:column>
+                    #{continent.name}
+                </h:column>
+            </h:dataTable>
 
             <div>
                 <h:commandButton id="btnBack" value="Back" action="index"/>

@@ -25,8 +25,14 @@ public class TestDataGenerator {
         Country germany = new Country("Germany", 80000000L);
         Continent europe = new Continent("Europe");
         europe.add(germany);
+
+        Country southPole = new Country("South Pole", 1000L);
+        Continent antarctica = new Continent("Antarctica");
+        antarctica.add(southPole);
+
         World earth = new World();
         earth.add(europe);
+        earth.add(antarctica);
 
         WorldEntity entity1 = new WorldEntity("Test World One");
         entity1.setWorldState(earth.getState());
