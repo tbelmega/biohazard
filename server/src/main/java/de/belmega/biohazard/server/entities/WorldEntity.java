@@ -1,6 +1,6 @@
 package de.belmega.biohazard.server.entities;
 
-import de.belmega.biohazard.persistence.WorldState;
+import de.belmega.biohazard.server.persistence.WorldState;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -20,7 +20,7 @@ public class WorldEntity {
 
     private Timestamp creationDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private WorldState state;
 
     public WorldEntity() {
