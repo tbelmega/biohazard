@@ -1,8 +1,8 @@
 package de.belmega.biohazard.server.persistence;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author tbelmega on 17.12.2016.
@@ -15,13 +15,24 @@ public class WorldState {
     long id;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Collection<ContinentState> continents = new HashSet<>();
+    private Set<ContinentState> continents = new HashSet<>();
 
-    public Collection<ContinentState> getContinents() {
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<DiseaseState> diseases = new HashSet<>();
+
+    public Set<ContinentState> getContinents() {
         return continents;
     }
 
     public void addContinent(ContinentState continentState) {
         this.continents.add(continentState);
+    }
+
+    public Set<DiseaseState> getDiseases() {
+        return diseases;
+    }
+
+    public void addDisease(DiseaseState disease) {
+        this.diseases.add(disease);
     }
 }

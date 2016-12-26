@@ -3,6 +3,7 @@ package de.belmega.biohazard.server.persistence;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A CountryState represents the state of a Country at a specific point in time.
@@ -21,7 +22,7 @@ public class CountryState extends NamedGameEntityState {
     private double growthFactor;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private Collection<InfectionState> infectedPeoplePerDisease = new HashSet<>();
+    private Set<InfectionState> infectedPeoplePerDisease = new HashSet<>();
 
     public long getPopulation() {
         return population;
@@ -43,7 +44,7 @@ public class CountryState extends NamedGameEntityState {
         return infectedPeoplePerDisease;
     }
 
-    public void setInfectedPeoplePerDisease(Collection<InfectionState> infectedPeoplePerDisease) {
+    public void setInfectedPeoplePerDisease(Set<InfectionState> infectedPeoplePerDisease) {
         this.infectedPeoplePerDisease = infectedPeoplePerDisease;
     }
 

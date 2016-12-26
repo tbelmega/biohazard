@@ -1,8 +1,8 @@
 package de.belmega.biohazard.server.persistence;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class ContinentState extends NamedGameEntityState {
@@ -13,10 +13,10 @@ public class ContinentState extends NamedGameEntityState {
     @ManyToOne
     private WorldState world;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Collection<CountryState> countries = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<CountryState> countries = new HashSet<>();
 
-    public Collection<CountryState> getCountries() {
+    public Set<CountryState> getCountries() {
         return countries;
     }
 
@@ -30,5 +30,13 @@ public class ContinentState extends NamedGameEntityState {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public WorldState getWorld() {
+        return world;
+    }
+
+    public void setWorld(WorldState world) {
+        this.world = world;
     }
 }

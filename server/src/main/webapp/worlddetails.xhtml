@@ -18,12 +18,33 @@
             <h:panelGrid columns="2">
                 <h:outputLabel>Created: </h:outputLabel>
                 #{worldDetailsBean.worldEntity.creationDate}
-
+                <h:outputLabel>Population: </h:outputLabel>
+                <h:outputText value="#{worldDetailsBean.totalPopulation}">
+                    <f:convertNumber groupingUsed="true"/>
+                </h:outputText>
             </h:panelGrid>
 
             <h:dataTable value="#{worldDetailsBean.continents}" var="continent">
                 <h:column>
                     #{continent.name}
+                </h:column>
+                <h:column>
+                    <h:dataTable value="#{continent.countries}" var="country">
+                        <h:column>
+                            #{country.name}
+                        </h:column>
+                        <h:column>
+                            <h:outputText value="#{country.population}">
+                                <f:convertNumber groupingUsed="true"/>
+                            </h:outputText>
+                        </h:column>
+                    </h:dataTable>
+                </h:column>
+            </h:dataTable>
+
+            <h:dataTable value="#{worldDetailsBean.diseases}" var="disease">
+                <h:column>
+                    #{disease.name}
                 </h:column>
             </h:dataTable>
 
