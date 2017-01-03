@@ -14,7 +14,7 @@ public class WorldEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
     private String name;
 

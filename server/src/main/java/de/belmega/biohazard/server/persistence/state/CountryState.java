@@ -16,6 +16,9 @@ import java.util.Set;
 public class CountryState extends NamedGameEntityState {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private String name;
 
     @ManyToOne
@@ -39,6 +42,24 @@ public class CountryState extends NamedGameEntityState {
 
         return state;
     }
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     public long getPopulation() {
         return population;
@@ -64,13 +85,6 @@ public class CountryState extends NamedGameEntityState {
         this.infectedPeoplePerDisease = infectedPeoplePerDisease;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public ContinentState getContinent() {
         return continent;

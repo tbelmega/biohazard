@@ -11,6 +11,9 @@ import java.util.Set;
 public class ContinentState extends NamedGameEntityState {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private String name;
 
     @ManyToOne
@@ -28,6 +31,24 @@ public class ContinentState extends NamedGameEntityState {
         return continentState;
     }
 
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
     public Set<CountryState> getCountries() {
         return countries;
     }
@@ -39,14 +60,6 @@ public class ContinentState extends NamedGameEntityState {
 
     public void addCountry(Country foo) {
         addCountry(CountryState.getState(foo));
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public WorldState getWorld() {

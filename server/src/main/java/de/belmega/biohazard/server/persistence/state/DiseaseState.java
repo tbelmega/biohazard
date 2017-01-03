@@ -2,15 +2,15 @@ package de.belmega.biohazard.server.persistence.state;
 
 import de.belmega.biohazard.core.disease.Disease;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
-public class DiseaseState {
+public class DiseaseState extends NamedGameEntityState {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     private String name;
 
     @ManyToOne
@@ -22,7 +22,7 @@ public class DiseaseState {
     }
 
     public DiseaseState(String name) {
-        this.name = name;
+        this.setName(name);
     }
 
     public static Disease build(DiseaseState d) {
@@ -34,6 +34,14 @@ public class DiseaseState {
         return new DiseaseState(d.getName());
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -41,6 +49,7 @@ public class DiseaseState {
     public void setName(String name) {
         this.name = name;
     }
+
 
     public WorldState getWorld() {
         return world;

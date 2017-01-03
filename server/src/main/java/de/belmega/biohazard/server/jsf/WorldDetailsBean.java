@@ -55,7 +55,8 @@ public class WorldDetailsBean {
     }
 
     public Collection<ContinentState> getContinents() {
-        return worldEntity.getWorldState().getContinents();
+        WorldState worldState = worldEntity.getWorldState();
+        return worldState.getContinents();
     }
 
     public Long getTotalPopulation() {

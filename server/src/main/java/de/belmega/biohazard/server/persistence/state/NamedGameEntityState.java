@@ -6,13 +6,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * @author tbelmega on 18.12.2016.
+ * Abstract super class for game entities whos equals() method may be based on the name property.
  */
 public abstract class NamedGameEntityState {
 
     public abstract String getName();
 
     public abstract void setName(String name);
-
 
     @Override
     public String toString() {

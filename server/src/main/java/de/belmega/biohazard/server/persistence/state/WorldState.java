@@ -12,11 +12,11 @@ import java.util.Set;
  * @author tbelmega on 17.12.2016.
  */
 @Entity
-public class WorldState {
+public class WorldState extends NamedGameEntityState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
     @OneToMany(mappedBy = "world", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ContinentState> continents = new HashSet<>();
@@ -26,6 +26,8 @@ public class WorldState {
 
     private long age;
 
+    private String name;
+
     public static WorldState getState(World w) {
         WorldState worldState = new WorldState();
         worldState.setAge(w.getAge());
@@ -33,6 +35,24 @@ public class WorldState {
         w.getDiseases().forEach(worldState::addDisease);
         return worldState;
     }
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     public Set<ContinentState> getContinents() {
         return continents;
