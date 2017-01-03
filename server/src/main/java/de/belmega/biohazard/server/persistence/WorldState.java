@@ -20,6 +20,8 @@ public class WorldState {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<DiseaseState> diseases = new HashSet<>();
 
+    private long age;
+
     public Set<ContinentState> getContinents() {
         return continents;
     }
@@ -38,5 +40,13 @@ public class WorldState {
 
     public void addDisease(DiseaseState disease) {
         this.diseases.add(disease);
+    }
+
+    public long getAge() {
+        return age;
+    }
+
+    public void setAge(long age) {
+        this.age = age;
     }
 }

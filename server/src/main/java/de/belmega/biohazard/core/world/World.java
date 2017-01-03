@@ -12,14 +12,22 @@ import java.util.Set;
 
 public class World {
 
+    private WorldRunner worldRunner;
+
     private Map<String, Continent> continents = new HashMap<>();
     private Map<String, Disease> diseases = new HashMap<>();
-    private WorldRunner worldRunner;
+
+    private long age;
+
+    public World() {
+        age = 0L;
+    }
 
     public static World build(WorldState worldState) {
         World world = new World();
         for (ContinentState c : worldState.getContinents())
             world.add(Continent.build(c));
+        world.setAge(worldState.getAge());
         return world;
     }
 
@@ -28,6 +36,14 @@ public class World {
         Thread worldThread = new Thread(worldRunner);
 
         worldThread.start();
+    }
+
+    public long getAge() {
+        return age;
+    }
+
+    public void setAge(long age) {
+        this.age = age;
     }
 
     public void add(Continent... continents) {
@@ -45,6 +61,7 @@ public class World {
     }
 
     public void tick() {
+        this.age += 1;
         continents.values().forEach(Continent::tick);
     }
 
@@ -61,6 +78,7 @@ public class World {
 
     public WorldState getState() {
         WorldState worldState = new WorldState();
+        worldState.setAge(age);
         for (Continent c : continents.values())
             worldState.addContinent(c.getState(worldState));
         for (Disease d : diseases.values())

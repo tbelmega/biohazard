@@ -104,4 +104,8 @@ public class WorldDetailsBean {
 
         status = WorldRunStatus.STOPPED;
     }
+
+    public long getAge() {
+        return worldEntity.getWorldState().getAge();
+    }
 }
