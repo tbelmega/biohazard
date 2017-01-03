@@ -2,6 +2,7 @@ package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
 import de.belmega.biohazard.server.persistence.ContinentState;
+import de.belmega.biohazard.server.persistence.CountryState;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -21,10 +22,10 @@ public class ContinentStateTest {
         continent.add(foo, bar);
 
         //act
-        ContinentState state = continent.getState();
+        ContinentState state = ContinentState.getState(continent);
 
         //assert
-        assertThat(state.getCountries(), containsInAnyOrder(foo.getState(), bar.getState()));
+        assertThat(state.getCountries(), containsInAnyOrder(CountryState.getState(foo), CountryState.getState(bar)));
     }
 
     @Test
@@ -33,10 +34,10 @@ public class ContinentStateTest {
         ContinentState continentState = new ContinentState();
         continentState.setName("quz");
         Country foo = new Country("foo", 80000000L);
-        continentState.addCountry(foo.getState());
+        continentState.addCountry(foo);
 
         //act
-        Continent continent = Continent.build(continentState);
+        Continent continent = continentState.build();
 
         //assert
         assertThat(continent.getName(), is(equalTo("quz")));

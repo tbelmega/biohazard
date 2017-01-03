@@ -2,14 +2,13 @@ package de.belmega.biohazard.core.country;
 
 
 import de.belmega.biohazard.core.disease.Disease;
-import de.belmega.biohazard.server.persistence.CountryState;
-import de.belmega.biohazard.server.persistence.InfectionState;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Country {
 
@@ -29,17 +28,6 @@ public class Country {
         population = initialPopulation;
     }
 
-    public static Country build(CountryState countryState) {
-        Country country = new Country(countryState.getName(), countryState.getPopulation());
-        country.setPopulationGrowthFactor(countryState.getGrowthFactor());
-
-        for (InfectionState infection : countryState.getInfectedPeoplePerDisease()) {
-            Disease d = new Disease(infection.getDiseaseName(), 1.0);
-            country.add(d, infection.getAmount());
-        }
-
-        return country;
-    }
 
     public void tick() {
         population = Math.round(population * (1 + populationGrowthFactor));
@@ -108,19 +96,6 @@ public class Country {
         return Math.round(percentage * population);
     }
 
-    public CountryState getState() {
-        CountryState state = new CountryState();
-        state.setName(this.name);
-        state.setPopulation(this.population);
-        state.setGrowthFactor(this.populationGrowthFactor);
-
-        for (Disease d : this.infectedPercentagePerDisease.keySet()) {
-            long infectedPeople = Math.round(infectedPercentagePerDisease.get(d) * population);
-            state.addInfected(d.getName(), infectedPeople);
-        }
-
-        return state;
-    }
 
     public double getGrowthFactor() {
         return populationGrowthFactor;
@@ -155,5 +130,9 @@ public class Country {
         return new HashCodeBuilder()
                 .append(this.name)
                 .build();
+    }
+
+    public Set<Disease> getDiseases() {
+        return infectedPercentagePerDisease.keySet();
     }
 }

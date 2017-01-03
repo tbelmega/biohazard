@@ -1,6 +1,5 @@
 package de.belmega.biohazard.core.disease;
 
-import de.belmega.biohazard.server.persistence.DiseaseState;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -51,7 +50,4 @@ public class Disease {
                 .hashCode();
     }
 
-    public DiseaseState getState() {
-        return new DiseaseState(this.name);
-    }
 }

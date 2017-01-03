@@ -2,8 +2,6 @@ package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
 import de.belmega.biohazard.core.disease.Disease;
-import de.belmega.biohazard.server.persistence.ContinentState;
-import de.belmega.biohazard.server.persistence.WorldState;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,13 +21,6 @@ public class World {
         age = 0L;
     }
 
-    public static World build(WorldState worldState) {
-        World world = new World();
-        for (ContinentState c : worldState.getContinents())
-            world.add(Continent.build(c));
-        world.setAge(worldState.getAge());
-        return world;
-    }
 
     public void run(long millisecondsPerTick) {
         worldRunner = new WorldRunner(this, millisecondsPerTick);
@@ -76,19 +67,12 @@ public class World {
         return countries;
     }
 
-    public WorldState getState() {
-        WorldState worldState = new WorldState();
-        worldState.setAge(age);
-        for (Continent c : continents.values())
-            worldState.addContinent(c.getState());
-        for (Disease d : diseases.values())
-            worldState.addDisease(d.getState());
-        return worldState;
-    }
 
     public Continent getContinent(String name) {
         return this.continents.get(name);
     }
 
-
+    public Set<Disease> getDiseases() {
+        return new HashSet<>(diseases.values());
+    }
 }

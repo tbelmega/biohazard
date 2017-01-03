@@ -75,7 +75,7 @@ public class CountryTest {
         country.add(disease, initiallyInfected);
 
         //act
-        CountryState state = country.getState();
+        CountryState state = CountryState.getState(country);
 
         //assert
         assertThat(state.getPopulation(), is(equalTo(initialPopulation)));
@@ -95,7 +95,7 @@ public class CountryTest {
         countryState.addInfected("foo", infectedPeople);
 
         //act
-        Country country = Country.build(countryState);
+        Country country = countryState.build();
 
         //assert
         assertThat(country.getPopulation(), is(equalTo(initialPopulation)));

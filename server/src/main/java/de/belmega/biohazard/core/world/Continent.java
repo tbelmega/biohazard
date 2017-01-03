@@ -1,8 +1,6 @@
 package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
-import de.belmega.biohazard.server.persistence.ContinentState;
-import de.belmega.biohazard.server.persistence.CountryState;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -20,12 +18,6 @@ public class Continent {
         this.name = name;
     }
 
-    public static Continent build(ContinentState continentState) {
-        Continent continent = new Continent(continentState.getName());
-        for (CountryState countryState : continentState.getCountries())
-            continent.add(Country.build(countryState));
-        return continent;
-    }
 
     public void tick() {
         this.countries.values().forEach(Country::tick);
@@ -40,13 +32,6 @@ public class Continent {
         return new HashSet<>(countries.values());
     }
 
-    public ContinentState getState() {
-        ContinentState continentState = new ContinentState();
-        continentState.setName(this.getName());
-        for (Country c : this.getCountries())
-            continentState.addCountry(c.getState());
-        return continentState;
-    }
 
     public String getName() {
         return name;

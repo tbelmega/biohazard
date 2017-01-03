@@ -1,6 +1,7 @@
 package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
+import de.belmega.biohazard.server.persistence.ContinentState;
 import de.belmega.biohazard.server.persistence.WorldState;
 import org.testng.annotations.Test;
 
@@ -24,10 +25,10 @@ public class WorldStateTest {
 
 
         //act
-        WorldState state = world.getState();
+        WorldState state = WorldState.getState(world);
 
         //assert
-        assertThat(state.getContinents(), containsInAnyOrder(foo.getState(), bar.getState()));
+        assertThat(state.getContinents(), containsInAnyOrder(ContinentState.getState(foo), ContinentState.getState(bar)));
     }
 
     @Test
@@ -36,11 +37,11 @@ public class WorldStateTest {
         WorldState worldState = new WorldState();
         Continent foo = new Continent("foo");
         foo.add(new Country("quz", 80000000L));
-        worldState.addContinent(foo.getState());
+        worldState.addContinent(foo);
 
 
         //act
-        World world = World.build(worldState);
+        World world = worldState.build();
 
         //assert
         assertThat(world.getContinents(), containsInAnyOrder(foo));

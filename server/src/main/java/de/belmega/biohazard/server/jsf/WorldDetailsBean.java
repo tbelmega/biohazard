@@ -7,6 +7,7 @@ import de.belmega.biohazard.server.entities.WorldEntity;
 import de.belmega.biohazard.server.persistence.ContinentState;
 import de.belmega.biohazard.server.persistence.CountryState;
 import de.belmega.biohazard.server.persistence.DiseaseState;
+import de.belmega.biohazard.server.persistence.WorldState;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -91,7 +92,7 @@ public class WorldDetailsBean {
     }
 
     private void startWorld() {
-        this.world = World.build(worldEntity.getWorldState());
+        this.world = worldEntity.getWorldState().build();
         world.run(1000);
 
         status = WorldRunStatus.RUNNING;
@@ -99,7 +100,7 @@ public class WorldDetailsBean {
 
     private void stopWorld() {
         world.stop();
-        worldEntity.setWorldState(world.getState());
+        worldEntity.setWorldState(WorldState.getState(world));
         worldDAO.saveWorld(worldEntity);
 
         status = WorldRunStatus.STOPPED;

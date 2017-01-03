@@ -1,5 +1,8 @@
 package de.belmega.biohazard.server.persistence;
 
+import de.belmega.biohazard.core.country.Country;
+import de.belmega.biohazard.core.disease.Disease;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
@@ -24,6 +27,18 @@ public class CountryState extends NamedGameEntityState {
 
     @OneToMany(mappedBy = "country", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<InfectionState> infectedPeoplePerDisease = new HashSet<>();
+
+    public static CountryState getState(Country c) {
+        CountryState state = new CountryState();
+        state.setName(c.getName());
+        state.setPopulation(c.getPopulation());
+        state.setGrowthFactor(c.getGrowthFactor());
+
+        for (Disease d : c.getDiseases())
+            state.addInfected(d.getName(), c.getInfectedPeople(d));
+
+        return state;
+    }
 
     public long getPopulation() {
         return population;
@@ -67,5 +82,17 @@ public class CountryState extends NamedGameEntityState {
 
     public void addInfected(String diseaseName, long infectedPeople) {
         this.infectedPeoplePerDisease.add(new InfectionState(this, diseaseName, infectedPeople));
+    }
+
+    public Country build() {
+        Country country = new Country(this.getName(), this.getPopulation());
+        country.setPopulationGrowthFactor(this.getGrowthFactor());
+
+        for (InfectionState infection : this.getInfectedPeoplePerDisease()) {
+            Disease d = new Disease(infection.getDiseaseName(), 1.0);
+            country.add(d, infection.getAmount());
+        }
+
+        return country;
     }
 }

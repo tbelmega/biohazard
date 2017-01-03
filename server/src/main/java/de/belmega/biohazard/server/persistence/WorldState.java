@@ -1,5 +1,9 @@
 package de.belmega.biohazard.server.persistence;
 
+import de.belmega.biohazard.core.disease.Disease;
+import de.belmega.biohazard.core.world.Continent;
+import de.belmega.biohazard.core.world.World;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +26,14 @@ public class WorldState {
 
     private long age;
 
+    public static WorldState getState(World w) {
+        WorldState worldState = new WorldState();
+        worldState.setAge(w.getAge());
+        w.getContinents().forEach(worldState::addContinent);
+        w.getDiseases().forEach(worldState::addDisease);
+        return worldState;
+    }
+
     public Set<ContinentState> getContinents() {
         return continents;
     }
@@ -39,6 +51,11 @@ public class WorldState {
         return diseases;
     }
 
+    public void addDisease(Disease d) {
+        DiseaseState state = DiseaseState.getState(d);
+        addDisease(state);
+    }
+
     public void addDisease(DiseaseState disease) {
         disease.setWorld(this);
         this.diseases.add(disease);
@@ -50,5 +67,20 @@ public class WorldState {
 
     public void setAge(long age) {
         this.age = age;
+    }
+
+    public void addContinent(Continent c) {
+        addContinent(ContinentState.getState(c));
+    }
+
+
+    public World build() {
+        World world = new World();
+        for (ContinentState c : this.getContinents())
+            world.add(c.build());
+        for (DiseaseState d : this.getDiseases())
+            world.add(DiseaseState.build(d));
+        world.setAge(this.getAge());
+        return world;
     }
 }

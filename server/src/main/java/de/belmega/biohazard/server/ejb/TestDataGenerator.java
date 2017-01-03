@@ -5,6 +5,7 @@ import de.belmega.biohazard.core.disease.Disease;
 import de.belmega.biohazard.core.world.Continent;
 import de.belmega.biohazard.core.world.World;
 import de.belmega.biohazard.server.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.WorldState;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -47,7 +48,7 @@ public class TestDataGenerator {
         earth.add(influenza, avianFlu);
 
         WorldEntity worldEntity = new WorldEntity("Test World One");
-        worldEntity.setWorldState(earth.getState());
+        worldEntity.setWorldState(WorldState.getState(earth));
 
         em.persist(worldEntity);
 
