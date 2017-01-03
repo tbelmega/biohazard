@@ -6,16 +6,13 @@ import de.belmega.biohazard.server.ejb.WorldRunStatus;
 import de.belmega.biohazard.server.persistence.entities.WorldEntity;
 import de.belmega.biohazard.server.persistence.state.ContinentState;
 import de.belmega.biohazard.server.persistence.state.CountryState;
-import de.belmega.biohazard.server.persistence.state.DiseaseState;
+import de.belmega.biohazard.server.persistence.state.InfectionState;
 import de.belmega.biohazard.server.persistence.state.WorldState;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author tbelmega on 04.12.2016.
@@ -73,11 +70,30 @@ public class WorldDetailsBean {
         return totalPopulation;
     }
 
-    public List<DiseaseState> getDiseases() {
-        Set<DiseaseState> diseases = worldEntity.getWorldState().getDiseases();
-        List<DiseaseState> diseaseList = new ArrayList<>(diseases);
-        Collections.sort(diseaseList);
-        return diseaseList;
+    public List<String> getDiseaseNames() {
+        Set<String> diseaseNames = new HashSet<>();
+        for (ContinentState continent : worldEntity.getWorldState().getContinents())
+            for (CountryState c : continent.getCountries())
+                for (InfectionState i : c.getInfectedPeoplePerDisease())
+                    diseaseNames.add(i.getDiseaseName());
+
+        List<String> diseaseNameList = new ArrayList<>(diseaseNames);
+        Collections.sort(diseaseNameList);
+        return diseaseNameList;
+    }
+
+    public Map<String, Long> getWorldInfectionState() {
+        Map<String, Long> infections = new HashMap<>();
+
+        for (ContinentState continent : worldEntity.getWorldState().getContinents())
+            for (CountryState c : continent.getCountries())
+                for (InfectionState i : c.getInfectedPeoplePerDisease())
+                    if (infections.containsKey(i.getDiseaseName()))
+                        infections.put(i.getDiseaseName(), infections.get(i.getDiseaseName()) + i.getAmount());
+                    else
+                        infections.put(i.getDiseaseName(), i.getAmount());
+
+        return infections;
     }
 
     public WorldRunStatus getStatus() {

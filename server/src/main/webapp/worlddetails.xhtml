@@ -54,9 +54,14 @@
                 </h:column>
             </h:dataTable>
 
-            <h:dataTable value="#{worldDetailsBean.diseases}" var="disease">
+            <h:dataTable value="#{worldDetailsBean.worldInfectionState.entrySet()}" var="infection">
                 <h:column>
-                    #{disease.name}
+                    #{infection.key}
+                </h:column>
+                <h:column>
+                    <h:outputText value="#{infection.value}">
+                        <f:convertNumber groupingUsed="true"/>
+                    </h:outputText>
                 </h:column>
             </h:dataTable>
 
