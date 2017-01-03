@@ -73,7 +73,6 @@ public class WorldDAO {
     private void mergeContinentWithAllChildren(ContinentState c) {
         for (CountryState country : c.getCountries())
             mergeCountryWithAllChildren(country);
-
         em.merge(c);
     }
 
