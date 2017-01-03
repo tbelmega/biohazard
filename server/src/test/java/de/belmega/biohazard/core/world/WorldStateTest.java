@@ -1,8 +1,8 @@
 package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
-import de.belmega.biohazard.server.persistence.ContinentState;
-import de.belmega.biohazard.server.persistence.WorldState;
+import de.belmega.biohazard.server.persistence.state.ContinentState;
+import de.belmega.biohazard.server.persistence.state.WorldState;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.CoreMatchers.is;

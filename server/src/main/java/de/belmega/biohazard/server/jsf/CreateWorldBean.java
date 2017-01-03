@@ -1,7 +1,7 @@
 package de.belmega.biohazard.server.jsf;
 
 import de.belmega.biohazard.server.ejb.WorldDAO;
-import de.belmega.biohazard.server.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.entities.WorldEntity;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;

@@ -1,4 +1,4 @@
-package de.belmega.biohazard.server.persistence;
+package de.belmega.biohazard.server.persistence.state;
 
 import de.belmega.biohazard.core.disease.Disease;
 import de.belmega.biohazard.core.world.Continent;

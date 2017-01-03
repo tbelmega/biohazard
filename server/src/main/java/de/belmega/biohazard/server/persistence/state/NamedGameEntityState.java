@@ -1,4 +1,4 @@
-package de.belmega.biohazard.server.persistence;
+package de.belmega.biohazard.server.persistence.state;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

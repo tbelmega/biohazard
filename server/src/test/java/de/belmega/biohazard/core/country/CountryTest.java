@@ -1,8 +1,8 @@
 package de.belmega.biohazard.core.country;
 
 import de.belmega.biohazard.core.disease.Disease;
-import de.belmega.biohazard.server.persistence.CountryState;
-import de.belmega.biohazard.server.persistence.InfectionState;
+import de.belmega.biohazard.server.persistence.state.CountryState;
+import de.belmega.biohazard.server.persistence.state.InfectionState;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

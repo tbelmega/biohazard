@@ -1,6 +1,6 @@
 package de.belmega.biohazard.server.ejb;
 
-import de.belmega.biohazard.server.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.entities.WorldEntity;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.ejb.Stateless;

@@ -4,8 +4,8 @@ import de.belmega.biohazard.core.country.Country;
 import de.belmega.biohazard.core.disease.Disease;
 import de.belmega.biohazard.core.world.Continent;
 import de.belmega.biohazard.core.world.World;
-import de.belmega.biohazard.server.entities.WorldEntity;
-import de.belmega.biohazard.server.persistence.WorldState;
+import de.belmega.biohazard.server.persistence.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.state.WorldState;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;

@@ -1,6 +1,6 @@
-package de.belmega.biohazard.server.entities;
+package de.belmega.biohazard.server.persistence.entities;
 
-import de.belmega.biohazard.server.persistence.WorldState;
+import de.belmega.biohazard.server.persistence.state.WorldState;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

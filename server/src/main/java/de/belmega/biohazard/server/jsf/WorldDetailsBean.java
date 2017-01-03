@@ -3,11 +3,11 @@ package de.belmega.biohazard.server.jsf;
 import de.belmega.biohazard.core.world.World;
 import de.belmega.biohazard.server.ejb.WorldDAO;
 import de.belmega.biohazard.server.ejb.WorldRunStatus;
-import de.belmega.biohazard.server.entities.WorldEntity;
-import de.belmega.biohazard.server.persistence.ContinentState;
-import de.belmega.biohazard.server.persistence.CountryState;
-import de.belmega.biohazard.server.persistence.DiseaseState;
-import de.belmega.biohazard.server.persistence.WorldState;
+import de.belmega.biohazard.server.persistence.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.state.ContinentState;
+import de.belmega.biohazard.server.persistence.state.CountryState;
+import de.belmega.biohazard.server.persistence.state.DiseaseState;
+import de.belmega.biohazard.server.persistence.state.WorldState;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
