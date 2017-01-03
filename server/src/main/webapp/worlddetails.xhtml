@@ -24,7 +24,9 @@
                 </h:outputText>
             </h:panelGrid>
 
-            <h:dataTable value="#{worldDetailsBean.continents}" var="continent">
+            <h:dataTable id="continentTable"
+                         value="#{worldDetailsBean.continents}"
+                         var="continent">
                 <h:column>
                     #{continent.name}
                 </h:column>
@@ -47,6 +49,16 @@
                     #{disease.name}
                 </h:column>
             </h:dataTable>
+
+            <h:panelGrid columns="3">
+                <h:outputLabel>Status:</h:outputLabel>
+                #{worldDetailsBean.status}
+                <h:commandButton id="btnRun"
+                                 value="#{worldDetailsBean.btnRunValue}"
+                                 action="#{worldDetailsBean.btnRunClick}"
+                                 rerender="continentTable"
+                />
+            </h:panelGrid>
 
             <div>
                 <h:commandButton id="btnBack" value="Back" action="index"/>

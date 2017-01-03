@@ -9,8 +9,7 @@ import de.belmega.biohazard.server.entities.WorldEntity;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.inject.Inject;
 
 /**
  * @author tbelmega on 04.12.2016.
@@ -18,8 +17,8 @@ import javax.persistence.PersistenceContext;
 @Singleton
 @Startup
 public class TestDataGenerator {
-    @PersistenceContext
-    EntityManager em;
+    @Inject
+    WorldDAO worldDAO;
 
     @PostConstruct
     public void setupTestData() {
@@ -27,7 +26,9 @@ public class TestDataGenerator {
         Disease avianFlu = new Disease("Avian Flu", 0);
 
         Country germany = new Country("Germany", 80000000L);
+        germany.setPopulationGrowthFactor(0.01);
         Country poland = new Country("Poland", 40000000L);
+        poland.setPopulationGrowthFactor(0.015);
         Continent europe = new Continent("Europe");
         europe.add(germany);
         europe.add(poland);
@@ -42,8 +43,8 @@ public class TestDataGenerator {
 
         WorldEntity entity1 = new WorldEntity("Test World One");
         entity1.setWorldState(earth.getState());
-        em.persist(entity1);
-        em.persist(new WorldEntity("Test World Two"));
-        em.persist(new WorldEntity("Test World Three"));
+
+
+        worldDAO.saveWorld(entity1);
     }
 }

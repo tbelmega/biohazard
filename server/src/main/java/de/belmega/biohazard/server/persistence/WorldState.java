@@ -24,6 +24,10 @@ public class WorldState {
         return continents;
     }
 
+    public void setContinents(Set<ContinentState> continents) {
+        this.continents = continents;
+    }
+
     public void addContinent(ContinentState continentState) {
         this.continents.add(continentState);
     }

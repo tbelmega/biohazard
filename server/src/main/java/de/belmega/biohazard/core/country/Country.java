@@ -16,6 +16,10 @@ public class Country {
     private final String name;
     private long population;
 
+    /**
+     * The growth per tick. A growth factor of 0 represents stagnation,
+     * a growth factor of 1 represents a 100% growth per tick (doubling the population).
+     */
     private double populationGrowthFactor = 0;
 
     private Map<Disease, Double> infectedPercentagePerDisease = new HashMap<>();

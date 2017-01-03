@@ -1,6 +1,8 @@
 package de.belmega.biohazard.server.jsf;
 
+import de.belmega.biohazard.core.world.World;
 import de.belmega.biohazard.server.ejb.WorldDAO;
+import de.belmega.biohazard.server.ejb.WorldRunStatus;
 import de.belmega.biohazard.server.entities.WorldEntity;
 import de.belmega.biohazard.server.persistence.ContinentState;
 import de.belmega.biohazard.server.persistence.CountryState;
@@ -22,6 +24,9 @@ public class WorldDetailsBean {
     WorldDAO worldDAO;
     private WorldEntity worldEntity;
     private long worldId;
+    private WorldRunStatus status = WorldRunStatus.STOPPED;
+
+    private World world;
 
     public void loadWorldEntity() {
         worldEntity = worldDAO.findWorld(worldId);
@@ -63,5 +68,40 @@ public class WorldDetailsBean {
 
     public Set<DiseaseState> getDiseases() {
         return worldEntity.getWorldState().getDiseases();
+    }
+
+    public WorldRunStatus getStatus() {
+        return status;
+    }
+
+    public String getBtnRunValue() {
+        if (status.equals(WorldRunStatus.RUNNING))
+            return "Stop";
+        else
+            return "Run";
+    }
+
+    public String btnRunClick() {
+        if (status.equals(WorldRunStatus.RUNNING))
+            stopWorld();
+        else
+            startWorld();
+
+        return "worlddetails.xhtml?worldId=" + worldId;
+    }
+
+    private void startWorld() {
+        this.world = World.build(worldEntity.getWorldState());
+        world.run(1000);
+
+        status = WorldRunStatus.RUNNING;
+    }
+
+    private void stopWorld() {
+        world.stop();
+        worldEntity.setWorldState(world.getState());
+        worldDAO.saveWorld(worldEntity);
+
+        status = WorldRunStatus.STOPPED;
     }
 }

@@ -1,6 +1,7 @@
 package de.belmega.biohazard.server.ejb;
 
 import de.belmega.biohazard.server.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.*;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.ejb.Stateless;
@@ -46,7 +47,69 @@ public class WorldDAO {
     }
 
     public void saveWorld(WorldEntity worldEntity) {
+        WorldEntity worldEntity1 = findWorld(worldEntity.getId());
+        if (worldEntity1 != null)
+            mergeWorldWithAllChildren(worldEntity);
+        else
+            persistWorldWithAllChildren(worldEntity);
+    }
+
+    private void mergeWorldWithAllChildren(WorldEntity worldEntity) {
+        WorldState worldState = worldEntity.getWorldState();
+
+        for (ContinentState c : worldState.getContinents())
+            mergeContinentWithAllChildren(c);
+
+
+        for (DiseaseState d : worldState.getDiseases())
+            em.merge(d);
+
+        WorldState mergedWorldState = em.merge(worldState);
+        worldEntity.setWorldState(mergedWorldState);
+        em.merge(worldEntity);
+        em.flush();
+    }
+
+    private void mergeContinentWithAllChildren(ContinentState c) {
+        for (CountryState country : c.getCountries())
+            mergeCountryWithAllChildren(country);
+
+        em.merge(c);
+    }
+
+    private void mergeCountryWithAllChildren(CountryState country) {
+        for (InfectionState i : country.getInfectedPeoplePerDisease())
+            em.merge(i);
+
+        em.merge(country);
+    }
+
+    private void persistWorldWithAllChildren(WorldEntity worldEntity) {
+        WorldState worldState = worldEntity.getWorldState();
+
+        for (ContinentState c : worldState.getContinents())
+            persistContinentWithAllChildren(c);
+
+        for (DiseaseState d : worldState.getDiseases())
+            em.persist(d);
+
+        em.persist(worldState);
         em.persist(worldEntity);
+        em.flush();
+    }
+
+    private void persistContinentWithAllChildren(ContinentState c) {
+        for (CountryState country : c.getCountries())
+            persistCountryWithAllChildren(country);
+
+        em.persist(c);
+    }
+
+    private void persistCountryWithAllChildren(CountryState country) {
+        for (InfectionState i : country.getInfectedPeoplePerDisease())
+            em.persist(i);
+
+        em.persist(country);
     }
 
     public void destroyWorld(WorldEntity worldEntity) {

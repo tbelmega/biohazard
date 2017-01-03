@@ -21,7 +21,7 @@ public class CountryState extends NamedGameEntityState {
     private long population;
     private double growthFactor;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<InfectionState> infectedPeoplePerDisease = new HashSet<>();
 
     public long getPopulation() {
