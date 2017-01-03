@@ -17,7 +17,10 @@
 
             <h:panelGrid columns="2">
                 <h:outputLabel>Created: </h:outputLabel>
-                #{worldDetailsBean.worldEntity.creationDate}
+                <h:outputText value="#{worldDetailsBean.worldEntity.creationDate}">
+                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
+                </h:outputText>
+
 
             </h:panelGrid>
             <h:panelGrid columns="2">
@@ -38,7 +41,7 @@
                     #{continent.name}
                 </h:column>
                 <h:column>
-                    <h:dataTable value="#{continent.countries}" var="country">
+                    <h:dataTable value="#{continent.sortedCountries}" var="country">
                         <h:column>
                             #{country.name}
                         </h:column>

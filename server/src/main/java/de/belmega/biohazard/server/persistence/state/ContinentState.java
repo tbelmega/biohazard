@@ -4,8 +4,7 @@ import de.belmega.biohazard.core.country.Country;
 import de.belmega.biohazard.core.world.Continent;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class ContinentState extends NamedGameEntityState {
@@ -75,6 +74,13 @@ public class ContinentState extends NamedGameEntityState {
         for (CountryState countryState : this.getCountries())
             continent.add(countryState.build());
         return continent;
+    }
+
+    @Transient
+    public List<CountryState> getSortedCountries() {
+        List<CountryState> countries = new ArrayList<>(this.countries);
+        Collections.sort(countries);
+        return countries;
     }
 
 

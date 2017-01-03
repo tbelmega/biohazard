@@ -12,7 +12,9 @@ import de.belmega.biohazard.server.persistence.state.WorldState;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -54,9 +56,12 @@ public class WorldDetailsBean {
         return "index";
     }
 
-    public Collection<ContinentState> getContinents() {
+    public List<ContinentState> getContinents() {
         WorldState worldState = worldEntity.getWorldState();
-        return worldState.getContinents();
+        Set<ContinentState> continents = worldState.getContinents();
+        List<ContinentState> continentList = new ArrayList<>(continents);
+        Collections.sort(continentList);
+        return continentList;
     }
 
     public Long getTotalPopulation() {
@@ -68,8 +73,11 @@ public class WorldDetailsBean {
         return totalPopulation;
     }
 
-    public Set<DiseaseState> getDiseases() {
-        return worldEntity.getWorldState().getDiseases();
+    public List<DiseaseState> getDiseases() {
+        Set<DiseaseState> diseases = worldEntity.getWorldState().getDiseases();
+        List<DiseaseState> diseaseList = new ArrayList<>(diseases);
+        Collections.sort(diseaseList);
+        return diseaseList;
     }
 
     public WorldRunStatus getStatus() {
