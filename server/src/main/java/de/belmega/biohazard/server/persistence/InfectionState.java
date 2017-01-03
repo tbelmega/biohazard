@@ -17,6 +17,7 @@ public class InfectionState {
     private long id;
 
     @ManyToOne
+    @JoinColumn(name = "country", nullable = false)
     private CountryState country;
 
     private String diseaseName;

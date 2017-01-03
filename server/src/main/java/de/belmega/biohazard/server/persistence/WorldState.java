@@ -17,7 +17,7 @@ public class WorldState {
     @OneToMany(mappedBy = "world", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ContinentState> continents = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "world", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<DiseaseState> diseases = new HashSet<>();
 
     private long age;
@@ -31,6 +31,7 @@ public class WorldState {
     }
 
     public void addContinent(ContinentState continentState) {
+        continentState.setWorld(this);
         this.continents.add(continentState);
     }
 
@@ -39,6 +40,7 @@ public class WorldState {
     }
 
     public void addDisease(DiseaseState disease) {
+        disease.setWorld(this);
         this.diseases.add(disease);
     }
 

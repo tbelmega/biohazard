@@ -14,7 +14,7 @@ public class ContinentState extends NamedGameEntityState {
     @JoinColumn(name = "world", nullable = false)
     private WorldState world;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "continent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<CountryState> countries = new HashSet<>();
 
     public Set<CountryState> getCountries() {
@@ -22,6 +22,7 @@ public class ContinentState extends NamedGameEntityState {
     }
 
     public void addCountry(CountryState countryState) {
+        countryState.setContinent(this);
         this.countries.add(countryState);
     }
 

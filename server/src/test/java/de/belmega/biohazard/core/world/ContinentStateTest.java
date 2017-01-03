@@ -21,7 +21,7 @@ public class ContinentStateTest {
         continent.add(foo, bar);
 
         //act
-        ContinentState state = continent.getState(null);
+        ContinentState state = continent.getState();
 
         //assert
         assertThat(state.getCountries(), containsInAnyOrder(foo.getState(), bar.getState()));

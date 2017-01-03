@@ -27,7 +27,7 @@ public class WorldStateTest {
         WorldState state = world.getState();
 
         //assert
-        assertThat(state.getContinents(), containsInAnyOrder(foo.getState(state), bar.getState(state)));
+        assertThat(state.getContinents(), containsInAnyOrder(foo.getState(), bar.getState()));
     }
 
     @Test
@@ -36,7 +36,7 @@ public class WorldStateTest {
         WorldState worldState = new WorldState();
         Continent foo = new Continent("foo");
         foo.add(new Country("quz", 80000000L));
-        worldState.addContinent(foo.getState(worldState));
+        worldState.addContinent(foo.getState());
 
 
         //act

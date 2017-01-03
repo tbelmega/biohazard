@@ -80,7 +80,7 @@ public class World {
         WorldState worldState = new WorldState();
         worldState.setAge(age);
         for (Continent c : continents.values())
-            worldState.addContinent(c.getState(worldState));
+            worldState.addContinent(c.getState());
         for (Disease d : diseases.values())
             worldState.addDisease(d.getState());
         return worldState;

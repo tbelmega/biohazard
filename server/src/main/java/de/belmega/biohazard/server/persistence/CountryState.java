@@ -16,12 +16,13 @@ public class CountryState extends NamedGameEntityState {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "continent", nullable = false)
     private ContinentState continent;
 
     private long population;
     private double growthFactor;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "country", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<InfectionState> infectedPeoplePerDisease = new HashSet<>();
 
     public long getPopulation() {
