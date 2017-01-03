@@ -11,6 +11,7 @@ public class ContinentState extends NamedGameEntityState {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "world", nullable = false)
     private WorldState world;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

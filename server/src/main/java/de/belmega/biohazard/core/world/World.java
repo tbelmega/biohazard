@@ -62,7 +62,7 @@ public class World {
     public WorldState getState() {
         WorldState worldState = new WorldState();
         for (Continent c : continents.values())
-            worldState.addContinent(c.getState());
+            worldState.addContinent(c.getState(worldState));
         for (Disease d : diseases.values())
             worldState.addDisease(d.getState());
         return worldState;

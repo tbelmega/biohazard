@@ -10,6 +10,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * @author tbelmega on 04.12.2016.
@@ -17,6 +19,9 @@ import javax.inject.Inject;
 @Singleton
 @Startup
 public class TestDataGenerator {
+    @PersistenceContext
+    EntityManager em;
+
     @Inject
     WorldDAO worldDAO;
 
@@ -41,10 +46,12 @@ public class TestDataGenerator {
         earth.add(europe, antarctica);
         earth.add(influenza, avianFlu);
 
-        WorldEntity entity1 = new WorldEntity("Test World One");
-        entity1.setWorldState(earth.getState());
+        WorldEntity worldEntity = new WorldEntity("Test World One");
+        worldEntity.setWorldState(earth.getState());
+
+        em.persist(worldEntity);
 
 
-        worldDAO.saveWorld(entity1);
+        //worldDAO.saveWorld(worldEntity);
     }
 }

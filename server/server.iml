@@ -29,7 +29,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="NewPersistenceUnit" value="21b545a2-6471-4bf0-b02d-85ebee808f51" />
-          <factory-entry name="biohazardDS" />
+          <factory-entry name="biohazardDS" value="21b545a2-6471-4bf0-b02d-85ebee808f51" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>
