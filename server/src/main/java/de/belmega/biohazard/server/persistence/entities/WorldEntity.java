@@ -6,7 +6,9 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
- * @author tbelmega on 03.12.2016.
+ * The world entity contains meta data about the specific game world,
+ * that are used to manage the world, but not part of the simulation.
+ * It references a WorldState entity that represents the world simulation.
  */
 @Entity
 public class WorldEntity {
