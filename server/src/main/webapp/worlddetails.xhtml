@@ -79,6 +79,9 @@
             </h:panelGrid>
 
             <div>
+                <h:link value="Print report" outcome="printreport.xhtml">
+                    <f:param name="worldId" value="#{worldDetailsBean.worldId}"/>
+                </h:link>
                 <h:commandButton id="btnBack" value="Back" action="index"/>
                 <h:commandButton id="btnDelete" value="Delete"
                                  onclick="if (! confirm('Destroy this world?')) return false"

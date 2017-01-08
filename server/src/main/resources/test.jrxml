@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-01-07T22:08:25 -->
+<jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="test" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20" uuid="847abe2d-c73d-46ca-93fe-985af2643f27">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="79" splitType="Stretch">
+            <staticText>
+                <reportElement x="128" y="23" width="100" height="17" uuid="9ccead57-95b0-44bb-8efb-c01675aeb601"/>
+                <text><![CDATA[Le Title]]></text>
+            </staticText>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="40" splitType="Stretch">
+            <staticText>
+                <reportElement x="128" y="23" width="100" height="17" uuid="0e585983-5213-462d-af79-aecb10511752"/>
+                <text><![CDATA[Le Page Header]]></text>
+            </staticText>
+        </band>
+    </pageHeader>
+    <columnHeader>
+        <band height="61" splitType="Stretch"/>
+    </columnHeader>
+    <detail>
+        <band height="125" splitType="Stretch">
+            <staticText>
+                <reportElement x="128" y="23" width="100" height="17" uuid="ec1e4ef8-90d3-4c08-91cb-30b75d5b892b"/>
+                <text><![CDATA[Le Detail]]></text>
+            </staticText>
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="45" splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="54" splitType="Stretch"/>
+    </pageFooter>
+    <summary>
+        <band height="42" splitType="Stretch"/>
+    </summary>
+</jasperReport>

@@ -6,7 +6,7 @@
     <ui:define name="content">
         <f:metadata>
             <!-- When page is loaded, get ID from URL and store it in the bean.
-             Then call loadWorldEntity, to let the bean load the entity. -->
+             Then call loadCountry, to let the bean load the entity. -->
             <f:viewParam name="countryId" value="#{countryDetailsBean.countryId}"/>
             <f:event type="preRenderComponent" listener="#{countryDetailsBean.loadCountry()}"/>
         </f:metadata>
