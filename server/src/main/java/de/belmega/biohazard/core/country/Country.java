@@ -37,6 +37,7 @@ public class Country {
 
             long killedPeople = calculateKilledPeople(d, infectedPeople);
             long additionallyInfectedPeople = calculateAdditionallyInfectedPeople(d, infectedPeople);
+            if (name.equals("Germany")) System.out.println(additionallyInfectedPeople);
 
             infectedPeople = infectedPeople + additionallyInfectedPeople - killedPeople;
             double infectedPercentage = calculateInfectedPercentage(infectedPeople);

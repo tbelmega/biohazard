@@ -16,11 +16,15 @@
             <h1>#{worldDetailsBean.worldEntity.name}</h1>
 
             <h:panelGrid columns="2">
+                <h:outputLabel>Export: </h:outputLabel>
+                <h:link value="Print report" outcome="printreport.xhtml">
+                    <f:param name="worldId" value="#{worldDetailsBean.worldId}"/>
+                </h:link>
+
                 <h:outputLabel>Created: </h:outputLabel>
                 <h:outputText value="#{worldDetailsBean.worldEntity.creationDate}">
                     <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
                 </h:outputText>
-
 
             </h:panelGrid>
             <h:panelGrid columns="2">
@@ -78,10 +82,8 @@
                 />
             </h:panelGrid>
 
+
             <div>
-                <h:link value="Print report" outcome="printreport.xhtml">
-                    <f:param name="worldId" value="#{worldDetailsBean.worldId}"/>
-                </h:link>
                 <h:commandButton id="btnBack" value="Back" action="index"/>
                 <h:commandButton id="btnDelete" value="Delete"
                                  onclick="if (! confirm('Destroy this world?')) return false"

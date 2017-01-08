@@ -96,6 +96,16 @@
             <artifactId>jasperreports</artifactId>
             <version>6.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>de.belmega</groupId>
+            <artifactId>biohazard-printing</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>de.belmega</groupId>
+            <artifactId>biohazard-printing</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 

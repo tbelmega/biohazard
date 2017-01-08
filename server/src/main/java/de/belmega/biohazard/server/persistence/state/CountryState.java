@@ -103,7 +103,7 @@ public class CountryState extends NamedGameEntityState {
         country.setPopulationGrowthFactor(this.getGrowthFactor());
 
         for (InfectionState infection : this.getInfectedPeoplePerDisease()) {
-            Disease d = new Disease(infection.getDiseaseName(), 1.0);
+            Disease d = new Disease(infection.getDiseaseName(), 1.0); //TODO
             country.add(d, infection.getAmount());
         }
 
