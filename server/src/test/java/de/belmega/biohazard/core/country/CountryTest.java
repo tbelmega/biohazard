@@ -1,6 +1,7 @@
 package de.belmega.biohazard.core.country;
 
 import de.belmega.biohazard.core.disease.Disease;
+import de.belmega.biohazard.core.world.World;
 import de.belmega.biohazard.server.persistence.state.CountryState;
 import de.belmega.biohazard.server.persistence.state.InfectionState;
 import org.testng.annotations.Test;
@@ -95,7 +96,7 @@ public class CountryTest {
         countryState.addInfected("foo", infectedPeople);
 
         //act
-        Country country = countryState.build();
+        Country country = countryState.build(World.NO_WORLD);
 
         //assert
         assertThat(country.getPopulation(), is(equalTo(initialPopulation)));

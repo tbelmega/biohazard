@@ -134,4 +134,19 @@ public class WorldDetailsBean {
     public long getAge() {
         return worldEntity.getWorldState().getAge();
     }
+
+    public String btnTickClick() {
+        world = worldEntity.getWorldState().build();
+
+        world.tick();
+
+        worldEntity.setWorldState(WorldState.getState(world));
+        worldDAO.saveWorld(worldEntity);
+
+        return "worlddetails.xhtml?worldId=" + worldId;
+    }
+
+    public boolean isRunning() {
+        return status.equals(WorldRunStatus.RUNNING);
+    }
 }

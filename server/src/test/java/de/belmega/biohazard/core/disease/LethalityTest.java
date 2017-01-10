@@ -3,6 +3,9 @@ package de.belmega.biohazard.core.disease;
 import de.belmega.biohazard.core.country.Country;
 import org.testng.annotations.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
@@ -23,8 +26,10 @@ public class LethalityTest {
 
         //assert
         long expectedDead = Math.round(100 * 0.1);
+        assertThat(country.getDeceasedPopulation(), is(equalTo(expectedDead)));
+
         long expectedPopulation = 1000 - expectedDead;
-        assertEquals(expectedPopulation, country.getPopulation());
+        assertThat(country.getPopulation(), is(equalTo(expectedPopulation)));
     }
 
     @Test

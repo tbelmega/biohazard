@@ -37,7 +37,7 @@ public class ContinentStateTest {
         continentState.addCountry(foo);
 
         //act
-        Continent continent = continentState.build();
+        Continent continent = continentState.build(World.NO_WORLD);
 
         //assert
         assertThat(continent.getName(), is(equalTo("quz")));

@@ -2,6 +2,7 @@ package de.belmega.biohazard.server.persistence.state;
 
 import de.belmega.biohazard.core.country.Country;
 import de.belmega.biohazard.core.world.Continent;
+import de.belmega.biohazard.core.world.World;
 
 import javax.persistence.*;
 import java.util.*;
@@ -69,10 +70,10 @@ public class ContinentState extends NamedGameEntityState {
         this.world = world;
     }
 
-    public Continent build() {
+    public Continent build(World world) {
         Continent continent = new Continent(this.getName());
         for (CountryState countryState : this.getCountries())
-            continent.add(countryState.build());
+            continent.add(countryState.build(world));
         return continent;
     }
 

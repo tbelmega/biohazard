@@ -19,6 +19,10 @@
                 <h:outputText value="#{countryDetailsBean.country.population}">
                     <f:convertNumber groupingUsed="true"/>
                 </h:outputText>
+                <h:outputLabel>Deceased Population: </h:outputLabel>
+                <h:outputText value="#{countryDetailsBean.country.deceasedPopulation}">
+                    <f:convertNumber groupingUsed="true"/>
+                </h:outputText>
                 <h:outputLabel>Growth per tick: </h:outputLabel>
                 <h:outputText value="#{countryDetailsBean.country.growthFactor}">
                     <f:convertNumber type="percent" minFractionDigits="2"/>

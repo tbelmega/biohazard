@@ -10,6 +10,8 @@ import java.util.Set;
 
 public class World {
 
+    public static final World NO_WORLD = new NullWorld();
+
     private WorldRunner worldRunner;
 
     private Map<String, Continent> continents = new HashMap<>();
@@ -74,5 +76,22 @@ public class World {
 
     public Set<Disease> getDiseases() {
         return new HashSet<>(diseases.values());
+    }
+
+    public Disease getDiseaseByName(String diseaseName) {
+        Disease disease = diseases.get(diseaseName);
+        if (disease != null) return disease;
+        else throw new IllegalArgumentException("Disease does not exist.");
+    }
+
+    /**
+     * NullObjectPattern. Placeholder for state "no World object" without need for null checks.
+     */
+    private static class NullWorld extends World {
+        @Override
+        public Disease getDiseaseByName(String diseaseName) {
+            return new Disease(diseaseName, 0.0);
+        }
+
     }
 }

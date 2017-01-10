@@ -14,13 +14,13 @@ public class Country {
 
     private final String name;
     private long population;
+    private long deceasedPopulation = 0;
 
     /**
      * The growth per tick. A growth factor of 0 represents stagnation,
      * a growth factor of 1 represents a 100% growth per tick (doubling the population).
      */
     private double populationGrowthFactor = 0;
-
     private Map<Disease, Double> infectedPercentagePerDisease = new HashMap<>();
 
     public Country(String name, long initialPopulation) {
@@ -76,6 +76,7 @@ public class Country {
             }
         }
         population -= killedPeople;
+        deceasedPopulation += killedPeople;
         return killedPeople;
     }
 
@@ -135,5 +136,13 @@ public class Country {
 
     public Set<Disease> getDiseases() {
         return infectedPercentagePerDisease.keySet();
+    }
+
+    public long getDeceasedPopulation() {
+        return deceasedPopulation;
+    }
+
+    public void setDeceasedPopulation(long deceasedPopulation) {
+        this.deceasedPopulation = deceasedPopulation;
     }
 }

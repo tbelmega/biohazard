@@ -17,6 +17,7 @@ public class DiseaseState extends NamedGameEntityState {
     @JoinColumn(name = "world", nullable = false)
     private WorldState world;
     private double spreadRate;
+    private double lethalityFactor;
 
     public DiseaseState() {
     }
@@ -27,11 +28,15 @@ public class DiseaseState extends NamedGameEntityState {
 
     public static Disease build(DiseaseState d) {
         Disease disease = new Disease(d.getName(), d.getSpreadRate());
+        disease.setLethalityFactor(d.getLethalityFactor());
         return disease;
     }
 
     public static DiseaseState getState(Disease d) {
-        return new DiseaseState(d.getName());
+        DiseaseState diseaseState = new DiseaseState(d.getName());
+        diseaseState.setSpreadRate(d.getSpreadRate());
+        diseaseState.setLethalityFactor(d.getLethalityFactor());
+        return diseaseState;
     }
 
     public long getId() {
@@ -65,5 +70,13 @@ public class DiseaseState extends NamedGameEntityState {
 
     public void setSpreadRate(double spreadRate) {
         this.spreadRate = spreadRate;
+    }
+
+    public double getLethalityFactor() {
+        return lethalityFactor;
+    }
+
+    public void setLethalityFactor(double lethalityFactor) {
+        this.lethalityFactor = lethalityFactor;
     }
 }

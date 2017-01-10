@@ -96,11 +96,12 @@ public class WorldState extends NamedGameEntityState {
 
     public World build() {
         World world = new World();
-        for (ContinentState c : this.getContinents())
-            world.add(c.build());
         for (DiseaseState d : this.getDiseases())
             world.add(DiseaseState.build(d));
+        for (ContinentState c : this.getContinents())
+            world.add(c.build(world));
         world.setAge(this.getAge());
         return world;
     }
+
 }
