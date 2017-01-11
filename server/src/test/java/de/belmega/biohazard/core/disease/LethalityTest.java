@@ -1,6 +1,7 @@
 package de.belmega.biohazard.core.disease;
 
 import de.belmega.biohazard.core.country.Country;
+import de.belmega.biohazard.server.persistence.state.CountryState;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -16,7 +17,7 @@ public class LethalityTest {
     @Test
     public void testThat_lethalDiseaseKillsPeople() throws Exception {
         //arrange
-        Country country = new Country("baz", 1000);
+        Country country = new Country(new CountryState("baz", 1000));
         Disease disease = new Disease("foo", 0);
         disease.setLethalityFactor(0.1);
         country.add(disease, 100);
@@ -26,16 +27,16 @@ public class LethalityTest {
 
         //assert
         long expectedDead = Math.round(100 * 0.1);
-        assertThat(country.getDeceasedPopulation(), is(equalTo(expectedDead)));
+        assertThat(country.getState().getDeceasedPopulation(), is(equalTo(expectedDead)));
 
         long expectedPopulation = 1000 - expectedDead;
-        assertThat(country.getPopulation(), is(equalTo(expectedPopulation)));
+        assertThat(country.getState().getPopulation(), is(equalTo(expectedPopulation)));
     }
 
     @Test
     public void testThat_lethalDiseaseKillsInfectedPeople() throws Exception {
         //arrange
-        Country country = new Country("baz", 1000);
+        Country country = new Country(new CountryState("baz", 1000));
         Disease disease = new Disease("foo", 0);
         disease.setLethalityFactor(0.1);
         country.add(disease, 100);
@@ -57,7 +58,7 @@ public class LethalityTest {
     @Test(timeOut = 100)
     public void testThat_lethalDiseaseKillsInfectedPeopleByChance() throws Exception {
         //arrange
-        Country country = new Country("baz", 1000);
+        Country country = new Country(new CountryState("baz", 1000));
         Disease disease = new Disease("foo", 0);
         disease.setLethalityFactor(0.1);
         long amountOfInfectedPeople = 4;
@@ -108,7 +109,7 @@ public class LethalityTest {
     public void testThat_twoLethalDiseasesOverlapInKilling() throws Exception {
         //arrange
         int initialPopulation = 10000;
-        Country country = new Country("baz", initialPopulation);
+        Country country = new Country(new CountryState("baz", initialPopulation));
         Disease disease1 = new Disease("foo", 0);
         disease1.setLethalityFactor(0.1);
         country.add(disease1, 5000);
@@ -123,6 +124,6 @@ public class LethalityTest {
         //assert
         long expectedDead = 975; // 500 + 500 - 25
         long expectedPopulation = initialPopulation - expectedDead;
-        assertEquals(expectedPopulation, country.getPopulation());
+        assertEquals(expectedPopulation, country.getState().getPopulation());
     }
 }

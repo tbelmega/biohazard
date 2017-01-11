@@ -1,7 +1,6 @@
 package de.belmega.biohazard.server.persistence.state;
 
 import de.belmega.biohazard.core.disease.Disease;
-import de.belmega.biohazard.core.world.Continent;
 import de.belmega.biohazard.core.world.World;
 
 import javax.persistence.*;
@@ -16,7 +15,7 @@ public class WorldState extends NamedGameEntityState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @OneToMany(mappedBy = "world", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ContinentState> continents = new HashSet<>();
@@ -28,20 +27,11 @@ public class WorldState extends NamedGameEntityState {
 
     private String name;
 
-    public static WorldState getState(World w) {
-        WorldState worldState = new WorldState();
-        worldState.setAge(w.getAge());
-        w.getContinents().forEach(worldState::addContinent);
-        w.getDiseases().forEach(worldState::addDisease);
-        return worldState;
-    }
-
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -56,10 +46,6 @@ public class WorldState extends NamedGameEntityState {
 
     public Set<ContinentState> getContinents() {
         return continents;
-    }
-
-    public void setContinents(Set<ContinentState> continents) {
-        this.continents = continents;
     }
 
     public void addContinent(ContinentState continentState) {
@@ -89,19 +75,23 @@ public class WorldState extends NamedGameEntityState {
         this.age = age;
     }
 
-    public void addContinent(Continent c) {
-        addContinent(ContinentState.getState(c));
-    }
-
-
     public World build() {
-        World world = new World();
+        World world = new World(this);
         for (DiseaseState d : this.getDiseases())
-            world.add(DiseaseState.build(d));
+            world.add(d.build());
         for (ContinentState c : this.getContinents())
             world.add(c.build(world));
-        world.setAge(this.getAge());
+
         return world;
     }
 
+    public void add(ContinentState... continentStates) {
+        for (ContinentState c : continentStates)
+            addContinent(c);
+    }
+
+    public void add(DiseaseState... diseaseStates) {
+        for (DiseaseState d : diseaseStates)
+            addDisease(d);
+    }
 }

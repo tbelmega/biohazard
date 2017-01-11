@@ -23,27 +23,27 @@ public class CountryTest {
         //arrange
         int initialPopulation = 80000000;
         long expectedPopulation = 80002192;
-        Country country = new Country("baz", initialPopulation);
-        country.setPopulationGrowthFactor(0.01 / 365);
+        Country country = new Country(new CountryState("baz", initialPopulation));
+        country.getState().setGrowthFactor(0.01 / 365);
 
         //act
         country.tick();
 
         //assert
-        assertThat(country.getPopulation(), is(equalTo(expectedPopulation)));
+        assertThat(country.getState().getPopulation(), is(equalTo(expectedPopulation)));
     }
 
     @Test
     public void testThat_whenNoGrowthFactorIsSet_populationStaysSame() throws Exception {
         //arrange
         long initialPopulation = 80000000;
-        Country country = new Country("baz", initialPopulation);
+        Country country = new Country(new CountryState("baz", initialPopulation));
 
         //act
         country.tick();
 
         //assert
-        assertThat(country.getPopulation(), is(equalTo(initialPopulation)));
+        assertThat(country.getState().getPopulation(), is(equalTo(initialPopulation)));
     }
 
 
@@ -53,14 +53,14 @@ public class CountryTest {
         long initialPopulation = 80000000;
         double growthFactor = -0.01 / 365;
         long expectedPopulation = 79997808;
-        Country country = new Country("baz", initialPopulation);
+        Country country = new Country(new CountryState("baz", initialPopulation));
 
         //act
-        country.setPopulationGrowthFactor(growthFactor);
+        country.getState().setGrowthFactor(growthFactor);
         country.tick();
 
         //assert
-        assertThat(country.getPopulation(), is(equalTo(expectedPopulation)));
+        assertThat(country.getState().getPopulation(), is(equalTo(expectedPopulation)));
     }
 
     @Test
@@ -68,15 +68,15 @@ public class CountryTest {
         //arrange
         long initialPopulation = 80000000;
         double growthFactor = -0.01 / 365;
-        Country country = new Country("baz", initialPopulation);
-        country.setPopulationGrowthFactor(growthFactor);
+        Country country = new Country(new CountryState("baz", initialPopulation));
+        country.getState().setGrowthFactor(growthFactor);
 
         Disease disease = new Disease("foo", 1.0);
         long initiallyInfected = 1000L;
         country.add(disease, initiallyInfected);
 
         //act
-        CountryState state = CountryState.getState(country);
+        CountryState state = country.getState();
 
         //assert
         assertThat(state.getPopulation(), is(equalTo(initialPopulation)));
@@ -99,8 +99,8 @@ public class CountryTest {
         Country country = countryState.build(World.NO_WORLD);
 
         //assert
-        assertThat(country.getPopulation(), is(equalTo(initialPopulation)));
-        assertThat(country.getGrowthFactor(), is(equalTo(growthFactor)));
+        assertThat(country.getState().getPopulation(), is(equalTo(initialPopulation)));
+        assertThat(country.getState().getGrowthFactor(), is(equalTo(growthFactor)));
         assertThat(country.getInfectedPeople(new Disease("foo", 1.0)), is(equalTo(infectedPeople)));
     }
 }

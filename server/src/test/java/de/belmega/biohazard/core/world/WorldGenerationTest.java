@@ -93,7 +93,7 @@ public class WorldGenerationTest {
         Country country = new WorldGenerator(params).generateCountry();
 
         //assert
-        assertThat(country.getPopulation(),
+        assertThat(country.getState().getPopulation(),
                 is(allOf(greaterThanOrEqualTo(90000L), lessThanOrEqualTo(1600000000L))));
     }
 }

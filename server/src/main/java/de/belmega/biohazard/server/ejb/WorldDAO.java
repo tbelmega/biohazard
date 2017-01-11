@@ -1,6 +1,6 @@
 package de.belmega.biohazard.server.ejb;
 
-import de.belmega.biohazard.server.persistence.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.ejb.Stateless;
@@ -19,14 +19,14 @@ public class WorldDAO {
     @PersistenceContext
     EntityManager em;
 
-    public List<WorldEntity> listWorlds() {
+    public List<WorldSimulationEntity> listWorlds() {
         return listWorlds(null, true);
     }
 
-    public List<WorldEntity> listWorlds(String filter, boolean asc) {
+    public List<WorldSimulationEntity> listWorlds(String filter, boolean asc) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<WorldEntity> query = criteriaBuilder.createQuery(WorldEntity.class);
-        Root<WorldEntity> worldEntityRoot = query.from(WorldEntity.class);
+        CriteriaQuery<WorldSimulationEntity> query = criteriaBuilder.createQuery(WorldSimulationEntity.class);
+        Root<WorldSimulationEntity> worldEntityRoot = query.from(WorldSimulationEntity.class);
 
         query.select(worldEntityRoot);
 
@@ -41,24 +41,24 @@ public class WorldDAO {
         return em.createQuery(query).getResultList();
     }
 
-    public WorldEntity findWorld(long worldId) {
-        return em.find(WorldEntity.class, worldId);
+    public WorldSimulationEntity findWorld(long worldId) {
+        return em.find(WorldSimulationEntity.class, worldId);
     }
 
-    public void saveWorld(WorldEntity worldEntity) {
-        WorldEntity worldEntity1 = findWorld(worldEntity.getId());
-        if (worldEntity1 != null)
-            em.merge(worldEntity);
+    public void saveWorld(WorldSimulationEntity worldSimulationEntity) {
+        WorldSimulationEntity worldSimulationEntity1 = findWorld(worldSimulationEntity.getId());
+        if (worldSimulationEntity1 != null)
+            em.merge(worldSimulationEntity);
         else
-            em.persist(worldEntity);
+            em.persist(worldSimulationEntity);
     }
 
-    public void destroyWorld(WorldEntity worldEntity) {
-        WorldEntity toRemove;
-        if (em.contains(worldEntity))
-            toRemove = worldEntity;
+    public void destroyWorld(WorldSimulationEntity worldSimulationEntity) {
+        WorldSimulationEntity toRemove;
+        if (em.contains(worldSimulationEntity))
+            toRemove = worldSimulationEntity;
         else
-            toRemove = em.merge(worldEntity);
+            toRemove = em.merge(worldSimulationEntity);
         em.remove(toRemove);
     }
 }

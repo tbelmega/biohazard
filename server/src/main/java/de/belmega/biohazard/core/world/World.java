@@ -2,6 +2,7 @@ package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
 import de.belmega.biohazard.core.disease.Disease;
+import de.belmega.biohazard.server.persistence.state.WorldState;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,17 +11,18 @@ import java.util.Set;
 
 public class World {
 
-    public static final World NO_WORLD = new NullWorld();
+    public static final World NO_WORLD = new NullWorld(new WorldState());
 
     private WorldRunner worldRunner;
+
+    private WorldState state;
 
     private Map<String, Continent> continents = new HashMap<>();
     private Map<String, Disease> diseases = new HashMap<>();
 
-    private long age;
 
-    public World() {
-        age = 0L;
+    public World(WorldState state) {
+        this.state = state;
     }
 
 
@@ -31,17 +33,10 @@ public class World {
         worldThread.start();
     }
 
-    public long getAge() {
-        return age;
-    }
-
-    public void setAge(long age) {
-        this.age = age;
-    }
 
     public void add(Continent... continents) {
         for (Continent continent : continents)
-            this.continents.put(continent.getName(), continent);
+            this.continents.put(continent.getState().getName(), continent);
     }
 
     public void add(Disease... diseases) {
@@ -54,7 +49,7 @@ public class World {
     }
 
     public void tick() {
-        this.age += 1;
+        this.state.setAge(this.state.getAge() + 1);
         continents.values().forEach(Continent::tick);
     }
 
@@ -84,10 +79,19 @@ public class World {
         else throw new IllegalArgumentException("Disease does not exist.");
     }
 
+    public WorldState getState() {
+        return state;
+    }
+
+
     /**
      * NullObjectPattern. Placeholder for state "no World object" without need for null checks.
      */
     private static class NullWorld extends World {
+        public NullWorld(WorldState state) {
+            super(state);
+        }
+
         @Override
         public Disease getDiseaseByName(String diseaseName) {
             return new Disease(diseaseName, 0.0);

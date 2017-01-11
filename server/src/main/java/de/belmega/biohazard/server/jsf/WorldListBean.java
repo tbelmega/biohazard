@@ -1,7 +1,7 @@
 package de.belmega.biohazard.server.jsf;
 
 import de.belmega.biohazard.server.ejb.WorldDAO;
-import de.belmega.biohazard.server.persistence.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -16,11 +16,11 @@ import java.util.List;
 public class WorldListBean {
     @Inject
     WorldDAO worldDAO;
-    private List<WorldEntity> worlds;
+    private List<WorldSimulationEntity> worlds;
     private String filter;
     private boolean orderAscending = true;
 
-    public List<WorldEntity> getWorlds() {
+    public List<WorldSimulationEntity> getWorlds() {
         if (worlds == null) {
             worlds = worldDAO.listWorlds(filter, orderAscending);
         }

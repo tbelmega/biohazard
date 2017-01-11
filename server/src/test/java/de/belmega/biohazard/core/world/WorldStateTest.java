@@ -2,6 +2,7 @@ package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
 import de.belmega.biohazard.server.persistence.state.ContinentState;
+import de.belmega.biohazard.server.persistence.state.CountryState;
 import de.belmega.biohazard.server.persistence.state.WorldState;
 import org.testng.annotations.Test;
 
@@ -18,35 +19,35 @@ public class WorldStateTest {
     @Test
     public void testThat_worldStateIsExtracted() throws Exception {
         //arrange
-        World world = new World();
-        Continent bar = new Continent("bar");
-        Continent foo = new Continent("foo");
+        World world = new World(new WorldState());
+        Continent bar = new Continent(new ContinentState("bar"));
+        Continent foo = new Continent(new ContinentState("foo"));
         world.add(bar, foo);
 
 
         //act
-        WorldState state = WorldState.getState(world);
+        WorldState state = world.getState();
 
         //assert
-        assertThat(state.getContinents(), containsInAnyOrder(ContinentState.getState(foo), ContinentState.getState(bar)));
+        assertThat(state.getContinents(), containsInAnyOrder(foo.getState(), bar.getState()));
     }
 
     @Test
     public void testThat_worldIsRestoredFromState() throws Exception {
         //arrange
         WorldState worldState = new WorldState();
-        Continent foo = new Continent("foo");
-        foo.add(new Country("quz", 80000000L));
-        worldState.addContinent(foo);
+        ContinentState fooState = new ContinentState("foo");
+        fooState.add(new CountryState("quz", 80000000L));
+        worldState.addContinent(fooState);
 
 
         //act
         World world = worldState.build();
 
         //assert
-        assertThat(world.getContinents(), containsInAnyOrder(foo));
+        assertThat(world.getContinents(), containsInAnyOrder(fooState));
         Continent continent = world.getContinent("foo");
         Country country = continent.getCountry("quz");
-        assertThat(country.getPopulation(), is(equalTo(80000000L)));
+        assertThat(country.getState().getPopulation(), is(equalTo(80000000L)));
     }
 }

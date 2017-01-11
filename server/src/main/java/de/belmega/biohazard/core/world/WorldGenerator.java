@@ -1,6 +1,9 @@
 package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
+import de.belmega.biohazard.server.persistence.state.ContinentState;
+import de.belmega.biohazard.server.persistence.state.CountryState;
+import de.belmega.biohazard.server.persistence.state.WorldState;
 
 import java.util.UUID;
 
@@ -14,7 +17,7 @@ public class WorldGenerator {
     }
 
     public World generate() {
-        this.world = new World();
+        this.world = new World(new WorldState());
         world.add(generateContinents());
         return world;
     }
@@ -35,7 +38,9 @@ public class WorldGenerator {
     }
 
     private Continent generateContinent() {
-        Continent continent = new Continent("Continent_" + UUID.randomUUID().getMostSignificantBits());
+        ContinentState state = new ContinentState();
+        state.setName("Continent_" + UUID.randomUUID().getMostSignificantBits());
+        Continent continent = new Continent(state);
         continent.add(generateCountries());
         return continent;
     }
@@ -61,6 +66,6 @@ public class WorldGenerator {
         long factor1 = minPopulation + (int) (Math.random() * range);
         long factor2 = minPopulation + (int) (Math.random() * range);
         long population = factor1 * factor2;
-        return new Country("Country_" + UUID.randomUUID().getMostSignificantBits(), population);
+        return new Country(new CountryState("Country_" + UUID.randomUUID().getMostSignificantBits(), population));
     }
 }

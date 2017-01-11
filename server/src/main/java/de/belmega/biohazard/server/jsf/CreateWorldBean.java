@@ -1,7 +1,7 @@
 package de.belmega.biohazard.server.jsf;
 
 import de.belmega.biohazard.server.ejb.WorldDAO;
-import de.belmega.biohazard.server.persistence.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -15,26 +15,26 @@ import javax.inject.Inject;
 public class CreateWorldBean {
     @Inject
     WorldDAO worldDAO;
-    private WorldEntity worldEntity;
+    private WorldSimulationEntity worldSimulationEntity;
 
     public String destroyWorldEntity() {
-        worldEntity = null;
+        worldSimulationEntity = null;
         return "index";
     }
 
-    public WorldEntity getWorldEntity() {
-        if (worldEntity == null)
-            worldEntity = new WorldEntity();
-        return worldEntity;
+    public WorldSimulationEntity getWorldSimulationEntity() {
+        if (worldSimulationEntity == null)
+            worldSimulationEntity = new WorldSimulationEntity();
+        return worldSimulationEntity;
     }
 
-    public void setWorldEntity(WorldEntity worldEntity) {
-        this.worldEntity = worldEntity;
+    public void setWorldSimulationEntity(WorldSimulationEntity worldSimulationEntity) {
+        this.worldSimulationEntity = worldSimulationEntity;
     }
 
     public String submit() {
-        worldDAO.saveWorld(getWorldEntity());
-        worldEntity = null;
+        worldDAO.saveWorld(getWorldSimulationEntity());
+        worldSimulationEntity = null;
         return "index";
     }
 }

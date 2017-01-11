@@ -1,6 +1,7 @@
 package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
+import de.belmega.biohazard.server.persistence.state.ContinentState;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -11,11 +12,13 @@ import java.util.Map;
 import java.util.Set;
 
 public class Continent {
-    private final String name;
+
     private Map<String, Country> countries = new HashMap<>();
 
-    public Continent(String name) {
-        this.name = name;
+    private ContinentState state;
+
+    public Continent(ContinentState state) {
+        this.state = state;
     }
 
 
@@ -24,8 +27,10 @@ public class Continent {
     }
 
     public void add(Country... countries) {
-        for (Country country : countries)
-            this.countries.put(country.getName(), country);
+        for (Country country : countries) {
+            state.addCountry(country);
+            this.countries.put(country.getState().getName(), country);
+        }
     }
 
     public Set<Country> getCountries() {
@@ -33,14 +38,11 @@ public class Continent {
     }
 
 
-    public String getName() {
-        return name;
-    }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("Name", name)
+                .append("Name", state.getName())
                 .build();
     }
 
@@ -52,7 +54,7 @@ public class Continent {
         Continent continent = (Continent) o;
 
         return new EqualsBuilder()
-                .append(this.name, continent.name)
+                .append(state.getName(), continent.getState().getName())
                 .isEquals();
 
     }
@@ -60,12 +62,20 @@ public class Continent {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(this.name)
+                .append(getState().getName())
                 .build();
     }
 
     public Country getCountry(String name) {
         Country country = this.countries.get(name);
         return country;
+    }
+
+    public ContinentState getState() {
+        return state;
+    }
+
+    public void setState(ContinentState state) {
+        this.state = state;
     }
 }

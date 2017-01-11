@@ -1,10 +1,9 @@
 package de.belmega.biohazard.server.ejb;
 
-import de.belmega.biohazard.core.country.Country;
-import de.belmega.biohazard.core.disease.Disease;
-import de.belmega.biohazard.core.world.Continent;
-import de.belmega.biohazard.core.world.World;
-import de.belmega.biohazard.server.persistence.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
+import de.belmega.biohazard.server.persistence.state.ContinentState;
+import de.belmega.biohazard.server.persistence.state.CountryState;
+import de.belmega.biohazard.server.persistence.state.DiseaseState;
 import de.belmega.biohazard.server.persistence.state.WorldState;
 
 import javax.annotation.PostConstruct;
@@ -24,33 +23,32 @@ public class TestDataGenerator {
 
     @PostConstruct
     public void setupTestData() {
-        Disease influenza = new Disease("Influenza", 0.3);
+        DiseaseState influenza = new DiseaseState("Influenza", 0.3);
         influenza.setLethalityFactor(0.01);
-        Disease avianFlu = new Disease("Avian Flu", 0.05);
+        DiseaseState avianFlu = new DiseaseState("Avian Flu", 0.05);
         avianFlu.setLethalityFactor(0.02);
 
-        Country germany = new Country("Germany", 80000000L);
-        germany.setPopulationGrowthFactor(0.01);
-        germany.add(avianFlu, 10000L);
-        Country poland = new Country("Poland", 40000000L);
-        poland.setPopulationGrowthFactor(0.015);
-        poland.add(avianFlu, 150L);
-        Continent europe = new Continent("Europe");
-        europe.add(germany);
-        europe.add(poland);
+        CountryState germanyState = new CountryState("Germany", 80000000L);
+        germanyState.setGrowthFactor(0.01);
+        germanyState.add(avianFlu, 10000L);
+        CountryState polandState = new CountryState("Poland", 40000000L);
+        polandState.setGrowthFactor(0.015);
+        polandState.add(avianFlu, 150L);
+        ContinentState europeState = new ContinentState("Europe");
+        europeState.add(germanyState, polandState);
 
-        Country southPole = new Country("South Pole", 1000L);
+        CountryState southPole = new CountryState("South Pole", 1000L);
         southPole.add(influenza, 500L);
-        Continent antarctica = new Continent("Antarctica");
-        antarctica.add(southPole);
+        ContinentState antarcticaState = new ContinentState("Antarctica");
+        antarcticaState.add(southPole);
 
-        World earth = new World();
-        earth.add(europe, antarctica);
-        earth.add(avianFlu, influenza);
+        WorldState earthState = new WorldState();
+        earthState.add(antarcticaState, europeState);
+        earthState.add(avianFlu, influenza);
 
-        WorldEntity worldEntity = new WorldEntity("Test World One");
-        worldEntity.setWorldState(WorldState.getState(earth));
+        WorldSimulationEntity worldSimulationEntity = new WorldSimulationEntity("Test World One");
+        worldSimulationEntity.setWorldState(earthState);
 
-        em.persist(worldEntity);
+        em.persist(worldSimulationEntity);
     }
 }

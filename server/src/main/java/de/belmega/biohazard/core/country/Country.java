@@ -2,6 +2,7 @@ package de.belmega.biohazard.core.country;
 
 
 import de.belmega.biohazard.core.disease.Disease;
+import de.belmega.biohazard.server.persistence.state.CountryState;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,32 +13,26 @@ import java.util.Set;
 
 public class Country {
 
-    private final String name;
-    private long population;
-    private long deceasedPopulation = 0;
-
-    /**
-     * The growth per tick. A growth factor of 0 represents stagnation,
-     * a growth factor of 1 represents a 100% growth per tick (doubling the population).
-     */
-    private double populationGrowthFactor = 0;
     private Map<Disease, Double> infectedPercentagePerDisease = new HashMap<>();
 
-    public Country(String name, long initialPopulation) {
-        this.name = name;
-        population = initialPopulation;
+    private CountryState state;
+
+
+    public Country(CountryState countryState) {
+        this.state = countryState;
     }
 
 
     public void tick() {
-        population = Math.round(population * (1 + populationGrowthFactor));
+        double populationFactor = 1 + state.getGrowthFactor();
+        double newPopulation = state.getPopulation() * populationFactor;
+        state.setPopulation(Math.round(newPopulation));
 
         for (Disease d : infectedPercentagePerDisease.keySet()) {
-            long infectedPeople = Math.round(infectedPercentagePerDisease.get(d) * population);
+            long infectedPeople = Math.round(infectedPercentagePerDisease.get(d) * state.getPopulation());
 
             long killedPeople = calculateKilledPeople(d, infectedPeople);
             long additionallyInfectedPeople = calculateAdditionallyInfectedPeople(d, infectedPeople);
-            if (name.equals("Germany")) System.out.println(additionallyInfectedPeople);
 
             infectedPeople = infectedPeople + additionallyInfectedPeople - killedPeople;
             double infectedPercentage = calculateInfectedPercentage(infectedPeople);
@@ -50,7 +45,7 @@ public class Country {
      * As a percentage, the value is always between 0 and 1.
      */
     private double calculateInfectedPercentage(double infectedPeople) {
-        double temp = infectedPeople / (double) population;
+        double temp = infectedPeople / (double) state.getPopulation();
         if (temp < 0) return 0;
         else if (1 < temp) return 1;
         else return temp;
@@ -75,17 +70,9 @@ public class Country {
                 killedPeople++;
             }
         }
-        population -= killedPeople;
-        deceasedPopulation += killedPeople;
+        state.setPopulation(state.getPopulation() - killedPeople);
+        state.setDeceasedPopulation(state.getDeceasedPopulation() + killedPeople);
         return killedPeople;
-    }
-
-    public long getPopulation() {
-        return population;
-    }
-
-    public void setPopulationGrowthFactor(double populationGrowthFactor) {
-        this.populationGrowthFactor = populationGrowthFactor;
     }
 
     public void add(Disease disease, long amount) {
@@ -93,24 +80,16 @@ public class Country {
         this.infectedPercentagePerDisease.put(disease, percentage);
     }
 
+
     public long getInfectedPeople(Disease disease) {
         Double percentage = this.infectedPercentagePerDisease.get(disease);
-        return Math.round(percentage * population);
-    }
-
-
-    public double getGrowthFactor() {
-        return populationGrowthFactor;
-    }
-
-    public String getName() {
-        return this.name;
+        return Math.round(percentage * state.getPopulation());
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("Name", name)
+                .append("Name", state.getName())
                 .build();
     }
 
@@ -122,7 +101,7 @@ public class Country {
         Country country = (Country) o;
 
         return new EqualsBuilder()
-                .append(this.name, country.name)
+                .append(this.state.getName(), country.getState().getName())
                 .isEquals();
 
     }
@@ -130,7 +109,7 @@ public class Country {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(this.name)
+                .append(this.getState().getName())
                 .build();
     }
 
@@ -138,11 +117,11 @@ public class Country {
         return infectedPercentagePerDisease.keySet();
     }
 
-    public long getDeceasedPopulation() {
-        return deceasedPopulation;
+    public CountryState getState() {
+        return state;
     }
 
-    public void setDeceasedPopulation(long deceasedPopulation) {
-        this.deceasedPopulation = deceasedPopulation;
+    public void setState(CountryState state) {
+        this.state = state;
     }
 }

@@ -13,7 +13,7 @@
         </f:metadata>
 
         <h:form>
-            <h1>#{worldDetailsBean.worldEntity.name}</h1>
+            <h1>#{worldDetailsBean.worldSimulationEntity.name}</h1>
 
             <h:panelGrid columns="2">
                 <h:outputLabel>Export: </h:outputLabel>
@@ -22,7 +22,7 @@
                 </h:link>
 
                 <h:outputLabel>Created: </h:outputLabel>
-                <h:outputText value="#{worldDetailsBean.worldEntity.creationDate}">
+                <h:outputText value="#{worldDetailsBean.worldSimulationEntity.creationDate}">
                     <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
                 </h:outputText>
 

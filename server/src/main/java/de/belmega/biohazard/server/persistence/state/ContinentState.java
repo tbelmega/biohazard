@@ -23,14 +23,12 @@ public class ContinentState extends NamedGameEntityState {
     @OneToMany(mappedBy = "continent", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<CountryState> countries = new HashSet<>();
 
-    public static ContinentState getState(Continent continent) {
-        ContinentState continentState = new ContinentState();
-        continentState.setName(continent.getName());
-        for (Country c : continent.getCountries())
-            continentState.addCountry(CountryState.getState(c));
-        return continentState;
+    public ContinentState(String name) {
+        this.name = name;
     }
 
+    public ContinentState() {
+    }
 
     public long getId() {
         return id;
@@ -58,8 +56,8 @@ public class ContinentState extends NamedGameEntityState {
         this.countries.add(countryState);
     }
 
-    public void addCountry(Country foo) {
-        addCountry(CountryState.getState(foo));
+    public void addCountry(Country country) {
+        addCountry(country.getState());
     }
 
     public WorldState getWorld() {
@@ -71,7 +69,7 @@ public class ContinentState extends NamedGameEntityState {
     }
 
     public Continent build(World world) {
-        Continent continent = new Continent(this.getName());
+        Continent continent = new Continent(this);
         for (CountryState countryState : this.getCountries())
             continent.add(countryState.build(world));
         return continent;
@@ -85,4 +83,8 @@ public class ContinentState extends NamedGameEntityState {
     }
 
 
+    public void add(CountryState... countries) {
+        for (CountryState c : countries)
+            addCountry(c);
+    }
 }

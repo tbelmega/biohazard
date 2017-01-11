@@ -26,10 +26,9 @@ public class DiseaseState extends NamedGameEntityState {
         this.setName(name);
     }
 
-    public static Disease build(DiseaseState d) {
-        Disease disease = new Disease(d.getName(), d.getSpreadRate());
-        disease.setLethalityFactor(d.getLethalityFactor());
-        return disease;
+    public DiseaseState(String name, double spreadRate) {
+        this.name = name;
+        this.spreadRate = spreadRate;
     }
 
     public static DiseaseState getState(Disease d) {
@@ -37,6 +36,12 @@ public class DiseaseState extends NamedGameEntityState {
         diseaseState.setSpreadRate(d.getSpreadRate());
         diseaseState.setLethalityFactor(d.getLethalityFactor());
         return diseaseState;
+    }
+
+    public Disease build() {
+        Disease disease = new Disease(name, spreadRate);
+        disease.setLethalityFactor(lethalityFactor);
+        return disease;
     }
 
     public long getId() {

@@ -3,7 +3,7 @@ package de.belmega.biohazard.server.jsf;
 import de.belmega.biohazard.core.world.World;
 import de.belmega.biohazard.server.ejb.WorldDAO;
 import de.belmega.biohazard.server.ejb.WorldRunStatus;
-import de.belmega.biohazard.server.persistence.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 import de.belmega.biohazard.server.persistence.state.ContinentState;
 import de.belmega.biohazard.server.persistence.state.CountryState;
 import de.belmega.biohazard.server.persistence.state.InfectionState;
@@ -22,14 +22,14 @@ import java.util.*;
 public class WorldDetailsBean {
     @Inject
     WorldDAO worldDAO;
-    private WorldEntity worldEntity;
+    private WorldSimulationEntity worldSimulationEntity;
     private long worldId;
     private WorldRunStatus status = WorldRunStatus.STOPPED;
 
     private World world;
 
     public void loadWorldEntity() {
-        worldEntity = worldDAO.findWorld(worldId);
+        worldSimulationEntity = worldDAO.findWorld(worldId);
     }
 
     public long getWorldId() {
@@ -40,21 +40,21 @@ public class WorldDetailsBean {
         this.worldId = worldId;
     }
 
-    public WorldEntity getWorldEntity() {
-        return worldEntity;
+    public WorldSimulationEntity getWorldSimulationEntity() {
+        return worldSimulationEntity;
     }
 
-    public void setWorldEntity(WorldEntity worldEntity) {
-        this.worldEntity = worldEntity;
+    public void setWorldSimulationEntity(WorldSimulationEntity worldSimulationEntity) {
+        this.worldSimulationEntity = worldSimulationEntity;
     }
 
     public String destroyWorldEntity() {
-        worldDAO.destroyWorld(worldEntity);
+        worldDAO.destroyWorld(worldSimulationEntity);
         return "index";
     }
 
     public List<ContinentState> getContinents() {
-        WorldState worldState = worldEntity.getWorldState();
+        WorldState worldState = worldSimulationEntity.getWorldState();
         Set<ContinentState> continents = worldState.getContinents();
         List<ContinentState> continentList = new ArrayList<>(continents);
         Collections.sort(continentList);
@@ -72,7 +72,7 @@ public class WorldDetailsBean {
 
     public List<String> getDiseaseNames() {
         Set<String> diseaseNames = new HashSet<>();
-        for (ContinentState continent : worldEntity.getWorldState().getContinents())
+        for (ContinentState continent : worldSimulationEntity.getWorldState().getContinents())
             for (CountryState c : continent.getCountries())
                 for (InfectionState i : c.getInfectedPeoplePerDisease())
                     diseaseNames.add(i.getDiseaseName());
@@ -85,7 +85,7 @@ public class WorldDetailsBean {
     public Map<String, Long> getWorldInfectionState() {
         Map<String, Long> infections = new HashMap<>();
 
-        for (ContinentState continent : worldEntity.getWorldState().getContinents())
+        for (ContinentState continent : worldSimulationEntity.getWorldState().getContinents())
             for (CountryState c : continent.getCountries())
                 for (InfectionState i : c.getInfectedPeoplePerDisease())
                     if (infections.containsKey(i.getDiseaseName()))
@@ -117,7 +117,7 @@ public class WorldDetailsBean {
     }
 
     private void startWorld() {
-        this.world = worldEntity.getWorldState().build();
+        this.world = worldSimulationEntity.getWorldState().build();
         world.run(1000);
 
         status = WorldRunStatus.RUNNING;
@@ -125,23 +125,23 @@ public class WorldDetailsBean {
 
     private void stopWorld() {
         world.stop();
-        worldEntity.setWorldState(WorldState.getState(world));
-        worldDAO.saveWorld(worldEntity);
+        worldSimulationEntity.setWorldState(world.getState());
+        worldDAO.saveWorld(worldSimulationEntity);
 
         status = WorldRunStatus.STOPPED;
     }
 
     public long getAge() {
-        return worldEntity.getWorldState().getAge();
+        return worldSimulationEntity.getWorldState().getAge();
     }
 
     public String btnTickClick() {
-        world = worldEntity.getWorldState().build();
+        world = worldSimulationEntity.getWorldState().build();
 
         world.tick();
 
-        worldEntity.setWorldState(WorldState.getState(world));
-        worldDAO.saveWorld(worldEntity);
+        worldSimulationEntity.setWorldState(world.getState());
+        worldDAO.saveWorld(worldSimulationEntity);
 
         return "worlddetails.xhtml?worldId=" + worldId;
     }

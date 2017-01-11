@@ -4,7 +4,7 @@
     <persistence-unit name="biohazardDS" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>de.belmega.biohazard.server.persistence.entities.WorldEntity</class>
+        <class>de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>

@@ -1,7 +1,7 @@
 package de.belmega.biohazard.server.jsf;
 
 import de.belmega.biohazard.server.ejb.WorldDAO;
-import de.belmega.biohazard.server.persistence.entities.WorldEntity;
+import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 import de.belmega.biohazard.server.printing.PrintWorldList;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -47,7 +47,7 @@ public class PrintWorldReportBean {
     }
 
     private void fillResponseOutput(OutputStream output) throws IOException {
-        WorldEntity world = dao.findWorld(worldId);
+        WorldSimulationEntity world = dao.findWorld(worldId);
 
         String fileName = "/test2.jasper";
         InputStream inputStream = getClass().getResourceAsStream(fileName);

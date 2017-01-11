@@ -16,16 +16,16 @@ public class ContinentStateTest {
     @Test
     public void testThat_continentStateIsExtracted() throws Exception {
         //arrange
-        Continent continent = new Continent("baz");
-        Country foo = new Country("foo", 80000000L);
-        Country bar = new Country("bar", 20000L);
+        Continent continent = new Continent(new ContinentState("baz"));
+        Country foo = new Country(new CountryState("foo", 80000000L));
+        Country bar = new Country(new CountryState("bar", 20000L));
         continent.add(foo, bar);
 
         //act
-        ContinentState state = ContinentState.getState(continent);
+        ContinentState state = continent.getState();
 
         //assert
-        assertThat(state.getCountries(), containsInAnyOrder(CountryState.getState(foo), CountryState.getState(bar)));
+        assertThat(state.getCountries(), containsInAnyOrder(foo.getState(), bar.getState()));
     }
 
     @Test
@@ -33,14 +33,14 @@ public class ContinentStateTest {
         //arrange
         ContinentState continentState = new ContinentState();
         continentState.setName("quz");
-        Country foo = new Country("foo", 80000000L);
+        Country foo = new Country(new CountryState("foo", 80000000L));
         continentState.addCountry(foo);
 
         //act
         Continent continent = continentState.build(World.NO_WORLD);
 
         //assert
-        assertThat(continent.getName(), is(equalTo("quz")));
+        assertThat(continent.getState().getName(), is(equalTo("quz")));
         assertThat(continent.getCountries(), contains(foo));
     }
 }

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * It references a WorldState entity that represents the world simulation.
  */
 @Entity
-public class WorldEntity {
+public class WorldSimulationEntity {
 
 
     @Id
@@ -25,11 +25,11 @@ public class WorldEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private WorldState state;
 
-    public WorldEntity() {
+    public WorldSimulationEntity() {
         this.creationDate = new Timestamp(System.currentTimeMillis());
     }
 
-    public WorldEntity(String name) {
+    public WorldSimulationEntity(String name) {
         this.name = name;
         this.creationDate = new Timestamp(System.currentTimeMillis());
     }

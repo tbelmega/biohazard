@@ -1,5 +1,6 @@
 package de.belmega.biohazard.core.world;
 
+import de.belmega.biohazard.server.persistence.state.WorldState;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
@@ -29,7 +30,7 @@ public class WorldRunnerTest {
     @Test
     public void testThat_whenWorldRunnerRuns_ageIsIncreased() throws Exception {
         //arrange
-        World world = new World();
+        World world = new World(new WorldState());
         WorldRunner runner = new WorldRunner(world, 100);
 
         //act
@@ -39,7 +40,7 @@ public class WorldRunnerTest {
         runner.stop();
 
         //assert
-        long actualWorldAge = world.getAge();
+        long actualWorldAge = world.getState().getAge();
         assertThat(actualWorldAge, is(both(greaterThanOrEqualTo(3L)).and(lessThanOrEqualTo(4L))));
     }
 }
