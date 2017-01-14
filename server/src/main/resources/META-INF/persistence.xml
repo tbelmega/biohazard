@@ -7,7 +7,6 @@
         <!--JNDI name of datasource to use, configured in JBoss. If this is missing, JBoss provides default datasource.-->
         <jta-data-source>java:/jdbc/biohazardDS</jta-data-source>
 
-        <class>de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>
