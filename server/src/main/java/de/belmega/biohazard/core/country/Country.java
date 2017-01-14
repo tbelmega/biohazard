@@ -28,16 +28,18 @@ public class Country {
         double newPopulation = state.getPopulation() * populationFactor;
         state.setPopulation(Math.round(newPopulation));
 
-        for (Disease d : infectedPercentagePerDisease.keySet()) {
-            long infectedPeople = Math.round(infectedPercentagePerDisease.get(d) * state.getPopulation());
+        infectedPercentagePerDisease.keySet().forEach(this::applyDiseaseToPopulation);
+    }
 
-            long killedPeople = calculateKilledPeople(d, infectedPeople);
-            long additionallyInfectedPeople = calculateAdditionallyInfectedPeople(d, infectedPeople);
+    private void applyDiseaseToPopulation(Disease d) {
+        long infectedPeople = Math.round(infectedPercentagePerDisease.get(d) * state.getPopulation());
 
-            infectedPeople = infectedPeople + additionallyInfectedPeople - killedPeople;
-            double infectedPercentage = calculateInfectedPercentage(infectedPeople);
-            infectedPercentagePerDisease.put(d, infectedPercentage);
-        }
+        long killedPeople = calculateKilledPeople(d, infectedPeople);
+        long additionallyInfectedPeople = calculateAdditionallyInfectedPeople(d, infectedPeople);
+
+        infectedPeople = infectedPeople + additionallyInfectedPeople - killedPeople;
+        double infectedPercentage = calculateInfectedPercentage(infectedPeople);
+        infectedPercentagePerDisease.put(d, infectedPercentage);
     }
 
     /**

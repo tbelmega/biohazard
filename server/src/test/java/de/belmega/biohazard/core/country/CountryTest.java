@@ -1,13 +1,9 @@
 package de.belmega.biohazard.core.country;
 
-import de.belmega.biohazard.core.disease.Disease;
-import de.belmega.biohazard.core.world.World;
 import de.belmega.biohazard.server.persistence.state.CountryState;
-import de.belmega.biohazard.server.persistence.state.InfectionState;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -63,44 +59,4 @@ public class CountryTest {
         assertThat(country.getState().getPopulation(), is(equalTo(expectedPopulation)));
     }
 
-    @Test
-    public void testThat_countryStateIsExtracted() throws Exception {
-        //arrange
-        long initialPopulation = 80000000;
-        double growthFactor = -0.01 / 365;
-        Country country = new Country(new CountryState("baz", initialPopulation));
-        country.getState().setGrowthFactor(growthFactor);
-
-        Disease disease = new Disease("foo", 1.0);
-        long initiallyInfected = 1000L;
-        country.add(disease, initiallyInfected);
-
-        //act
-        CountryState state = country.getState();
-
-        //assert
-        assertThat(state.getPopulation(), is(equalTo(initialPopulation)));
-        assertThat(state.getGrowthFactor(), is(equalTo(growthFactor)));
-        assertThat(state.getInfectedPeoplePerDisease(), containsInAnyOrder(new InfectionState(state, "foo", 1000L)));
-    }
-
-    @Test
-    public void testThat_countryStateIsRestored() throws Exception {
-        //arrange
-        CountryState countryState = new CountryState();
-        long initialPopulation = 80000000L;
-        countryState.setPopulation(initialPopulation);
-        double growthFactor = 0.01;
-        countryState.setGrowthFactor(growthFactor);
-        long infectedPeople = 1000L;
-        countryState.addInfected("foo", infectedPeople);
-
-        //act
-        Country country = countryState.build(World.NO_WORLD);
-
-        //assert
-        assertThat(country.getState().getPopulation(), is(equalTo(initialPopulation)));
-        assertThat(country.getState().getGrowthFactor(), is(equalTo(growthFactor)));
-        assertThat(country.getInfectedPeople(new Disease("foo", 1.0)), is(equalTo(infectedPeople)));
-    }
 }
