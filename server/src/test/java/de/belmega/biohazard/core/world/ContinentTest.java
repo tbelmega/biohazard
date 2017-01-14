@@ -2,6 +2,7 @@ package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
 import de.belmega.biohazard.server.persistence.state.ContinentState;
+import de.belmega.biohazard.server.persistence.state.CountryState;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
@@ -13,10 +14,10 @@ public class ContinentTest {
     public void testThat_whenContinentTicks_allCountriesTick() throws Exception {
         //arrange
         Country country1 = Mockito.mock(Country.class);
-        when(country1.getState().getName()).thenReturn("bar");
+        when(country1.getState()).thenReturn(new CountryState("bar", 0));
 
         Country country2 = Mockito.mock(Country.class);
-        when(country2.getState().getName()).thenReturn("baz");
+        when(country2.getState()).thenReturn(new CountryState("baz", 0));
 
         Continent continent = new Continent(new ContinentState("foo"));
         continent.add(country1, country2);

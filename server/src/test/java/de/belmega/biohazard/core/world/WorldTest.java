@@ -1,5 +1,6 @@
 package de.belmega.biohazard.core.world;
 
+import de.belmega.biohazard.server.persistence.state.ContinentState;
 import de.belmega.biohazard.server.persistence.state.WorldState;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -12,12 +13,13 @@ public class WorldTest {
     public void testThat_whenWorldRuns_allContinentsTick() throws Exception {
         //arrange
         Continent continent1 = Mockito.mock(Continent.class);
-        when(continent1.getState().getName()).thenReturn("foo");
+        when(continent1.getState()).thenReturn(new ContinentState("foo"));
 
         Continent continent2 = Mockito.mock(Continent.class);
-        when(continent2.getState().getName()).thenReturn("bar");
+        when(continent2.getState()).thenReturn(new ContinentState("bar"));
 
-        World world = new World(new WorldState());
+        WorldState state = new WorldState();
+        World world = new World(state);
         world.add(continent1, continent2);
 
         //act
