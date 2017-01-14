@@ -29,7 +29,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="NewPersistenceUnit" value="21b545a2-6471-4bf0-b02d-85ebee808f51" />
-          <factory-entry name="biohazardDS" value="21b545a2-6471-4bf0-b02d-85ebee808f51" />
+          <factory-entry name="biohazardDS" value="410b4467-7f8c-4d28-9771-e52e580dbc83" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>
@@ -110,7 +110,8 @@
     <orderEntry type="library" name="Maven: org.olap4j:olap4j:0.9.7.309-JS-3" level="project" />
     <orderEntry type="library" name="Maven: com.google.zxing:core:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: com.ibm.icu:icu4j:57.1" level="project" />
-    <orderEntry type="module" module-name="biohazard-printing" />
+    <orderEntry type="module" module-name="printing" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.40" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.testng:testng:6.9.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.beust:jcommander:1.48" level="project" />

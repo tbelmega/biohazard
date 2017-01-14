@@ -4,22 +4,20 @@
     <persistence-unit name="biohazardDS" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+        <!--JNDI name of datasource to use, configured in JBoss. If this is missing, JBoss provides default datasource.-->
+        <jta-data-source>java:/jdbc/biohazardDS</jta-data-source>
+
         <class>de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/dev"/>
-            <property name="javax.persistence.jdbc.user" value="admin"/>
-            <property name="javax.persistence.jdbc.password" value="1cWjffXAju58CqW5wGuz"/>
-
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
 
             <property name="hibernate.transaction.flush_before_completion" value="true"/>
-            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
 
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
         </properties>
 
     </persistence-unit>
