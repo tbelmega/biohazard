@@ -119,7 +119,7 @@ public class CountryState extends NamedGameEntityState {
         this.deceasedPopulation = deceasedPopulation;
     }
 
-    public void add(DiseaseState avianFlu, long l) {
+    public void add(DiseaseState diseaseState, long l) {
 
     }
 }

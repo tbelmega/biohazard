@@ -42,6 +42,9 @@ public abstract class NamedGameEntityState implements Comparable {
                 .build();
     }
 
+    /**
+     * Provides alphabetical ordering by name.
+     */
     @Override
     public int compareTo(Object o) {
         NamedGameEntityState otherNamedGameEntityState = (NamedGameEntityState) o;

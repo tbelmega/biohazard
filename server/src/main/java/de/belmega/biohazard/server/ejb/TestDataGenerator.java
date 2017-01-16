@@ -23,16 +23,16 @@ public class TestDataGenerator {
 
     @PostConstruct
     public void setupTestData() {
-        DiseaseState influenza = new DiseaseState("Influenza", 0.3);
+        DiseaseState influenza = new DiseaseState("Influenza", 0.01);
         influenza.setLethalityFactor(0.01);
-        DiseaseState avianFlu = new DiseaseState("Avian Flu", 0.05);
+        DiseaseState avianFlu = new DiseaseState("Avian Flu", 0.03);
         avianFlu.setLethalityFactor(0.02);
 
         CountryState germanyState = new CountryState("Germany", 80000000L);
-        germanyState.setGrowthFactor(0.01);
+        germanyState.setGrowthFactor(0.01 / 365);
         germanyState.add(avianFlu, 10000L);
         CountryState polandState = new CountryState("Poland", 40000000L);
-        polandState.setGrowthFactor(0.015);
+        polandState.setGrowthFactor(0.015 / 365);
         polandState.add(avianFlu, 150L);
         ContinentState europeState = new ContinentState("Europe");
         europeState.add(germanyState, polandState);
