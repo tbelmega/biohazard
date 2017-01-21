@@ -8,12 +8,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Country {
-
-    private Set<InfectionState> infections = new HashSet<>();
 
     private CountryState state;
 
@@ -23,16 +18,15 @@ public class Country {
     }
 
     public void tick() {
-
         state.getRoutes().forEach(this::spreadDiseasesTravelling);
 
         growPopulation();
 
-        infections.forEach(this::applyDiseaseToPopulation);
+        state.getInfections().forEach(this::applyDiseaseToPopulation);
     }
 
     /**
-     * Calculate the new population based on the population grwoth factor.
+     * Calculate the new population based on the population growth factor.
      */
     private void growPopulation() {
         double populationFactor = 1 + state.getGrowthFactor();
@@ -44,7 +38,7 @@ public class Country {
      * Calculate the disease spread by travelling people.
      */
     private void spreadDiseasesTravelling(TravelRoute route) {
-        for (InfectionState i : infections)
+        for (InfectionState i : state.getInfections())
             spreadDiseaseTravelling(route, i);
     }
 
@@ -78,8 +72,8 @@ public class Country {
      */
     private void applyDiseaseToPopulation(InfectionState i) {
         long killedPeople = killPeople(i);
-        long additionallyInfectedPeople = infectPeople(i);
 
+        long additionallyInfectedPeople = infectPeople(i);
         i.increaseAmount(additionallyInfectedPeople - killedPeople);
     }
 
@@ -105,15 +99,32 @@ public class Country {
         return 0;
     }
 
-    private long killPeople(InfectionState i) {
+    private long killPeople(InfectionState infection) {
         long population = state.getPopulation();
-        double lethalityFactor = i.getDisease().getLethalityFactor();
+        double lethalityFactor = infection.getDisease().getLethalityFactor();
 
-        long killedPeople = applyFactor(i, population, lethalityFactor);
+        long killedPeople = applyFactor(infection, population, lethalityFactor);
 
-        state.setPopulation(population - killedPeople);
-        state.setDeceasedPopulation(state.getDeceasedPopulation() + killedPeople);
+        updateOtherInfections(infection, population, killedPeople);
+        updatePopulation(population, killedPeople);
+
         return killedPeople;
+    }
+
+    /**
+     * For every other Disease, kill the same percentage of infected as were killed of the total population.
+     */
+    private void updateOtherInfections(InfectionState infection, double population, long killedPeople) {
+        double killedPercentage = killedPeople / population;
+        state.getInfections()
+                .stream()
+                .filter(i -> i != infection)
+                .forEach(i -> i.reduceByFactor(killedPercentage));
+    }
+
+    private void updatePopulation(long population, long killedPeople) {
+        state.setPopulation(population - killedPeople);
+        state.increaseDeceasedPopulation(killedPeople);
     }
 
     /**
@@ -125,7 +136,7 @@ public class Country {
             killedPeople = oneByChance(factor);
         }
 
-        killedPeople = Math.max(killedPeople, max);
+        killedPeople = Math.min(killedPeople, max);
         return killedPeople;
     }
 
@@ -139,13 +150,8 @@ public class Country {
         return additionallyInfectedPeople;
     }
 
-    public void add(InfectionState infectionState) {
-        this.infections.add(infectionState);
-    }
-
-
     public long getInfectedPeople(DiseaseState disease) {
-        for (InfectionState i : infections)
+        for (InfectionState i : state.getInfections())
             if (i.getDisease().equals(disease))
                 return i.getAmount();
         return 0;

@@ -71,7 +71,7 @@ public class ContinentState extends NamedGameEntityState {
     public Continent build(World world) {
         Continent continent = new Continent(this);
         for (CountryState countryState : this.getCountries())
-            continent.add(countryState.build(world));
+            continent.add(countryState.build());
         return continent;
     }
 

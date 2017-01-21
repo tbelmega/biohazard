@@ -2,7 +2,6 @@ package de.belmega.biohazard.server.persistence.state;
 
 import de.belmega.biohazard.core.country.Country;
 import de.belmega.biohazard.core.country.TravelRoute;
-import de.belmega.biohazard.core.world.World;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -104,12 +103,8 @@ public class CountryState extends NamedGameEntityState {
         this.infections.add(infectionState);
     }
 
-    public Country build(World world) {
-        Country country = new Country(this);
-
-        this.getInfections().forEach(country::add);
-
-        return country;
+    public Country build() {
+        return new Country(this);
     }
 
     public long getDeceasedPopulation() {
@@ -137,5 +132,9 @@ public class CountryState extends NamedGameEntityState {
             infection.increaseAmount(amount);
         else
             InfectionState.create(this, disease, amount);
+    }
+
+    public void increaseDeceasedPopulation(long killedPeople) {
+        this.deceasedPopulation += killedPeople;
     }
 }
