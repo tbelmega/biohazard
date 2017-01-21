@@ -1,5 +1,6 @@
 package de.belmega.biohazard.server.persistence.state;
 
+import de.belmega.biohazard.core.country.TravelRoute;
 import de.belmega.biohazard.core.disease.Disease;
 import de.belmega.biohazard.core.world.World;
 
@@ -23,8 +24,10 @@ public class WorldState extends NamedGameEntityState {
     @OneToMany(mappedBy = "world", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<DiseaseState> diseases = new HashSet<>();
 
-    private long age;
+    @OneToMany(mappedBy = "world", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<TravelRoute> travelRoutes = new HashSet<>();
 
+    private long age;
     private String name;
 
     public Long getId() {
@@ -93,5 +96,23 @@ public class WorldState extends NamedGameEntityState {
     public void add(DiseaseState... diseaseStates) {
         for (DiseaseState d : diseaseStates)
             addDisease(d);
+    }
+
+    public Set<TravelRoute> getTravelRoutes() {
+        return travelRoutes;
+    }
+
+    public void setTravelRoutes(Set<TravelRoute> travelRoutes) {
+        this.travelRoutes = travelRoutes;
+    }
+
+    public void add(TravelRoute... routes) {
+        for (TravelRoute r : routes)
+            addRoute(r);
+    }
+
+    private void addRoute(TravelRoute r) {
+        r.setWorld(this);
+        this.travelRoutes.add(r);
     }
 }

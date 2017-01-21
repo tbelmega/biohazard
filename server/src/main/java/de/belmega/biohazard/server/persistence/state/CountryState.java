@@ -1,6 +1,7 @@
 package de.belmega.biohazard.server.persistence.state;
 
 import de.belmega.biohazard.core.country.Country;
+import de.belmega.biohazard.core.country.TravelRoute;
 import de.belmega.biohazard.core.disease.Disease;
 import de.belmega.biohazard.core.world.World;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A CountryState represents the state of a Country at a specific point in time.
@@ -37,6 +39,9 @@ public class CountryState extends NamedGameEntityState {
     @OneToMany(mappedBy = "country", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<InfectionState> infectedPeoplePerDisease = new HashSet<>();
     private long deceasedPopulation;
+
+    @ElementCollection
+    private Set<Long> routeIDs = new HashSet<>();
 
     public CountryState(String name, long population) {
         this.name = name;
@@ -119,7 +124,21 @@ public class CountryState extends NamedGameEntityState {
         this.deceasedPopulation = deceasedPopulation;
     }
 
-    public void add(DiseaseState diseaseState, long l) {
+    public Set<Long> getRouteIDs() {
+        return routeIDs;
+    }
 
+    public Set<TravelRoute> getRoutes() {
+        Set<TravelRoute> routes =
+                continent.getWorld().getTravelRoutes()
+                        .stream()
+                        .filter(route -> this.getRouteIDs().contains(route.getId()))
+                        .collect(Collectors.toSet());
+        return routes;
+    }
+
+    public void addRoute(TravelRoute route) {
+        this.routeIDs.add(route.getId());
+        this.getContinent().getWorld().add(route);
     }
 }

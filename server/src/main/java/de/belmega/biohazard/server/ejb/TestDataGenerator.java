@@ -30,15 +30,15 @@ public class TestDataGenerator {
 
         CountryState germanyState = new CountryState("Germany", 80000000L);
         germanyState.setGrowthFactor(0.01 / 365);
-        germanyState.add(avianFlu, 10000L);
+        germanyState.addInfected(avianFlu.getName(), 10000L);
         CountryState polandState = new CountryState("Poland", 40000000L);
         polandState.setGrowthFactor(0.015 / 365);
-        polandState.add(avianFlu, 150L);
+        polandState.addInfected(avianFlu.getName(), 150L);
         ContinentState europeState = new ContinentState("Europe");
         europeState.add(germanyState, polandState);
 
         CountryState southPole = new CountryState("South Pole", 1000L);
-        southPole.add(influenza, 500L);
+        southPole.addInfected(influenza.getName(), 500L);
         ContinentState antarcticaState = new ContinentState("Antarctica");
         antarcticaState.add(southPole);
 

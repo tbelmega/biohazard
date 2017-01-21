@@ -24,11 +24,36 @@ public class Country {
 
 
     public void tick() {
+
+        state.getRoutes().forEach(this::spreadDiseasesTraveling);
+
         double populationFactor = 1 + state.getGrowthFactor();
         double newPopulation = state.getPopulation() * populationFactor;
         state.setPopulation(Math.round(newPopulation));
 
         infectedPercentagePerDisease.keySet().forEach(this::applyDiseaseToPopulation);
+    }
+
+    private void spreadDiseasesTraveling(TravelRoute route) {
+        for (Disease d : infectedPercentagePerDisease.keySet()) {
+            double infectedTravellers = route.getTravelersPerTick() * infectedPercentagePerDisease.get(d);
+            long infectedTravellersRounded;
+            if (infectedTravellers < 1.0)
+                infectedTravellersRounded = checkChanceFor1InfectedTraveller(infectedTravellers);
+            else
+                infectedTravellersRounded = Math.round(infectedTravellers);
+
+            CountryState targetCountry = route.getTargetCountry(this.state);
+            targetCountry.addInfected(d.getName(), infectedTravellersRounded);
+            this.state.addInfected(d.getName(), -1 * infectedTravellersRounded);
+        }
+    }
+
+    private long checkChanceFor1InfectedTraveller(double infectedTravellers) {
+        if (Math.random() < infectedTravellers)
+            return 1;
+        else
+            return 0;
     }
 
     private void applyDiseaseToPopulation(Disease d) {
