@@ -1,9 +1,11 @@
 package de.belmega.biohazard.core.country;
 
 import de.belmega.biohazard.server.persistence.state.CountryState;
-import de.belmega.biohazard.server.persistence.state.WorldState;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class TravelRoute {
@@ -12,15 +14,10 @@ public class TravelRoute {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Transient
-    private CountryState country1;
+    @ManyToMany(mappedBy = "routes", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @Size(max = 2)
+    private Set<CountryState> countryStates = new HashSet<>();
 
-    @Transient
-    private CountryState country2;
-
-    @ManyToOne
-    @JoinColumn(name = "world", nullable = false)
-    private WorldState world;
 
     /**
      * Number between 0 and 1. Describes which part of each countries poplation travels to the other each tick.
@@ -36,11 +33,9 @@ public class TravelRoute {
     public TravelRoute() {
     }
 
-    ;
-
     private TravelRoute(CountryState country1, CountryState country2, TravelRouteType type) {
-        this.country1 = country1;
-        this.country2 = country2;
+        this.countryStates.add(country1);
+        this.countryStates.add(country2);
         this.type = type;
     }
 
@@ -60,9 +55,11 @@ public class TravelRoute {
     }
 
     public long getTravelersPerTick() {
+        long populations = 0;
+        for (CountryState country : this.countryStates)
+            populations += country.getPopulation();
         return Math.round(
-                travelingPopulationFactorPerTick *
-                        (country1.getPopulation() + country2.getPopulation()));
+                travelingPopulationFactorPerTick * populations);
     }
 
 
@@ -74,17 +71,18 @@ public class TravelRoute {
         this.id = id;
     }
 
-    public WorldState getWorld() {
-        return world;
-    }
-
-    public void setWorld(WorldState world) {
-        this.world = world;
-    }
-
+    /**
+     * Assuming the set of countries consists of exact two countries,
+     * returns the country different from the given one.
+     *
+     * @param sourceCountry the country to start from
+     * @return the country to travel to
+     */
     public CountryState getTargetCountry(CountryState sourceCountry) {
-        if (country1.equals(sourceCountry)) return country2;
-        else if (country2.equals(sourceCountry)) return country1;
-        else throw new IllegalArgumentException("Not part of this route: " + sourceCountry);
+        for (CountryState country : this.countryStates)
+            if (!country.equals(sourceCountry))
+                return country;
+
+        throw new IllegalStateException("No different country found in " + countryStates);
     }
 }

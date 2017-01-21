@@ -7,10 +7,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.persistence.*;
 
 /**
- * @author tbelmega on 17.12.2016.
+ * An InfectionState counts the number of people that are infected with a specific disease in a specific country.
  */
 @Entity
 public class InfectionState {
+
+    @ManyToOne
+    @JoinColumn(name = "disease", nullable = false)
+    private DiseaseState disease;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,19 +24,28 @@ public class InfectionState {
     @JoinColumn(name = "country", nullable = false)
     private CountryState country;
 
-    private String diseaseName;
-
+    /**
+     * Amount of infected people.
+     */
     private Long amount;
 
-    public InfectionState(CountryState countryState, String diseaseName, Long infectedPeople) {
+    private InfectionState(CountryState countryState, DiseaseState disease, Long infectedPeople) {
         this.country = countryState;
-        this.diseaseName = diseaseName;
+        this.disease = disease;
         this.amount = infectedPeople;
     }
 
     public InfectionState() {
     }
 
+    /**
+     * Create an infection state entity with the given parameters and add it to the country as well.
+     */
+    public static InfectionState create(CountryState country, DiseaseState disease, long amount) {
+        InfectionState infectionState = new InfectionState(country, disease, amount);
+        country.add(infectionState);
+        return infectionState;
+    }
 
     public long getId() {
         return id;
@@ -43,11 +56,7 @@ public class InfectionState {
     }
 
     public String getDiseaseName() {
-        return diseaseName;
-    }
-
-    public void setDiseaseName(String diseaseName) {
-        this.diseaseName = diseaseName;
+        return disease.getName();
     }
 
     public CountryState getCountry() {
@@ -66,13 +75,12 @@ public class InfectionState {
         this.amount = amount;
     }
 
-
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("Disease", diseaseName)
+                .append("Disease", getDiseaseName())
                 .append("Country", country.getName())
-                .append("Infection count", amount)
+                .append("InfectionState count", amount)
                 .build();
     }
 
@@ -81,12 +89,12 @@ public class InfectionState {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        InfectionState infection = (InfectionState) o;
+        InfectionState infectionState = (InfectionState) o;
 
         //TODO should the amount be a criterium for equality?
         return new EqualsBuilder()
-                .append(this.diseaseName, infection.getDiseaseName())
-                .append(this.country, infection.getCountry())
+                .append(this.getDiseaseName(), infectionState.getDiseaseName())
+                .append(this.country, infectionState.getCountry())
                 .isEquals();
 
     }
@@ -94,8 +102,16 @@ public class InfectionState {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(this.diseaseName)
+                .append(this.getDiseaseName())
                 .append(this.country)
                 .build();
+    }
+
+    public DiseaseState getDisease() {
+        return disease;
+    }
+
+    public void increaseAmount(long addedAmount) {
+        this.amount += addedAmount;
     }
 }

@@ -2,18 +2,29 @@ package de.belmega.biohazard.core.disease;
 
 import de.belmega.biohazard.core.country.Country;
 import de.belmega.biohazard.server.persistence.state.CountryState;
+import de.belmega.biohazard.server.persistence.state.DiseaseState;
+import de.belmega.biohazard.server.persistence.state.InfectionState;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.AssertJUnit.assertEquals;
 
 public class DiseaseTest {
 
+    private DiseaseState disease;
+    private CountryState countryState;
+
+    @BeforeMethod
+    public void setUp() {
+        countryState = new CountryState("baz", 80000000);
+        disease = new DiseaseState("foo", 0.1);
+    }
+
     @Test
     public void testThat_diseaseSpreadsInCountry() throws Exception {
         //arrange
-        Country country = new Country(new CountryState("baz", 80000000));
-        Disease disease = new Disease("foo", 0.1);
-        country.add(disease, 1000);
+        InfectionState.create(countryState, disease, 1000);
+        Country country = new Country(this.countryState);
 
         //act
         country.tick();
@@ -26,10 +37,12 @@ public class DiseaseTest {
     public void testThat_diseaseSpreadsInCountryUpToPopulationLimit() throws Exception {
         //arrange
         int initialPopulation = 80000000;
-        Country country = new Country(new CountryState("baz", initialPopulation));
-        country.getState().setGrowthFactor(0);
-        Disease disease = new Disease("foo", 0.1);
-        country.add(disease, 75000000);
+        CountryState baz = new CountryState("baz", initialPopulation);
+        Country country = new Country(baz);
+
+        baz.setGrowthFactor(0);
+
+        InfectionState.create(countryState, disease, 75000000);
 
         //act
         country.tick();
@@ -46,10 +59,10 @@ public class DiseaseTest {
     @Test(timeOut = 100)
     public void testThat_diseaseSpreadsInCountryByChance() throws Exception {
         //arrange
-        Country country = new Country(new CountryState("baz", 80000000));
-        Disease disease = new Disease("foo", 0.1);
+        Country country = new Country(countryState);
         long amountOfInfectedPeople = 4;
-        country.add(disease, amountOfInfectedPeople);
+
+        InfectionState.create(countryState, disease, 4);
 
         //act
         while (country.getInfectedPeople(disease) == amountOfInfectedPeople) {

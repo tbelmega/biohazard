@@ -30,12 +30,12 @@
             </h:panelGrid>
 
             <h2>Diseases: </h2>
-            <h:dataTable value="#{countryDetailsBean.country.infectedPeoplePerDisease}" var="infection">
+            <h:dataTable value="#{countryDetailsBean.country.infections}" var="infectionState">
                 <h:column>
-                    #{infection.diseaseName}
+                    #{infectionState.diseaseName}
                 </h:column>
                 <h:column>
-                    <h:outputText value="#{infection.amount}">
+                    <h:outputText value="#{infectionState.amount}">
                         <f:convertNumber groupingUsed="true"/>
                     </h:outputText>
                 </h:column>

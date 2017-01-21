@@ -2,6 +2,9 @@ package de.belmega.biohazard.core.disease;
 
 import de.belmega.biohazard.core.country.Country;
 import de.belmega.biohazard.server.persistence.state.CountryState;
+import de.belmega.biohazard.server.persistence.state.DiseaseState;
+import de.belmega.biohazard.server.persistence.state.InfectionState;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,13 +17,23 @@ import static org.testng.AssertJUnit.assertEquals;
  */
 public class LethalityTest {
 
+    private DiseaseState disease;
+    private CountryState countryState;
+
+    @BeforeMethod
+    public void setUp() {
+        disease = new DiseaseState("foo", 0);
+        disease.setLethalityFactor(0.1);
+
+        countryState = new CountryState("baz", 1000);
+    }
+
     @Test
     public void testThat_lethalDiseaseKillsPeople() throws Exception {
         //arrange
-        Country country = new Country(new CountryState("baz", 1000));
-        Disease disease = new Disease("foo", 0);
-        disease.setLethalityFactor(0.1);
-        country.add(disease, 100);
+        InfectionState.create(countryState, disease, 100);
+
+        Country country = new Country(countryState);
 
         //act
         country.tick();
@@ -36,10 +49,9 @@ public class LethalityTest {
     @Test
     public void testThat_lethalDiseaseKillsInfectedPeople() throws Exception {
         //arrange
-        Country country = new Country(new CountryState("baz", 1000));
-        Disease disease = new Disease("foo", 0);
-        disease.setLethalityFactor(0.1);
-        country.add(disease, 100);
+        InfectionState.create(countryState, disease, 100);
+
+        Country country = new Country(countryState);
 
         //act
         country.tick();
@@ -58,11 +70,10 @@ public class LethalityTest {
     @Test(timeOut = 100)
     public void testThat_lethalDiseaseKillsInfectedPeopleByChance() throws Exception {
         //arrange
-        Country country = new Country(new CountryState("baz", 1000));
-        Disease disease = new Disease("foo", 0);
-        disease.setLethalityFactor(0.1);
         long amountOfInfectedPeople = 4;
-        country.add(disease, amountOfInfectedPeople);
+        InfectionState.create(countryState, disease, amountOfInfectedPeople);
+
+        Country country = new Country(countryState);
 
         //act
         while (country.getInfectedPeople(disease) == amountOfInfectedPeople) {
@@ -77,26 +88,24 @@ public class LethalityTest {
     @Test
     public void testThat_lethalityFactorIsAtMostOne() throws Exception {
         //arrange
-        Disease disease = new Disease("foo", 0);
 
         //act
         disease.setLethalityFactor(2);
 
         //assert
-        assertEquals(Disease.MAX_LETHALITY_FACTOR, disease.getLethalityFactor());
+        assertEquals(DiseaseState.MAX_LETHALITY_FACTOR, disease.getLethalityFactor());
     }
 
 
     @Test
     public void testThat_lethalityFactorIsAtLeastZero() throws Exception {
         //arrange
-        Disease disease = new Disease("foo", 0);
 
         //act
         disease.setLethalityFactor(-1);
 
         //assert
-        assertEquals(Disease.MIN_LETHALITY_FACTOR, disease.getLethalityFactor());
+        assertEquals(DiseaseState.MIN_LETHALITY_FACTOR, disease.getLethalityFactor());
     }
 
 
@@ -110,13 +119,14 @@ public class LethalityTest {
         //arrange
         int initialPopulation = 10000;
         Country country = new Country(new CountryState("baz", initialPopulation));
-        Disease disease1 = new Disease("foo", 0);
-        disease1.setLethalityFactor(0.1);
-        country.add(disease1, 5000);
 
-        Disease disease2 = new Disease("bar", 0);
+
+        InfectionState.create(countryState, disease, 5000);
+
+        DiseaseState disease2 = new DiseaseState("bar", 0);
         disease2.setLethalityFactor(0.1);
-        country.add(disease2, 5000);
+
+        InfectionState.create(countryState, disease2, 5000);
 
         //act
         country.tick();

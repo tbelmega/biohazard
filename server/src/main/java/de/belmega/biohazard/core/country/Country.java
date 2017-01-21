@@ -1,19 +1,19 @@
 package de.belmega.biohazard.core.country;
 
 
-import de.belmega.biohazard.core.disease.Disease;
 import de.belmega.biohazard.server.persistence.state.CountryState;
+import de.belmega.biohazard.server.persistence.state.DiseaseState;
+import de.belmega.biohazard.server.persistence.state.InfectionState;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Country {
 
-    private Map<Disease, Double> infectedPercentagePerDisease = new HashMap<>();
+    private Set<InfectionState> infections = new HashSet<>();
 
     private CountryState state;
 
@@ -22,31 +22,48 @@ public class Country {
         this.state = countryState;
     }
 
-
     public void tick() {
 
-        state.getRoutes().forEach(this::spreadDiseasesTraveling);
+        state.getRoutes().forEach(this::spreadDiseasesTravelling);
 
+        growPopulation();
+
+        infections.forEach(this::applyDiseaseToPopulation);
+    }
+
+    /**
+     * Calculate the new population based on the population grwoth factor.
+     */
+    private void growPopulation() {
         double populationFactor = 1 + state.getGrowthFactor();
         double newPopulation = state.getPopulation() * populationFactor;
         state.setPopulation(Math.round(newPopulation));
-
-        infectedPercentagePerDisease.keySet().forEach(this::applyDiseaseToPopulation);
     }
 
-    private void spreadDiseasesTraveling(TravelRoute route) {
-        for (Disease d : infectedPercentagePerDisease.keySet()) {
-            double infectedTravellers = route.getTravelersPerTick() * infectedPercentagePerDisease.get(d);
-            long infectedTravellersRounded;
-            if (infectedTravellers < 1.0)
-                infectedTravellersRounded = checkChanceFor1InfectedTraveller(infectedTravellers);
-            else
-                infectedTravellersRounded = Math.round(infectedTravellers);
+    /**
+     * Calculate the disease spread by travelling people.
+     */
+    private void spreadDiseasesTravelling(TravelRoute route) {
+        for (InfectionState i : infections)
+            spreadDiseaseTravelling(route, i);
+    }
 
-            CountryState targetCountry = route.getTargetCountry(this.state);
-            targetCountry.addInfected(d.getName(), infectedTravellersRounded);
-            this.state.addInfected(d.getName(), -1 * infectedTravellersRounded);
-        }
+    private void spreadDiseaseTravelling(TravelRoute route, InfectionState i) {
+        double infectedTravellers = route.getTravelersPerTick() * calculateInfectedPercentage(i);
+        long infectedTravellersRounded;
+        if (infectedTravellers < 1.0)
+            infectedTravellersRounded = checkChanceFor1InfectedTraveller(infectedTravellers);
+        else
+            infectedTravellersRounded = Math.round(infectedTravellers);
+
+        CountryState targetCountry = route.getTargetCountry(this.state);
+        targetCountry.addInfected(i.getDisease(), infectedTravellersRounded);
+        i.increaseAmount(-1 * infectedTravellersRounded);
+    }
+
+    private double calculateInfectedPercentage(InfectionState i) {
+        long infectedAmount = i.getAmount();
+        return calculateInfectedPercentage(infectedAmount);
     }
 
     private long checkChanceFor1InfectedTraveller(double infectedTravellers) {
@@ -56,15 +73,14 @@ public class Country {
             return 0;
     }
 
-    private void applyDiseaseToPopulation(Disease d) {
-        long infectedPeople = Math.round(infectedPercentagePerDisease.get(d) * state.getPopulation());
+    /**
+     * Calculate the disease spread by disease spread rate.
+     */
+    private void applyDiseaseToPopulation(InfectionState i) {
+        long killedPeople = killPeople(i);
+        long additionallyInfectedPeople = infectPeople(i);
 
-        long killedPeople = calculateKilledPeople(d, infectedPeople);
-        long additionallyInfectedPeople = calculateAdditionallyInfectedPeople(d, infectedPeople);
-
-        infectedPeople = infectedPeople + additionallyInfectedPeople - killedPeople;
-        double infectedPercentage = calculateInfectedPercentage(infectedPeople);
-        infectedPercentagePerDisease.put(d, infectedPercentage);
+        i.increaseAmount(additionallyInfectedPeople - killedPeople);
     }
 
     /**
@@ -78,39 +94,61 @@ public class Country {
         else return temp;
     }
 
-    private long calculateAdditionallyInfectedPeople(Disease d, long infectedPeople) {
-        long additionallyInfectedPeople = Math.round(infectedPeople * (d.getSpreadRate()));
-        if (additionallyInfectedPeople == 0) {
-            double randomNumber = Math.random();
-            if (randomNumber < d.getSpreadRate()) {
-                additionallyInfectedPeople++;
-            }
-        }
-        return additionallyInfectedPeople;
+
+    /**
+     * With the given probability, return 1, else 0.
+     */
+    private long oneByChance(double probability) {
+        double randomNumber = Math.random();
+        if (randomNumber < probability)
+            return 1;
+        return 0;
     }
 
-    private long calculateKilledPeople(Disease d, long infectedPeople) {
-        long killedPeople = Math.round(infectedPeople * d.getLethalityFactor());
-        if (killedPeople == 0) {
-            double randomNumber = Math.random();
-            if (randomNumber < d.getLethalityFactor()) {
-                killedPeople++;
-            }
-        }
-        state.setPopulation(state.getPopulation() - killedPeople);
+    private long killPeople(InfectionState i) {
+        long population = state.getPopulation();
+        double lethalityFactor = i.getDisease().getLethalityFactor();
+
+        long killedPeople = applyFactor(i, population, lethalityFactor);
+
+        state.setPopulation(population - killedPeople);
         state.setDeceasedPopulation(state.getDeceasedPopulation() + killedPeople);
         return killedPeople;
     }
 
-    public void add(Disease disease, long amount) {
-        double percentage = calculateInfectedPercentage(amount);
-        this.infectedPercentagePerDisease.put(disease, percentage);
+    /**
+     * Get the product of the factor and the amount of infected people, up to the given maximum.
+     */
+    private long applyFactor(InfectionState i, long max, double factor) {
+        long killedPeople = Math.round(i.getAmount() * factor);
+        if (killedPeople == 0) {
+            killedPeople = oneByChance(factor);
+        }
+
+        killedPeople = Math.max(killedPeople, max);
+        return killedPeople;
     }
 
 
-    public long getInfectedPeople(Disease disease) {
-        Double percentage = this.infectedPercentagePerDisease.get(disease);
-        return Math.round(percentage * state.getPopulation());
+    private long infectPeople(InfectionState i) {
+        long healthyPeople = state.getPopulation() - i.getAmount();
+        double spreadRate = i.getDisease().getSpreadRate();
+
+        long additionallyInfectedPeople = applyFactor(i, healthyPeople, spreadRate);
+
+        return additionallyInfectedPeople;
+    }
+
+    public void add(InfectionState infectionState) {
+        this.infections.add(infectionState);
+    }
+
+
+    public long getInfectedPeople(DiseaseState disease) {
+        for (InfectionState i : infections)
+            if (i.getDisease().equals(disease))
+                return i.getAmount();
+        return 0;
     }
 
     @Override
@@ -138,10 +176,6 @@ public class Country {
         return new HashCodeBuilder()
                 .append(this.getState().getName())
                 .build();
-    }
-
-    public Set<Disease> getDiseases() {
-        return infectedPercentagePerDisease.keySet();
     }
 
     public CountryState getState() {

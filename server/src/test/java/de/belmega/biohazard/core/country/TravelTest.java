@@ -42,20 +42,10 @@ public class TravelTest {
         TravelRoute route = TravelRoute.create(germany, poland, TravelRouteType.LAND);
 
         //assert
-        assertThat(germany.getRouteIDs(), contains(route.getId()));
-        assertThat(poland.getRouteIDs(), contains(route.getId()));
+        assertThat(germany.getRoutes(), contains(route));
+        assertThat(poland.getRoutes(), contains(route));
     }
 
-    @Test
-    public void testThat_routeIsAddedToWorld() throws Exception {
-        //arrange
-
-        //act
-        TravelRoute route = TravelRoute.create(germany, poland, TravelRouteType.LAND);
-
-        //assert
-        assertThat(earthState.getTravelRoutes(), contains(route));
-    }
 
     @Test
     public void testThat_travelRouteCalculatesTravelingPeoplePerTick() throws Exception {
@@ -75,7 +65,7 @@ public class TravelTest {
     public void testThat_travelersCarryDiseases() throws Exception {
         //arrange
         DiseaseState avianFlu = new DiseaseState("Avian Flu");
-        germany.addInfected(avianFlu.getName(), 40000000L);
+        germany.addInfected(avianFlu, 40000000L);
         earthState.add(avianFlu);
 
         TravelRoute route = TravelRoute.create(germany, poland, TravelRouteType.LAND);
@@ -87,7 +77,7 @@ public class TravelTest {
         earth.tick();
 
         //assert
-        assertThat(poland.getInfectedPeoplePerDisease(), is(not(empty())));
+        assertThat(poland.getInfections(), is(not(empty())));
     }
 
 

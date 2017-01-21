@@ -1,7 +1,7 @@
 package de.belmega.biohazard.core.world;
 
 import de.belmega.biohazard.core.country.Country;
-import de.belmega.biohazard.core.disease.Disease;
+import de.belmega.biohazard.server.persistence.state.DiseaseState;
 import de.belmega.biohazard.server.persistence.state.WorldState;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ public class World {
     private WorldState state;
 
     private Map<String, Continent> continents = new HashMap<>();
-    private Map<String, Disease> diseases = new HashMap<>();
+    private Map<String, DiseaseState> diseases = new HashMap<>();
 
 
     public World(WorldState state) {
@@ -39,8 +39,8 @@ public class World {
             this.continents.put(continent.getState().getName(), continent);
     }
 
-    public void add(Disease... diseases) {
-        for (Disease d : diseases)
+    public void add(DiseaseState... diseases) {
+        for (DiseaseState d : diseases)
             this.diseases.put(d.getName(), d);
     }
 
@@ -69,12 +69,12 @@ public class World {
         return this.continents.get(name);
     }
 
-    public Set<Disease> getDiseases() {
+    public Set<DiseaseState> getDiseases() {
         return new HashSet<>(diseases.values());
     }
 
-    public Disease getDiseaseByName(String diseaseName) {
-        Disease disease = diseases.get(diseaseName);
+    public DiseaseState getDiseaseByName(String diseaseName) {
+        DiseaseState disease = diseases.get(diseaseName);
         if (disease != null) return disease;
         else throw new IllegalArgumentException("Disease does not exist.");
     }
@@ -93,8 +93,8 @@ public class World {
         }
 
         @Override
-        public Disease getDiseaseByName(String diseaseName) {
-            return new Disease(diseaseName, 0.0);
+        public DiseaseState getDiseaseByName(String diseaseName) {
+            return new DiseaseState(diseaseName, 0.0);
         }
 
     }

@@ -1,16 +1,11 @@
 package de.belmega.biohazard.server.persistence.state;
 
-import de.belmega.biohazard.core.country.TravelRoute;
-import de.belmega.biohazard.core.disease.Disease;
 import de.belmega.biohazard.core.world.World;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @author tbelmega on 17.12.2016.
- */
 @Entity
 public class WorldState extends NamedGameEntityState {
 
@@ -24,8 +19,6 @@ public class WorldState extends NamedGameEntityState {
     @OneToMany(mappedBy = "world", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<DiseaseState> diseases = new HashSet<>();
 
-    @OneToMany(mappedBy = "world", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<TravelRoute> travelRoutes = new HashSet<>();
 
     private long age;
     private String name;
@@ -60,11 +53,6 @@ public class WorldState extends NamedGameEntityState {
         return diseases;
     }
 
-    public void addDisease(Disease d) {
-        DiseaseState state = DiseaseState.getState(d);
-        addDisease(state);
-    }
-
     public void addDisease(DiseaseState disease) {
         disease.setWorld(this);
         this.diseases.add(disease);
@@ -81,7 +69,7 @@ public class WorldState extends NamedGameEntityState {
     public World build() {
         World world = new World(this);
         for (DiseaseState d : this.getDiseases())
-            world.add(d.build());
+            world.add(d);
         for (ContinentState c : this.getContinents())
             world.add(c.build(world));
 
@@ -98,21 +86,4 @@ public class WorldState extends NamedGameEntityState {
             addDisease(d);
     }
 
-    public Set<TravelRoute> getTravelRoutes() {
-        return travelRoutes;
-    }
-
-    public void setTravelRoutes(Set<TravelRoute> travelRoutes) {
-        this.travelRoutes = travelRoutes;
-    }
-
-    public void add(TravelRoute... routes) {
-        for (TravelRoute r : routes)
-            addRoute(r);
-    }
-
-    private void addRoute(TravelRoute r) {
-        r.setWorld(this);
-        this.travelRoutes.add(r);
-    }
 }

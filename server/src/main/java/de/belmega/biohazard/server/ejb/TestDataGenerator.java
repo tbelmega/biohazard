@@ -1,5 +1,7 @@
 package de.belmega.biohazard.server.ejb;
 
+import de.belmega.biohazard.core.country.TravelRoute;
+import de.belmega.biohazard.core.country.TravelRouteType;
 import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 import de.belmega.biohazard.server.persistence.state.ContinentState;
 import de.belmega.biohazard.server.persistence.state.CountryState;
@@ -30,21 +32,25 @@ public class TestDataGenerator {
 
         CountryState germanyState = new CountryState("Germany", 80000000L);
         germanyState.setGrowthFactor(0.01 / 365);
-        germanyState.addInfected(avianFlu.getName(), 10000L);
+        germanyState.addInfected(avianFlu, 10000L);
         CountryState polandState = new CountryState("Poland", 40000000L);
         polandState.setGrowthFactor(0.015 / 365);
-        polandState.addInfected(avianFlu.getName(), 150L);
+        polandState.addInfected(avianFlu, 150L);
+
         ContinentState europeState = new ContinentState("Europe");
         europeState.add(germanyState, polandState);
 
         CountryState southPole = new CountryState("South Pole", 1000L);
-        southPole.addInfected(influenza.getName(), 500L);
+        southPole.addInfected(influenza, 500L);
         ContinentState antarcticaState = new ContinentState("Antarctica");
         antarcticaState.add(southPole);
 
         WorldState earthState = new WorldState();
         earthState.add(antarcticaState, europeState);
         earthState.add(avianFlu, influenza);
+
+        TravelRoute route = TravelRoute.create(germanyState, polandState, TravelRouteType.LAND);
+        route.setTravelingPopulationFactorPerTick(0.001);
 
         WorldSimulationEntity worldSimulationEntity = new WorldSimulationEntity("Test World One");
         worldSimulationEntity.setWorldState(earthState);

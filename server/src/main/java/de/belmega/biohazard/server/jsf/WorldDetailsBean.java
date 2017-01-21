@@ -74,7 +74,7 @@ public class WorldDetailsBean {
         Set<String> diseaseNames = new HashSet<>();
         for (ContinentState continent : worldSimulationEntity.getWorldState().getContinents())
             for (CountryState c : continent.getCountries())
-                for (InfectionState i : c.getInfectedPeoplePerDisease())
+                for (InfectionState i : c.getInfections())
                     diseaseNames.add(i.getDiseaseName());
 
         List<String> diseaseNameList = new ArrayList<>(diseaseNames);
@@ -87,7 +87,7 @@ public class WorldDetailsBean {
 
         for (ContinentState continent : worldSimulationEntity.getWorldState().getContinents())
             for (CountryState c : continent.getCountries())
-                for (InfectionState i : c.getInfectedPeoplePerDisease())
+                for (InfectionState i : c.getInfections())
                     if (infections.containsKey(i.getDiseaseName()))
                         infections.put(i.getDiseaseName(), infections.get(i.getDiseaseName()) + i.getAmount());
                     else

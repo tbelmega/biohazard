@@ -61,12 +61,12 @@
             </h:dataTable>
 
             <h:outputLabel>Diseases: </h:outputLabel>
-            <h:dataTable value="#{worldDetailsBean.worldInfectionState.entrySet()}" var="infection">
+            <h:dataTable value="#{worldDetailsBean.worldInfectionState.entrySet()}" var="infectionState">
                 <h:column>
-                    #{infection.key}
+                    #{infectionState.key}
                 </h:column>
                 <h:column>
-                    <h:outputText value="#{infection.value}">
+                    <h:outputText value="#{infectionState.value}">
                         <f:convertNumber groupingUsed="true"/>
                     </h:outputText>
                 </h:column>

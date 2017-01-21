@@ -1,21 +1,23 @@
 package de.belmega.biohazard.server.persistence.state;
 
-import de.belmega.biohazard.core.disease.Disease;
-
 import javax.persistence.*;
 
 @Entity
 public class DiseaseState extends NamedGameEntityState {
 
+    public static final double MAX_LETHALITY_FACTOR = 1.0;
+    public static final double MIN_LETHALITY_FACTOR = 0.0;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String name;
-
     @ManyToOne
     @JoinColumn(name = "world", nullable = false)
     private WorldState world;
+
+
+    private String name;
     private double spreadRate;
     private double lethalityFactor;
 
@@ -31,18 +33,6 @@ public class DiseaseState extends NamedGameEntityState {
         this.spreadRate = spreadRate;
     }
 
-    public static DiseaseState getState(Disease d) {
-        DiseaseState diseaseState = new DiseaseState(d.getName());
-        diseaseState.setSpreadRate(d.getSpreadRate());
-        diseaseState.setLethalityFactor(d.getLethalityFactor());
-        return diseaseState;
-    }
-
-    public Disease build() {
-        Disease disease = new Disease(name, spreadRate);
-        disease.setLethalityFactor(lethalityFactor);
-        return disease;
-    }
 
     public long getId() {
         return id;
@@ -82,6 +72,10 @@ public class DiseaseState extends NamedGameEntityState {
     }
 
     public void setLethalityFactor(double lethalityFactor) {
-        this.lethalityFactor = lethalityFactor;
+        if (MIN_LETHALITY_FACTOR < lethalityFactor && lethalityFactor < MAX_LETHALITY_FACTOR)
+            this.lethalityFactor = lethalityFactor;
+        else if (lethalityFactor >= MAX_LETHALITY_FACTOR)
+            this.lethalityFactor = MAX_LETHALITY_FACTOR;
+        else this.lethalityFactor = MIN_LETHALITY_FACTOR;
     }
 }
