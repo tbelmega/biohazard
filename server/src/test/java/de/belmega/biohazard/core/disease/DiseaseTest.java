@@ -42,7 +42,7 @@ public class DiseaseTest {
 
         baz.setGrowthFactor(0);
 
-        InfectionState.create(countryState, disease, 75000000);
+        InfectionState.create(baz, disease, 75000000);
 
         //act
         country.tick();

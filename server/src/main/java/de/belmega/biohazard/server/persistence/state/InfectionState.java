@@ -72,7 +72,10 @@ public class InfectionState {
     }
 
     public void setAmount(Long amount) {
-        this.amount = amount;
+        if (amount > 0)
+            this.amount = amount;
+        else
+            this.amount = 0L;
     }
 
     @Override
@@ -91,7 +94,6 @@ public class InfectionState {
 
         InfectionState infectionState = (InfectionState) o;
 
-        //TODO should the amount be a criterium for equality?
         return new EqualsBuilder()
                 .append(this.getDiseaseName(), infectionState.getDiseaseName())
                 .append(this.country, infectionState.getCountry())
@@ -112,6 +114,11 @@ public class InfectionState {
     }
 
     public void increaseAmount(long addedAmount) {
-        this.amount += addedAmount;
+        setAmount(this.amount + addedAmount);
+    }
+
+    public void reduceByFactor(double factor) {
+        long reduceByAmount = Math.round(amount * factor);
+        setAmount(amount - reduceByAmount);
     }
 }

@@ -5,10 +5,7 @@ import de.belmega.biohazard.auth.persistence.dao.UserDAO;
 import de.belmega.biohazard.core.country.TravelRoute;
 import de.belmega.biohazard.core.country.TravelRouteType;
 import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
-import de.belmega.biohazard.server.persistence.state.ContinentState;
-import de.belmega.biohazard.server.persistence.state.CountryState;
-import de.belmega.biohazard.server.persistence.state.DiseaseState;
-import de.belmega.biohazard.server.persistence.state.WorldState;
+import de.belmega.biohazard.server.persistence.state.*;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -18,7 +15,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * @author tbelmega on 04.12.2016.
+ * Insert test data into database when server starts up.
+ * Remove for production environment.
  */
 @Singleton
 @Startup
@@ -48,25 +46,26 @@ public class TestDataGenerator {
         influenza.setLethalityFactor(0.01);
         DiseaseState avianFlu = new DiseaseState("Avian Flu", 0.03);
         avianFlu.setLethalityFactor(0.02);
+        DiseaseState plague = new DiseaseState("Plague", 0.05);
+        plague.setLethalityFactor(0.5);
 
         CountryState germanyState = new CountryState("Germany", 80000000L);
         germanyState.setGrowthFactor(0.01 / 365);
-        germanyState.addInfected(avianFlu, 10000L);
+
         CountryState polandState = new CountryState("Poland", 40000000L);
         polandState.setGrowthFactor(0.015 / 365);
-        polandState.addInfected(avianFlu, 150L);
 
         ContinentState europeState = new ContinentState("Europe");
         europeState.add(germanyState, polandState);
 
         CountryState southPole = new CountryState("South Pole", 1000L);
-        southPole.addInfected(influenza, 500L);
+
         ContinentState antarcticaState = new ContinentState("Antarctica");
         antarcticaState.add(southPole);
 
         WorldState earthState = new WorldState();
         earthState.add(antarcticaState, europeState);
-        earthState.add(avianFlu, influenza);
+        earthState.add(avianFlu, influenza, plague);
 
         TravelRoute route = TravelRoute.create(germanyState, polandState, TravelRouteType.LAND);
         route.setTravelingPopulationFactorPerTick(0.001);
@@ -74,6 +73,12 @@ public class TestDataGenerator {
         WorldSimulationEntity worldSimulationEntity = new WorldSimulationEntity("Test World One");
         worldSimulationEntity.setWorldState(earthState);
 
+        InfectionState.create(germanyState, avianFlu, 1000L);
+        InfectionState.create(germanyState, plague, 10000L);
+        InfectionState.create(polandState, avianFlu, 150L);
+        InfectionState.create(southPole, influenza, 500L);
+
         em.persist(worldSimulationEntity);
+
     }
 }

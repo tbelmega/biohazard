@@ -59,7 +59,7 @@ public class LethalityTest {
         //assert
         long expectedDead = Math.round(100 * 0.1);
         long expectedInfectedPopulation = 100 - expectedDead;
-        assertEquals(expectedInfectedPopulation, country.getInfectedPeople(disease));
+        assertThat(country.getInfectedPeople(disease), is(equalTo(expectedInfectedPopulation)));
     }
 
     /**
@@ -118,15 +118,16 @@ public class LethalityTest {
     public void testThat_twoLethalDiseasesOverlapInKilling() throws Exception {
         //arrange
         int initialPopulation = 10000;
-        Country country = new Country(new CountryState("baz", initialPopulation));
+        CountryState baz = new CountryState("baz", initialPopulation);
+        Country country = new Country(baz);
 
 
-        InfectionState.create(countryState, disease, 5000);
+        InfectionState.create(baz, disease, 5000);
 
         DiseaseState disease2 = new DiseaseState("bar", 0);
         disease2.setLethalityFactor(0.1);
 
-        InfectionState.create(countryState, disease2, 5000);
+        InfectionState.create(baz, disease2, 5000);
 
         //act
         country.tick();
