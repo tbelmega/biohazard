@@ -1,5 +1,7 @@
 package de.belmega.biohazard.server.ejb;
 
+import de.belmega.biohazard.auth.common.dto.UserDTO;
+import de.belmega.biohazard.auth.persistence.dao.UserDAO;
 import de.belmega.biohazard.core.country.TravelRoute;
 import de.belmega.biohazard.core.country.TravelRouteType;
 import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
@@ -11,6 +13,7 @@ import de.belmega.biohazard.server.persistence.state.WorldState;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -23,8 +26,24 @@ public class TestDataGenerator {
     @PersistenceContext
     EntityManager em;
 
+    @Inject
+    UserDAO userDAO;
+
     @PostConstruct
     public void setupTestData() {
+        setupTestUser();
+        setupTestWorld();
+    }
+
+    private void setupTestUser() {
+        UserDTO user = new UserDTO();
+        user.setMailAddress("kenn@ich.net");
+        user.setPassword("1234");
+
+        userDAO.saveUser(user);
+    }
+
+    private void setupTestWorld() {
         DiseaseState influenza = new DiseaseState("Influenza", 0.01);
         influenza.setLethalityFactor(0.01);
         DiseaseState avianFlu = new DiseaseState("Avian Flu", 0.03);

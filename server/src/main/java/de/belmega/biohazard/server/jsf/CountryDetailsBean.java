@@ -1,6 +1,6 @@
 package de.belmega.biohazard.server.jsf;
 
-import de.belmega.biohazard.server.ejb.CountryDAO;
+import de.belmega.biohazard.server.persistence.dao.CountryDAO;
 import de.belmega.biohazard.server.persistence.state.CountryState;
 
 import javax.faces.bean.ManagedBean;

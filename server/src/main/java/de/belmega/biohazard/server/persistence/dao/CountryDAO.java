@@ -1,4 +1,4 @@
-package de.belmega.biohazard.server.ejb;
+package de.belmega.biohazard.server.persistence.dao;
 
 import de.belmega.biohazard.server.persistence.state.CountryState;
 

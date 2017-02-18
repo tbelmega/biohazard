@@ -1,6 +1,6 @@
 package de.belmega.biohazard.server.jsf;
 
-import de.belmega.biohazard.server.ejb.WorldDAO;
+import de.belmega.biohazard.server.persistence.dao.WorldDAO;
 import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 
 import javax.faces.bean.ManagedBean;

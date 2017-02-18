@@ -1,4 +1,4 @@
-package de.belmega.biohazard.server.ejb;
+package de.belmega.biohazard.server.persistence.dao;
 
 import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 import org.apache.commons.lang3.StringUtils;
@@ -11,9 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-/**
- * @author tbelmega on 03.12.2016.
- */
+
 @Stateless
 public class WorldDAO {
     @PersistenceContext
