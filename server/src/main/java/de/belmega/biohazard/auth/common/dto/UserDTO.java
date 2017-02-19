@@ -31,4 +31,8 @@ public class UserDTO {
     public byte[] getEncryptedPassword(byte[] salt) {
         return EncryptionUtil.hash(password.toCharArray(), salt);
     }
+
+    public String getName() {
+        return mailAddress.substring(0, getMailAddress().indexOf('@'));
+    }
 }

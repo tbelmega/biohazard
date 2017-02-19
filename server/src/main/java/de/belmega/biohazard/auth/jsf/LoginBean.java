@@ -17,7 +17,7 @@ import java.io.Serializable;
 @SessionScoped
 public class LoginBean implements Serializable {
 
-    public static final String ATTRIBUTE_USERNAME = "username";
+    public static final String ATTRIBUTE_USER = "user";
     public static final String LOGIN_PAGE = "login";
 
     @Inject
@@ -58,9 +58,8 @@ public class LoginBean implements Serializable {
         UserDTO user = new UserDTO(emailaddress, password);
         boolean valid = authService.validate(user);
         if (valid) {
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-                    .getExternalContext().getSession(false);
-            session.setAttribute("username", emailaddress);
+            HttpSession session = getHttpSession();
+            session.setAttribute(ATTRIBUTE_USER, user);
             return WorldListBean.INDEX_PAGE_REDIRECT;
         } else {
             FacesContext.getCurrentInstance().addMessage(
@@ -73,17 +72,24 @@ public class LoginBean implements Serializable {
     }
 
     public String logout() {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(false);
-        session.invalidate();
+        getHttpSession().invalidate();
         return LOGIN_PAGE;
     }
 
     public Boolean getLoggedIn() {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(false);
-        Object username = session.getAttribute(ATTRIBUTE_USERNAME);
+        HttpSession session = getHttpSession();
+        Object username = session.getAttribute(ATTRIBUTE_USER);
         boolean sessionHasLoggedInUser = username != null;
         return sessionHasLoggedInUser;
+    }
+
+    private HttpSession getHttpSession() {
+        return (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(false);
+    }
+
+    public String getGreeting() {
+        UserDTO user = (UserDTO) getHttpSession().getAttribute(ATTRIBUTE_USER);
+        return "Hello, " + user.getName() + ". ";
     }
 }

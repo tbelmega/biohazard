@@ -38,6 +38,11 @@ body {
     border-left: 1px solid #909090;
 }
 
+#navigation {
+    border-right: 1px solid #909090;
+    border-left: 1px solid #909090;
+}
+
 #content {
     min-height: 100%;
     padding: 0 20px;
@@ -49,7 +54,7 @@ body {
 #footer {
     height: 50px;
     line-height: 25px;
-    margin-bottom: -50px;
+    margin-bottom: -100px;
     padding: 10px;
     font-size: 8px;
     border-right: 1px solid #909090;

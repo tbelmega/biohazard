@@ -17,7 +17,10 @@
         <div id="container" class="shadowed">
             <div id="header">
                 <span>Biohazard World Monitor</span>
+            </div>
+            <div id="navigation">
                 <h:form rendered="#{loginBean.loggedIn}">
+                    <h:outputLabel id="lblGreeting" value="#{loginBean.greeting}"></h:outputLabel>
                     <h:commandLink id="linkLogout" action="#{loginBean.logout}">Logout</h:commandLink>
                 </h:form>
             </div>
