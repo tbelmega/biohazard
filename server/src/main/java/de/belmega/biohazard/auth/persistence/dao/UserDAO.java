@@ -61,4 +61,13 @@ public class UserDAO {
     }
 
 
+    public List<UserEntity> findAll() {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<UserEntity> query = criteriaBuilder.createQuery(UserEntity.class);
+        Root<UserEntity> entityRoot = query.from(UserEntity.class);
+
+        query.select(entityRoot);
+
+        return em.createQuery(query).getResultList();
+    }
 }
