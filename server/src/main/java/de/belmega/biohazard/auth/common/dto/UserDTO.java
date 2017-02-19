@@ -1,12 +1,18 @@
 package de.belmega.biohazard.auth.common.dto;
 
-/**
- * @author tbelmega on 18.02.2017.
- */
 public class UserDTO {
 
     private String mailAddress;
     private String password;
+
+    public UserDTO(String mailAddress, String password) {
+        this.mailAddress = mailAddress;
+        this.password = password;
+    }
+
+    public UserDTO() {
+
+    }
 
     public String getMailAddress() {
         return mailAddress;

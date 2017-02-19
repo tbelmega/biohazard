@@ -33,6 +33,8 @@ public class UserDAO {
 
         userEntity.setMailAddress(user.getMailAddress());
         userEntity.setPassword(user.getEncryptedPassword());
+
+        em.persist(userEntity);
     }
 
     /**
@@ -42,7 +44,7 @@ public class UserDAO {
      * @param user the user to search
      * @return a list with the matching user entity as only element. empty list, if no matching user.
      */
-    private List<UserEntity> findUserByMailAddress(@NotNull UserDTO user) {
+    public List<UserEntity> findUserByMailAddress(@NotNull UserDTO user) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<UserEntity> criteria = builder.createQuery(UserEntity.class);
         Root<UserEntity> from = criteria.from(UserEntity.class);
