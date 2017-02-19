@@ -6,19 +6,23 @@
         template="template.xhtml">
     <ui:define name="content">
         <h:form>
-
             <h:inputText value="#{userListBean.filter}"/>
             <h:commandButton value="Filter"/>
+
+            <!-- User Table -->
             <h:dataTable value="#{userListBean.users}" var="user">
+
+                <!-- Name Column-->
                 <h:column>
                     <f:facet name="header">Name</f:facet>
                     <h:link value="#{user.mailAddress}" outcome="userdetails.xhtml">
                         <f:param name="userId" value="#{user.id}"/>
                     </h:link>
                 </h:column>
-
             </h:dataTable>
-        </h:form>
 
+            <h:commandButton id="btnCreateUser" value="Create User" action="createuser"/>
+
+        </h:form>
     </ui:define>
 </ui:composition>

@@ -2,6 +2,7 @@ package de.belmega.biohazard.auth.persistence.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 public class UserEntity {
@@ -16,9 +17,17 @@ public class UserEntity {
 
     @NotNull
     private byte[] hashedPassword;
-    @NotNull
 
+    @NotNull
     private byte[] salt;
+
+    @ManyToMany
+    @JoinTable(
+            name = "User_ApplicationRole",
+            joinColumns = {@JoinColumn(name = "roles")},
+            inverseJoinColumns = {@JoinColumn(name = "users")}
+    )
+    private Set<ApplicationRoleEntity> roles;
 
 
     public String getMailAddress() {
