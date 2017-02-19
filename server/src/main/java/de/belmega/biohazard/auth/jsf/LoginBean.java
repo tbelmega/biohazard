@@ -5,16 +5,17 @@ import de.belmega.biohazard.auth.common.dto.UserDTO;
 import de.belmega.biohazard.auth.service.AuthService;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
-@ManagedBean
+@Named
 @SessionScoped
 public class LoginBean {
 
+    public static final String ATTRIBUTE_USERNAME = "username";
     @Inject
     AuthService authService;
 
@@ -69,5 +70,13 @@ public class LoginBean {
                 .getExternalContext().getSession(false);
         session.invalidate();
         return "login";
+    }
+
+    public Boolean getLoggedIn() {
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(false);
+        Object username = session.getAttribute(ATTRIBUTE_USERNAME);
+        boolean sessionHasLoggedInUser = username != null;
+        return sessionHasLoggedInUser;
     }
 }
