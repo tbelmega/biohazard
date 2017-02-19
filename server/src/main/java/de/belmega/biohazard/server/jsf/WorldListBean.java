@@ -11,6 +11,10 @@ import java.util.List;
 @Named
 @RequestScoped
 public class WorldListBean {
+
+    public static final String INDEX_PAGE = "index";
+    public static final String INDEX_PAGE_REDIRECT = INDEX_PAGE + "?faces-redirect=true";
+
     @Inject
     WorldDAO worldDAO;
     private List<WorldSimulationEntity> worlds;

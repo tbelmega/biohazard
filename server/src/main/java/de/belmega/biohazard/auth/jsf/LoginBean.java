@@ -3,6 +3,7 @@ package de.belmega.biohazard.auth.jsf;
 
 import de.belmega.biohazard.auth.common.dto.UserDTO;
 import de.belmega.biohazard.auth.service.AuthService;
+import de.belmega.biohazard.server.jsf.WorldListBean;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 public class LoginBean implements Serializable {
 
     public static final String ATTRIBUTE_USERNAME = "username";
+    public static final String LOGIN_PAGE = "login";
 
     @Inject
     AuthService authService;
@@ -59,14 +61,14 @@ public class LoginBean implements Serializable {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                     .getExternalContext().getSession(false);
             session.setAttribute("username", emailaddress);
-            return "index";
+            return WorldListBean.INDEX_PAGE_REDIRECT;
         } else {
             FacesContext.getCurrentInstance().addMessage(
-                    "btnLogin",
+                    null,
                     new FacesMessage(FacesMessage.SEVERITY_WARN,
                             "Incorrect username or password",
                             "Please enter correct username and password."));
-            return "null";
+            return null;
         }
     }
 
@@ -74,7 +76,7 @@ public class LoginBean implements Serializable {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
         session.invalidate();
-        return "login";
+        return LOGIN_PAGE;
     }
 
     public Boolean getLoggedIn() {
