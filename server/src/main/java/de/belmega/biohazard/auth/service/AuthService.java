@@ -23,8 +23,13 @@ public class AuthService {
     }
 
     private boolean validatePassword(UserDTO user, UserEntity userEntity) {
-        String enteredEncryptedPassword = user.getEncryptedPassword();
-        String storedEncryptedPassword = userEntity.getPassword();
-        return enteredEncryptedPassword.equals(storedEncryptedPassword);
+        byte[] enteredEncryptedPassword = user.getEncryptedPassword(userEntity.getSalt());
+        byte[] storedEncryptedPassword = userEntity.getHashedPassword();
+
+        if (enteredEncryptedPassword.length != storedEncryptedPassword.length) return false;
+        for (int i = 0; i < storedEncryptedPassword.length; i++)
+            if (enteredEncryptedPassword[i] != storedEncryptedPassword[i]) return false;
+
+        return true;
     }
 }

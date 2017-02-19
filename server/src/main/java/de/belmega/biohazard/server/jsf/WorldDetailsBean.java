@@ -9,14 +9,15 @@ import de.belmega.biohazard.server.persistence.state.CountryState;
 import de.belmega.biohazard.server.persistence.state.InfectionState;
 import de.belmega.biohazard.server.persistence.state.WorldState;
 
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.*;
 
 @Named
 @SessionScoped
-public class WorldDetailsBean {
+public class WorldDetailsBean implements Serializable {
     @Inject
     WorldDAO worldDAO;
     private WorldSimulationEntity worldSimulationEntity;

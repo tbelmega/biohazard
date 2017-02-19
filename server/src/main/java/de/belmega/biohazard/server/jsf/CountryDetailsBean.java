@@ -3,7 +3,7 @@ package de.belmega.biohazard.server.jsf;
 import de.belmega.biohazard.server.persistence.dao.CountryDAO;
 import de.belmega.biohazard.server.persistence.state.CountryState;
 
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 

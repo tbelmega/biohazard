@@ -1,6 +1,7 @@
 package de.belmega.biohazard.auth.persistence.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class UserEntity {
@@ -13,8 +14,11 @@ public class UserEntity {
     @Column(name = "mailAddress", nullable = false, unique = true)
     private String mailAddress;
 
-    private String password;
-    private String salt;
+    @NotNull
+    private byte[] hashedPassword;
+    @NotNull
+
+    private byte[] salt;
 
 
     public String getMailAddress() {
@@ -25,19 +29,19 @@ public class UserEntity {
         this.mailAddress = userName;
     }
 
-    public String getPassword() {
-        return password;
+    public byte[] getHashedPassword() {
+        return hashedPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setHashedPassword(byte[] password) {
+        this.hashedPassword = password;
     }
 
-    public String getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
-    public void setSalt(String salt) {
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 

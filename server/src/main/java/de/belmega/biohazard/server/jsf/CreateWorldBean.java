@@ -3,13 +3,14 @@ package de.belmega.biohazard.server.jsf;
 import de.belmega.biohazard.server.persistence.dao.WorldDAO;
 import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 
 @Named
 @SessionScoped
-public class CreateWorldBean {
+public class CreateWorldBean implements Serializable {
     @Inject
     WorldDAO worldDAO;
     private WorldSimulationEntity worldSimulationEntity;

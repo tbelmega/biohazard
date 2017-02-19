@@ -1,5 +1,7 @@
 package de.belmega.biohazard.auth.common.dto;
 
+import de.belmega.biohazard.auth.common.EncryptionUtil;
+
 public class UserDTO {
 
     private String mailAddress;
@@ -26,7 +28,7 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String getEncryptedPassword() {
-        return password;
+    public byte[] getEncryptedPassword(byte[] salt) {
+        return EncryptionUtil.hash(password.toCharArray(), salt);
     }
 }

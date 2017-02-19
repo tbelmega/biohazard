@@ -3,7 +3,7 @@ package de.belmega.biohazard.server.jsf;
 import de.belmega.biohazard.server.persistence.dao.WorldDAO;
 import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;

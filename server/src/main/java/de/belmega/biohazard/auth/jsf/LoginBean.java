@@ -4,24 +4,29 @@ package de.belmega.biohazard.auth.jsf;
 import de.belmega.biohazard.auth.common.dto.UserDTO;
 import de.belmega.biohazard.auth.service.AuthService;
 
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 
 @Named
 @SessionScoped
-public class LoginBean {
+public class LoginBean implements Serializable {
 
     public static final String ATTRIBUTE_USERNAME = "username";
+
     @Inject
     AuthService authService;
 
     private String emailaddress;
     private String password;
     private String message;
+
+    public LoginBean() {
+    }
 
     public String getEmailaddress() {
         return emailaddress;

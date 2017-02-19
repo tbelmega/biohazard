@@ -1,5 +1,6 @@
 package de.belmega.biohazard.auth.persistence.dao;
 
+import de.belmega.biohazard.auth.common.EncryptionUtil;
 import de.belmega.biohazard.auth.common.dto.UserDTO;
 import de.belmega.biohazard.auth.persistence.entities.UserEntity;
 
@@ -26,13 +27,13 @@ public class UserDAO {
         List<UserEntity> userEntities = findUserByMailAddress(user);
         if (userEntities.size() < 1) {
             userEntity = new UserEntity();
-            userEntity.setSalt("1234");
+            userEntity.setSalt(EncryptionUtil.getNextSalt());
         } else {
             userEntity = userEntities.get(0);
         }
 
         userEntity.setMailAddress(user.getMailAddress());
-        userEntity.setPassword(user.getEncryptedPassword());
+        userEntity.setHashedPassword(user.getEncryptedPassword(userEntity.getSalt()));
 
         em.persist(userEntity);
     }
