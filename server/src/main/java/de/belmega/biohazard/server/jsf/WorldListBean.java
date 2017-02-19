@@ -3,15 +3,12 @@ package de.belmega.biohazard.server.jsf;
 import de.belmega.biohazard.server.persistence.dao.WorldDAO;
 import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
-/**
- * @author tbelmega on 03.12.2016.
- */
-@ManagedBean
+@Named
 @RequestScoped
 public class WorldListBean {
     @Inject

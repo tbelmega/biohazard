@@ -3,11 +3,11 @@ package de.belmega.biohazard.server.jsf;
 import de.belmega.biohazard.server.persistence.dao.CountryDAO;
 import de.belmega.biohazard.server.persistence.state.CountryState;
 
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
-@ManagedBean
+@Named
 @RequestScoped
 public class CountryDetailsBean {
     private long countryId;

@@ -9,15 +9,12 @@ import de.belmega.biohazard.server.persistence.state.CountryState;
 import de.belmega.biohazard.server.persistence.state.InfectionState;
 import de.belmega.biohazard.server.persistence.state.WorldState;
 
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.*;
 
-/**
- * @author tbelmega on 04.12.2016.
- */
-@ManagedBean
+@Named
 @SessionScoped
 public class WorldDetailsBean {
     @Inject

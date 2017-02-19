@@ -3,14 +3,11 @@ package de.belmega.biohazard.server.jsf;
 import de.belmega.biohazard.server.persistence.dao.WorldDAO;
 import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
-/**
- * @author tbelmega on 04.12.2016.
- */
-@ManagedBean
+@Named
 @SessionScoped
 public class CreateWorldBean {
     @Inject
