@@ -12,8 +12,8 @@ import java.util.List;
 @RequestScoped
 public class WorldListBean {
 
-    public static final String INDEX_PAGE = "index";
-    public static final String INDEX_PAGE_REDIRECT = INDEX_PAGE + "?faces-redirect=true";
+    public static final String WORLDLIST_PAGE = "player/worldlist";
+    public static final String WORLDLIST_PAGE_REDIRECT = WORLDLIST_PAGE + "?faces-redirect=true";
 
     @Inject
     WorldDAO worldDAO;

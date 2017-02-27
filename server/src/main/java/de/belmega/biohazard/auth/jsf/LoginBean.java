@@ -1,6 +1,7 @@
 package de.belmega.biohazard.auth.jsf;
 
 
+import de.belmega.biohazard.auth.common.dto.UserCredentialDTO;
 import de.belmega.biohazard.auth.common.dto.UserDTO;
 import de.belmega.biohazard.auth.service.AuthService;
 import de.belmega.biohazard.server.jsf.WorldListBean;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
+import java.util.Optional;
 
 @Named
 @SessionScoped
@@ -55,12 +57,12 @@ public class LoginBean implements Serializable {
     }
 
     public String validateUsernamePassword() {
-        UserDTO user = new UserDTO(emailaddress, password);
-        boolean valid = authService.validate(user);
-        if (valid) {
+        UserCredentialDTO credentials = new UserCredentialDTO(emailaddress, password);
+        Optional<UserDTO> loggedInUser = authService.validate(credentials);
+        if (loggedInUser.isPresent()) {
             HttpSession session = getHttpSession();
-            session.setAttribute(ATTRIBUTE_USER, user);
-            return WorldListBean.INDEX_PAGE_REDIRECT;
+            session.setAttribute(ATTRIBUTE_USER, loggedInUser.get());
+            return WorldListBean.WORLDLIST_PAGE_REDIRECT;
         } else {
             FacesContext.getCurrentInstance().addMessage(
                     null,

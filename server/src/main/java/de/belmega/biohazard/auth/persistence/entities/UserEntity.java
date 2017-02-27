@@ -21,7 +21,7 @@ public class UserEntity {
     @NotNull
     private byte[] salt;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<ApplicationRole> roles;
 
     public String getMailAddress() {

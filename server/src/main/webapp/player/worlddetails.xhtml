@@ -3,7 +3,7 @@
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
-        template="template.xhtml">
+        template="../template.xhtml">
     <ui:define name="content">
         <f:metadata>
             <!-- When page is loaded, get ID from URL and store it in the bean.
@@ -85,7 +85,7 @@
 
 
             <div>
-                <h:commandButton id="btnBack" value="Back" action="index"/>
+                <h:commandButton id="btnBack" value="Back" action="wordlist"/>
                 <h:commandButton id="btnDelete" value="Delete"
                                  onclick="if (! confirm('Destroy this world?')) return false"
                                  action="#{worldDetailsBean.destroyWorldEntity}"/>

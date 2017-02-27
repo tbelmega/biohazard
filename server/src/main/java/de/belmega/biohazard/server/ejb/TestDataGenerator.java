@@ -1,5 +1,6 @@
 package de.belmega.biohazard.server.ejb;
 
+import de.belmega.biohazard.auth.common.dto.UserCredentialDTO;
 import de.belmega.biohazard.auth.common.dto.UserDTO;
 import de.belmega.biohazard.auth.persistence.dao.UserDAO;
 import de.belmega.biohazard.auth.persistence.entities.ApplicationRole;
@@ -35,12 +36,14 @@ public class TestDataGenerator {
     }
 
     private void setupTestUser() {
+        UserCredentialDTO credentials = new UserCredentialDTO("kenn@ich.net", "1234");
+
         UserDTO user = new UserDTO();
-        user.setMailAddress("kenn@ich.net");
-        user.setPassword("1234");
+        user.setMailAddress(credentials.getMailAddress());
         user.addRole(ApplicationRole.ADMIN);
 
         userDAO.saveUser(user);
+        userDAO.updatePassword(credentials);
     }
 
     private void setupTestWorld() {

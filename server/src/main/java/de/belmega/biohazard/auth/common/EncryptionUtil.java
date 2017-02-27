@@ -1,6 +1,8 @@
 package de.belmega.biohazard.auth.common;
 
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -11,6 +13,7 @@ import java.util.Random;
 
 public class EncryptionUtil {
 
+    public static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?";
     private static final Random RANDOM = new SecureRandom();
     private static final int ITERATIONS = 10000;
     private static final int KEY_LENGTH = 512;
@@ -44,5 +47,10 @@ public class EncryptionUtil {
         } finally {
             spec.clearPassword();
         }
+    }
+
+    public static byte[] generateRandomPassword(byte[] salt) {
+        String password = RandomStringUtils.random(20, CHARACTERS);
+        return hash(password.toCharArray(), salt);
     }
 }

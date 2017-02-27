@@ -1,48 +1,35 @@
 package de.belmega.biohazard.auth.common.dto;
 
-import de.belmega.biohazard.auth.common.EncryptionUtil;
 import de.belmega.biohazard.auth.persistence.entities.ApplicationRole;
+import de.belmega.biohazard.auth.persistence.entities.UserEntity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserDTO {
 
     private String mailAddress;
-    private String password;
-    private Set<ApplicationRole> roles;
-
-    public UserDTO(String mailAddress, String password) {
-        this.mailAddress = mailAddress;
-        this.password = password;
-    }
-
-    public UserDTO(String mailAddress, Set<ApplicationRole> roles) {
-        this.mailAddress = mailAddress;
-        this.roles = roles;
-    }
+    private Set<ApplicationRole> roles = new HashSet<>();
 
     public UserDTO() {
 
     }
 
+    public UserDTO(UserEntity userEntity) {
+        this.mailAddress = userEntity.getMailAddress();
+        this.roles = userEntity.getRoles();
+    }
+
     public String getMailAddress() {
-        return mailAddress;
+        return this.mailAddress;
     }
 
     public void setMailAddress(String mailAddress) {
         this.mailAddress = mailAddress;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public byte[] getEncryptedPassword(byte[] salt) {
-        return EncryptionUtil.hash(password.toCharArray(), salt);
-    }
-
     public String getName() {
-        return mailAddress.substring(0, getMailAddress().indexOf('@'));
+        return getMailAddress().substring(0, getMailAddress().indexOf('@'));
     }
 
     public void addRole(ApplicationRole role) {
