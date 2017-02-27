@@ -21,18 +21,13 @@ public class UserEntity {
     @NotNull
     private byte[] salt;
 
-    @ManyToMany
-    @JoinTable(
-            name = "User_ApplicationRole",
-            joinColumns = {@JoinColumn(name = "roles")},
-            inverseJoinColumns = {@JoinColumn(name = "users")}
-    )
-    private Set<ApplicationRoleEntity> roles;
-
+    @ElementCollection
+    private Set<ApplicationRole> roles;
 
     public String getMailAddress() {
         return mailAddress;
     }
+
 
     public void setMailAddress(String userName) {
         this.mailAddress = userName;
@@ -62,4 +57,11 @@ public class UserEntity {
         this.id = id;
     }
 
+    public Set<ApplicationRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<ApplicationRole> roles) {
+        this.roles = roles;
+    }
 }

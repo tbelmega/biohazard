@@ -27,8 +27,7 @@ public class UserManagementService {
     }
 
     private UserDTO createDTO(UserEntity userEntity) {
-        UserDTO dto = new UserDTO();
-        dto.setMailAddress(userEntity.getMailAddress());
+        UserDTO dto = new UserDTO(userEntity.getMailAddress(), userEntity.getRoles());
         return dto;
     }
 }

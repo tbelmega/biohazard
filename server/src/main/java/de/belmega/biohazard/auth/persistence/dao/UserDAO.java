@@ -34,6 +34,7 @@ public class UserDAO {
 
         userEntity.setMailAddress(user.getMailAddress());
         userEntity.setHashedPassword(user.getEncryptedPassword(userEntity.getSalt()));
+        userEntity.setRoles(user.getRoles());
 
         em.persist(userEntity);
     }

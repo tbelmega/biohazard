@@ -2,6 +2,7 @@ package de.belmega.biohazard.server.ejb;
 
 import de.belmega.biohazard.auth.common.dto.UserDTO;
 import de.belmega.biohazard.auth.persistence.dao.UserDAO;
+import de.belmega.biohazard.auth.persistence.entities.ApplicationRole;
 import de.belmega.biohazard.core.country.TravelRoute;
 import de.belmega.biohazard.core.country.TravelRouteType;
 import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
@@ -37,6 +38,7 @@ public class TestDataGenerator {
         UserDTO user = new UserDTO();
         user.setMailAddress("kenn@ich.net");
         user.setPassword("1234");
+        user.addRole(ApplicationRole.ADMIN);
 
         userDAO.saveUser(user);
     }
