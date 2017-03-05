@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment/>
+    <entry key="driver path">E:/workspace/biohazard/ui-test/src/main/resources/geckodriver.exe</entry>
+    <entry key="application url">http://localhost:8080/biohazard-server</entry>
+</properties>

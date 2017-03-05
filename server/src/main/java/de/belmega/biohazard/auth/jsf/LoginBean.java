@@ -75,7 +75,7 @@ public class LoginBean implements Serializable {
 
     public String logout() {
         getHttpSession().invalidate();
-        return LOGIN_PAGE;
+        return "/" + LOGIN_PAGE + "?faces-redirect=true";
     }
 
     public Boolean getLoggedIn() {
