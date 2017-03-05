@@ -1,36 +1,26 @@
 package de.belmega.biohazard.auth;
 
-import de.belmega.biohazard.selenium.TestConfiguration;
+import de.belmega.biohazard.selenium.TestUser;
+import de.belmega.biohazard.selenium.pages.auth.LoginPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static de.belmega.biohazard.selenium.TestConfiguration.config;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 
 public class LogIn_LogOut_Test {
 
     private WebDriver driver1;
+    private LoginPage loginPage = new LoginPage();
 
-    private static void login(WebDriver driver) {
-        driver.get(TestConfiguration.baseUrl());
 
-        driver.findElement(By.name("form_login:emailadress")).sendKeys("kenn@ich.net");
-        driver.findElement(By.name("form_login:password")).sendKeys("1234");
-
-        driver.findElement(By.id("form_login:btnLogin")).click();
-
-        WebDriverWait webDriver1Wait = new WebDriverWait(driver, 5);
-        webDriver1Wait.until(elementToBeClickable(By.partialLinkText("Logout")));
-    }
-
-    @BeforeTest
-    public void openBrowser() {
+    @BeforeClass
+    public void createDriver() {
         driver1 = config().createFirefoxDriver();
     }
 
@@ -39,11 +29,25 @@ public class LogIn_LogOut_Test {
         //arrange
 
         //act
-        login(driver1);
+        loginPage.login(driver1, TestUser.ADMIN);
 
         //assert
         assertThat(driver1.findElement(By.id("loggedInBar:lblGreeting")).getText(), containsString("Hello, kenn."));
     }
+
+    @Test
+    public void testLogout() throws Exception {
+        //arrange
+        loginPage.login(driver1, TestUser.ADMIN);
+
+        //act
+        loginPage.logout(driver1);
+
+        //assert
+        String navigation = driver1.findElement(By.id("navigation")).getText();
+        assertThat(navigation, not(containsString("Logout")));
+    }
+
 
     @AfterTest
     public void closeBrowser() {
