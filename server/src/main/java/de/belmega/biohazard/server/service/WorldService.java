@@ -1,7 +1,6 @@
 package de.belmega.biohazard.server.service;
 
 import de.belmega.biohazard.server.dto.WorldDTO;
-import de.belmega.biohazard.server.dto.WorldListDTO;
 import de.belmega.biohazard.server.persistence.dao.WorldDAO;
 import de.belmega.biohazard.server.persistence.entities.WorldSimulationEntity;
 

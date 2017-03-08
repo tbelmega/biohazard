@@ -1,7 +1,6 @@
 package de.belmega.biohazard.rs;
 
 import de.belmega.biohazard.server.dto.WorldDTO;
-import de.belmega.biohazard.server.dto.WorldListDTO;
 import de.belmega.biohazard.server.service.WorldService;
 
 import javax.ejb.Stateless;
@@ -11,7 +10,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.Collections;
 import java.util.List;
 
 @Stateless

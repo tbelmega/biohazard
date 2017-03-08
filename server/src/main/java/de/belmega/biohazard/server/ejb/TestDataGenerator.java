@@ -85,5 +85,7 @@ public class TestDataGenerator {
 
         em.persist(worldSimulationEntity);
 
+        WorldSimulationEntity worldSimulationEntity2 = new WorldSimulationEntity("Test World Eleven");
+        em.persist(worldSimulationEntity2);
     }
 }

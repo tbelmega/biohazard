@@ -24,12 +24,12 @@ public class WorldDTO {
         return name;
     }
 
-    public Timestamp getCreationTimestamp() {
-        return creationTimestamp;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Timestamp getCreationTimestamp() {
+        return creationTimestamp;
     }
 
     public void setCreationTimestamp(Timestamp creationTimestamp) {
