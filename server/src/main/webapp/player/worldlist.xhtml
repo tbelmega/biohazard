@@ -27,7 +27,7 @@
                             <f:param name="order" value="#{!worldListBean.orderAscending}"/>
                         </h:link>
                     </f:facet>
-                    <h:outputText value="#{world.creationDate}">
+                    <h:outputText value="#{world.creationTimestamp}">
                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
                     </h:outputText>
                 </h:column>

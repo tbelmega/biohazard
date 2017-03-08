@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
 
-    <persistence-unit name="biohazardDS" transaction-type="JTA">
+    <persistence-unit name="ExampleDS" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!--JNDI name of datasource to use, configured in JBoss. If this is missing, JBoss provides default datasource.-->
-        <jta-data-source>java:/jdbc/biohazardDS</jta-data-source>
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
 
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
 
             <property name="hibernate.transaction.flush_before_completion" value="true"/>
             <property name="hibernate.show_sql" value="true"/>
